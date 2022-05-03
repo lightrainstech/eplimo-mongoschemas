@@ -29,6 +29,10 @@ const ReferralSchema = new mongoose.Schema(
 )
 
 ReferralSchema.methods = {
+  getReferralCodeList: async function (email) {
+    const referral = mongoose.model('Referral')
+    return await referral.find({}).sort({ createdAt: 1 })
+  },
   getByEmail: async function (email) {
     const referral = mongoose.model('Referral')
     return await referral.findOne({ email: email })

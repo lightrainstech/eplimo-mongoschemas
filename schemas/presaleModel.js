@@ -67,7 +67,7 @@ const PreSaleSchema = new mongoose.Schema(
 PreSaleSchema.methods = {
   getPresaleRequests: async function () {
     const Presale = mongoose.model('PreSale')
-    return await Presale.find({})
+    return await Presale.find({}).sort({ createdAt: 1 })
   },
   getByEmail: async function (email) {
     const Presale = mongoose.model('PreSale')
