@@ -1,3 +1,6 @@
+'use strict'
+// External Dependancies
+const mongoose = require('mongoose')
 const AdminSchema = new mongoose.Schema(
   {
     name: {
