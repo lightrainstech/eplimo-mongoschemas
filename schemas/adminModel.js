@@ -1,6 +1,10 @@
 'use strict'
 // External Dependancies
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
+const bcrypt = require('bcrypt')
+const Schema = mongoose.Schema
+const SALT_ROUNDS = 10
 const AdminSchema = new mongoose.Schema(
   {
     name: {
@@ -20,6 +24,10 @@ const AdminSchema = new mongoose.Schema(
     },
     hashedPassword: {
       type: String
+    },
+    salt: {
+      type: String,
+      default: ''
     }
   },
   {
@@ -30,14 +38,28 @@ const AdminSchema = new mongoose.Schema(
 AdminSchema.virtual('password')
   .set(function (password) {
     this._password = password
-    this.hashedPassword = this.securePassword(password)
+    this.salt = this.makeSalt()
+    this.hashedPassword = this.encryptPassword(password)
   })
+
   .get(function () {
     return this._password
   })
 
 AdminSchema.methods = {
+  makeSalt: function () {
+    return bcrypt.genSaltSync(SALT_ROUNDS)
+  },
+
+  encryptPassword: function (password) {
+    if (!password) return ''
+    return bcrypt.hashSync(password, this.salt)
+  },
+  authenticate: function (plainText) {
+    return bcrypt.compareSync(plainText, this.hashedPassword)
+  },
   adminLogin: async function (email, password) {
+    console.log('here')
     try {
       const adminModel = mongoose.model('Admin'),
         options = {
@@ -47,6 +69,7 @@ AdminSchema.methods = {
           select: 'email hashedPassword'
         },
         admin = await adminModel.load(options)
+      console.log(admin)
       if (admin) {
         const auth = await bcrypt.compare(password, admin.hashedPassword)
         if (auth) {
