@@ -1,0 +1,12 @@
+{
+  "name": "eplimo-mongoschemas",
+  "version": "1.0.0",
+  "description": "Mongoschema for all eplimo services",
+  "main": "index.js",
+  "author": "sruthi23",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^6.3.1",
+    "mongoose-unique-validator": "^3.0.0"
+  }
+}
