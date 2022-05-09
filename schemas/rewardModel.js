@@ -37,6 +37,20 @@ Reward.methods = {
   getuserLimoR: async function (email) {
     const Reward = mongoose.model('Reward')
     return await Reward.findOne({ email: email }, { limoR: 1 })
+  },
+  updateRewardPoints: async function (rewardId, stakeAmount) {
+    stakeAmount = Number(stakeAmount)
+    const Reward = mongoose.model('Reward')
+    return await Reward.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          totalPoint: totalPoint - stakeAmount,
+          limoR: limoR - stakeAmount
+        }
+      },
+      { new: true }
+    )
   }
 }
 
