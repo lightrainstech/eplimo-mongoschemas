@@ -59,17 +59,15 @@ AdminSchema.methods = {
     return bcrypt.compareSync(plainText, this.hashedPassword)
   },
   adminLogin: async function (email, password) {
-    console.log('here')
     try {
       const adminModel = mongoose.model('Admin'),
         options = {
           criteria: {
             email: email
           },
-          select: 'email hashedPassword'
+          select: 'email hashedPassword role'
         },
         admin = await adminModel.load(options)
-      console.log(admin)
       if (admin) {
         const auth = await bcrypt.compare(password, admin.hashedPassword)
         if (auth) {

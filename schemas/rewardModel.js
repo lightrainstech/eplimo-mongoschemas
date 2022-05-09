@@ -20,10 +20,15 @@ const RewardSchema = new mongoose.Schema(
       type: String,
       default: '---'
     },
-    rewardPoint: {
+    totalPoint: {
       type: Number,
       default: 0
-    }
+    },
+    limoR: {
+      type: Number,
+      default: 0
+    },
+    limoT: { type: Number, default: 0 }
   },
   { timestamps: true }
 )
