@@ -43,7 +43,7 @@ RewardSchema.methods = {
     stakeAmount = Number(stakeAmount)
     const Reward = mongoose.model('Reward')
     return await Reward.findOneAndUpdate(
-      { email: email },
+      { _id: rewardId },
       {
         $set: {
           totalPoint: totalPoint - stakeAmount,
