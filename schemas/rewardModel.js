@@ -3,6 +3,11 @@ const { ObjectId } = mongoose.Schema
 
 const RewardSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+      unique: true
+    },
     name: {
       type: String,
       default: '---'
