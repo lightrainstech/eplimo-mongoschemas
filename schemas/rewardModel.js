@@ -34,7 +34,7 @@ const RewardSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-Reward.methods = {
+RewardSchema.methods = {
   getuserLimoR: async function (email) {
     const Reward = mongoose.model('Reward')
     return await Reward.findOne({ email: email }, { limoR: 1 })
