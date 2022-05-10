@@ -17,10 +17,6 @@ const RewardSchema = new mongoose.Schema(
       required: true,
       unique: true
     },
-    distributorId: {
-      type: String,
-      default: '---'
-    },
     phone: {
       type: String,
       default: '---'
