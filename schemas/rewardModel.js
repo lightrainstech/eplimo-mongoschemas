@@ -40,14 +40,15 @@ RewardSchema.methods = {
     return await Reward.findOne({ email: email }, { limoR: 1 })
   },
   updateRewardPoints: async function (rewardId, stakeAmount) {
-    stakeAmount = Number(stakeAmount)
+    stakeAmount = Number(stakeAmount)*-1
     const Reward = mongoose.model('Reward')
     return await Reward.findOneAndUpdate(
       { _id: rewardId },
       {
         $set: {
-          totalPoint: totalPoint - stakeAmount,
-          limoR: limoR - stakeAmount
+           { "$inc":{"totalPoint":stakeAmount}},
+           { "$inc":{"limoR":stakeAmount}},
+          
         }
       },
       { new: true }
