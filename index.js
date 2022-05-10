@@ -14,7 +14,6 @@ const Admin = require('./schemas/adminModel.js')
 const PreSale = require('./schemas/presaleModel.js')
 const Referral = require('./schemas/referralModel.js')
 const Reward = require('./schemas/rewardModel.js')
-const Reward = require('./schemas/rewardModel.js')
 const StakingReward = require('./schemas/stakingRewardModel.js')
 
 module.exports = {
