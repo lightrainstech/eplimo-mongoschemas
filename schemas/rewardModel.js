@@ -27,6 +27,10 @@ const RewardSchema = new mongoose.Schema(
     limoR: {
       type: Number,
       default: 0
+    },
+    limoT: {
+      type: Number,
+      default: 0
     }
   },
   { timestamps: true }
