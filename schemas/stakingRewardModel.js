@@ -3,9 +3,9 @@ const { ObjectId } = mongoose.Schema
 
 const StakingRewardSchema = new mongoose.Schema(
   {
-    rewardId: {
-      type: ObjectId,
-      ref: 'Reward'
+    userId: {
+      type: String,
+      required: true
     },
     rewardPoint: {
       type: Number,
