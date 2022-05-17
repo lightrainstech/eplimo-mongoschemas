@@ -37,16 +37,15 @@ const RewardSchema = new mongoose.Schema(
 )
 
 RewardSchema.methods = {
-  getuserLimoR: async function (userId) {
+  getuserLimoR: async function (email) {
     const Reward = mongoose.model('Reward')
-    return await Reward.findOne({ userId: userId }, { limoR: 1 })
+    return await Reward.findOne({ email: email }, { limoR: 1 })
   },
-  updateRewardPoints: async function (userId, stakeAmount) {
+  updateRewardPoints: async function (email, stakeAmount) {
     stakeAmount = Number(stakeAmount) * -1
-    console.log(stakeAmount)
     const Reward = mongoose.model('Reward')
     return await Reward.findOneAndUpdate(
-      { userId: userId },
+      { email: email },
       {
         $inc: { limoR: stakeAmount }
       },
