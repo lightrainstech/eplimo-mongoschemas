@@ -15,11 +15,13 @@ const PreSale = require('./schemas/presaleModel.js')
 const Referral = require('./schemas/referralModel.js')
 const Reward = require('./schemas/rewardModel.js')
 const StakingReward = require('./schemas/stakingRewardModel.js')
+const LimoReward = require('./schemas/limoRewardModel.js')
 
 module.exports = {
   Admin,
   PreSale,
   Referral,
   Reward,
-  StakingReward
+  StakingReward,
+  LimoReward
 }
