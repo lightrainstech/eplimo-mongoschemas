@@ -21,7 +21,7 @@ const LimoRewardSchema = new mongoose.Schema(
 
 LimoRewardSchema.methods = {
   getuserLimo: async function (email) {
-    const Reward = mongoose.model('Reward')
+    const Reward = mongoose.model('LimoReward')
     return await Reward.findOne({ email: email }, { limo: 1 })
   }
 }
