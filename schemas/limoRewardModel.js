@@ -30,4 +30,8 @@ LimoRewardSchema.methods = {
   }
 }
 
+LimoRewardSchema.index({
+  wallet: 1
+})
+
 module.exports = mongoose.model('LimoReward', LimoRewardSchema)
