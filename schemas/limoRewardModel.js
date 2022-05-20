@@ -14,15 +14,19 @@ const LimoRewardSchema = new mongoose.Schema(
     limo: {
       type: Number,
       default: 0
+    },
+    wallet: {
+      type: String,
+      required: tsrue
     }
   },
   { timestamps: true }
 )
 
 LimoRewardSchema.methods = {
-  getuserLimo: async function (email) {
+  getuserLimo: async function (wallet) {
     const Reward = mongoose.model('LimoReward')
-    return await Reward.findOne({ email: email }, { limo: 1 })
+    return await Reward.findOne({ wallet: wallet }, { limo: 1 })
   }
 }
 
