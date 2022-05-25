@@ -15,15 +15,7 @@ const RewardSchema = new mongoose.Schema(
       type: String,
       default: '---'
     },
-    limo: {
-      type: Number,
-      default: 0
-    },
     limoR: {
-      type: Number,
-      default: 0
-    },
-    limoT: {
       type: Number,
       default: 0
     }
