@@ -38,6 +38,18 @@ RewardSchema.methods = {
       },
       { new: true }
     )
+  },
+  updateEmail: async function (oldEmail, newEmail) {
+    const Reward = mongoose.model('Reward')
+    return await Reward.findOneAndUpdate(
+      { email: oldEmail },
+      {
+        $set: {
+          email: newEmail
+        }
+      },
+      { new: true }
+    )
   }
 }
 
