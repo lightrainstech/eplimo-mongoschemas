@@ -7,7 +7,7 @@ const socialSchema = {
 
 const UserSchema = new mongoose.Schema(
   {
-    userType: {
+    role: {
       type: String,
       required: true,
       enum: ['admin', 'user'],
