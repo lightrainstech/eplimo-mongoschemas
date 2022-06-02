@@ -11,7 +11,7 @@ const LimoStakeSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    stakeAmount: {
+    limos: {
       type: Number,
       default: 0.0
     },
