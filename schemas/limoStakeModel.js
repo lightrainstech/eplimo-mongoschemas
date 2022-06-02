@@ -22,6 +22,10 @@ const LimoStakeSchema = new mongoose.Schema(
     txnHash: {
       type: String,
       default: '0x0'
+    },
+    date:{
+    type:String,
+    default:'--'
     }
   },
   { timestamps: true }
