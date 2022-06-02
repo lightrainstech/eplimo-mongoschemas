@@ -23,12 +23,28 @@ const LimoStakeSchema = new mongoose.Schema(
       type: String,
       default: '0x0'
     },
-    date:{
-    type:String,
-    default:'--'
+    date: {
+      type: String,
+      default: '--'
     }
   },
   { timestamps: true }
 )
+
+LimoStakeSchema.methods = {
+  updateStatus: async function (id, txnhash) {
+    const LimoStakeModel = mongoose.model('LimoStake')
+    return await LimoStakeModel.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          txnHash: txnhash,
+          isProcessed: true
+        }
+      },
+      { new: true }
+    )
+  }
+}
 
 module.exports = mongoose.model('LimoStake', LimoStakeSchema)
