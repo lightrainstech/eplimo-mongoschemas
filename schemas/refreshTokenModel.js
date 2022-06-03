@@ -3,6 +3,10 @@ const { ObjectId } = mongoose.Schema
 
 const RefreshTokenSchema = new mongoose.Schema(
   {
+    user: {
+      type: Schema.ObjectId,
+      ref: 'User'
+    },
     token: {
       type: String
     },
