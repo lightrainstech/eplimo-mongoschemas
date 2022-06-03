@@ -127,14 +127,7 @@ const UserSchema = new mongoose.Schema(
     practitionerDoc: {
       type: String,
       default: '--'
-    },
-
-    refreshToken: [
-      {
-        type: Schema.ObjectId,
-        ref: 'RefreshToken'
-      }
-    ]
+    }
   },
   { timestamps: true }
 )
