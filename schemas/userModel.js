@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    authToken: {
+      type: String,
+      default: ''
+    },
     isEmailVerified: {
       type: Boolean,
       default: false
@@ -181,7 +185,7 @@ UserSchema.methods = {
   },
   authUserNameOrEmail: async function (creds) {
     const User = mongoose.model('User')
-    var query = {
+    let query = {
       $or: [{ email: creds }, { userName: creds }]
     }
     return User.findOne(query, {
@@ -191,6 +195,14 @@ UserSchema.methods = {
       hashed_password: 1,
       isActive: 1
     }).exec()
+  },
+  setAuthToken: async function (email, authToken) {
+    const User = mongoose.model('User')
+    return await User.findOneAndUpdate(
+      { email: email },
+      { $set: { authToken: authToken } },
+      { new: true }
+    )
   }
 }
 
