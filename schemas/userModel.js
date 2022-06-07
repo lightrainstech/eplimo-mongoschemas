@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
+const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
+const uuidv5 = require('uuid/v5')
 
 const socialSchema = {
   url: String
@@ -137,6 +140,22 @@ const UserSchema = new mongoose.Schema(
 )
 
 UserSchema.methods = {
+  authenticate: function (plainText) {
+    return this.encryptPassword(plainText) === this.hashed_password
+  },
+
+  encryptPassword: function (password) {
+    if (!password) return ''
+    try {
+      return crypto
+        .createHmac('sha256', this.salt)
+        .update(password)
+        .digest('hex')
+    } catch (err) {
+      return ''
+    }
+  },
+
   getByEmail: async function (email) {
     const User = mongoose.model('User')
     let data = await User.findOne({ email: email })
@@ -159,6 +178,19 @@ UserSchema.methods = {
 
   generateRefreshToken: function (str) {
     return uuid5(str, process.env.UUID_NAMESPACE)
+  },
+  authUserNameOrEmail: async function (creds) {
+    const User = mongoose.model('User')
+    var query = {
+      $or: [{ email: creds }, { userName: creds }]
+    }
+    return User.findOne(query, {
+      email: 1,
+      userName: 1,
+      salt: 1,
+      hashed_password: 1,
+      isActive: 1
+    }).exec()
   }
 }
 
