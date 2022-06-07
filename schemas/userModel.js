@@ -139,7 +139,7 @@ const UserSchema = new mongoose.Schema(
 UserSchema.methods = {
   getByEmail: async function (email) {
     const User = mongoose.model('User')
-    let data = await Presale.findOne({ email: email })
+    let data = await User.findOne({ email: email })
     if (data) {
       return true
     } else {
