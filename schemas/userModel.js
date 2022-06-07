@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ['admin', 'user'],
+      enum: ['lpo', 'user'],
       default: 'user'
     },
     userName: {
@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    isEmailerified: {
+    isEmailVerified: {
       type: Boolean,
       default: false
     },
@@ -47,14 +47,14 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    primaryWallet: {
-      type: String,
-      required: true,
-      unique: true
-    },
-    secondaryWallet: {
-      type: String
-    },
+    // custodyWallet: {
+    //   type: String,
+    //   required: true,
+    //   unique: true
+    // },
+    // nonCustodyWallet: {
+    //   type: String
+    // },
     isActive: {
       type: Boolean,
       default: false
@@ -124,12 +124,38 @@ const UserSchema = new mongoose.Schema(
         'Zumba Center'
       ]
     },
-    practitionerDoc: {
-      type: String,
-      default: '--'
+    isKycVerified: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }
 )
+
+UserSchema.methods = {
+  getByEmail: async function (email) {
+    const User = mongoose.model('User')
+    let data = await Presale.findOne({ email: email })
+    if (data) {
+      return true
+    } else {
+      return false
+    }
+  },
+  generateJWT: function () {
+    return jwt.sign(
+      {
+        hash: this.hashed_password,
+        handle: this.handle,
+        exp: Math.floor(Date.now() / 1000) + parseInt(process.env.JWT_EXPIRY)
+      },
+      process.env.JWT_SECRET
+    )
+  },
+
+  generateRefreshToken: function (str) {
+    return uuid5(str, process.env.UUID_NAMESPACE)
+  }
+}
 
 module.exports = mongoose.model('User', UserSchema)
