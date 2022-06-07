@@ -132,4 +132,16 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+UserSchema.methods = {
+  getByEmail: async function (email) {
+    const User = mongoose.model('User')
+    let data = await Presale.findOne({ email: email })
+    if (data) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
 module.exports = mongoose.model('User', UserSchema)
