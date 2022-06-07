@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const uuidv5 = require('uuid/v5')
+const { v5 } = require('uuid')
 
 const socialSchema = {
   url: String
@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema(
       type: String
     },
     salt: {
+      type: String,
+      default: ''
+    },
+    authToken: {
       type: String,
       default: ''
     },
@@ -169,7 +173,6 @@ UserSchema.methods = {
     return jwt.sign(
       {
         hash: this.hashed_password,
-        userName: this.userName,
         exp: Math.floor(Date.now() / 1000) + parseInt(process.env.JWT_EXPIRY)
       },
       process.env.JWT_SECRET
@@ -177,11 +180,11 @@ UserSchema.methods = {
   },
 
   generateRefreshToken: function (str) {
-    return uuid5(str, process.env.UUID_NAMESPACE)
+    return v5(str, process.env.UUID_NAMESPACE)
   },
   authUserNameOrEmail: async function (creds) {
     const User = mongoose.model('User')
-    var query = {
+    let query = {
       $or: [{ email: creds }, { userName: creds }]
     }
     return User.findOne(query, {
@@ -191,6 +194,21 @@ UserSchema.methods = {
       hashed_password: 1,
       isActive: 1
     }).exec()
+  },
+  setAuthToken: async function (email, authToken) {
+    const User = mongoose.model('User')
+    return await User.findOneAndUpdate(
+      { email: email },
+      { $set: { authToken: authToken } },
+      { new: true }
+    )
+  }
+}
+
+UserSchema.statics = {
+  load: function (options, cb) {
+    options.select = options.select || 'name userName email createdAt'
+    return this.findOne(options.criteria).select(options.select).exec(cb)
   }
 }
 
