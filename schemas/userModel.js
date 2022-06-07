@@ -173,7 +173,6 @@ UserSchema.methods = {
     return jwt.sign(
       {
         hash: this.hashed_password,
-        userName: this.userName,
         exp: Math.floor(Date.now() / 1000) + parseInt(process.env.JWT_EXPIRY)
       },
       process.env.JWT_SECRET
