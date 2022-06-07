@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    isEmailerified: {
+    isEmailVerified: {
       type: Boolean,
       default: false
     },
@@ -124,9 +124,9 @@ const UserSchema = new mongoose.Schema(
         'Zumba Center'
       ]
     },
-    practitionerDoc: {
-      type: String,
-      default: '--'
+    isKycVerified: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }
@@ -141,6 +141,9 @@ UserSchema.methods = {
     } else {
       return false
     }
+  },
+  generateRefreshToken: function (str) {
+    return uuid5(str, process.env.UUID_NAMESPACE)
   }
 }
 
