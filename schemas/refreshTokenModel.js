@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
+const Schema = mongoose.Schema
 
 const refreshTokenSchema = {
   token: {
