@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "mongoose": "^6.3.1",
-    "mongoose-unique-validator": "^3.0.0"
+    "mongoose-unique-validator": "^3.0.0",
+    "uuid5": "^1.0.2"
   }
 }
