@@ -17,9 +17,22 @@ const RefreshTokenSchema = new mongoose.Schema(
       type: Schema.ObjectId,
       ref: 'User'
     },
-    refreshToken: [refreshTokenSchema]
+    refreshTokens: [refreshTokenSchema]
   },
   { timestamps: true }
 )
+
+RefreshTokenSchema.methods = {
+  addRefreshToken: async function (userId, data) {
+    const RefreshToken = mongoose.model('RefreshToken')
+    return RefreshToken.findOneAndUpdate(
+      { user: userId },
+      { $addToSet: { refreshTokens: data } },
+      { upsert: true, new: true }
+    )
+      .lean()
+      .exec()
+  }
+}
 
 module.exports = mongoose.model('RefreshToken', RefreshTokenSchema)
