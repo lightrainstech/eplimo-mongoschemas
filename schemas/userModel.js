@@ -147,7 +147,8 @@ UserSchema.virtual('password')
   .set(function (password) {
     this._password = password
     this.salt = this.makeSalt()
-    this.hashed_password = this.encryptPassword(password)
+    this.hashedPassword = this.encryptPassword(password)
+    console.log('hashedPassword', this.hashedPassword)
   })
   .get(function () {
     return this._password
@@ -160,7 +161,7 @@ UserSchema.methods = {
   },
 
   authenticate: function (plainText) {
-    return this.encryptPassword(plainText) === this.hashed_password
+    return this.encryptPassword(plainText) === this.hashedPassword
   },
 
   encryptPassword: function (password) {
@@ -187,7 +188,7 @@ UserSchema.methods = {
   generateJWT: function () {
     return jwt.sign(
       {
-        hash: this.hashed_password,
+        hash: this.hashedPassword,
         exp: Math.floor(Date.now() / 1000) + parseInt(process.env.JWT_EXPIRY)
       },
       process.env.JWT_SECRET
@@ -206,7 +207,7 @@ UserSchema.methods = {
       email: 1,
       userName: 1,
       salt: 1,
-      hashed_password: 1,
+      hashedPassword: 1,
       isActive: 1
     }).exec()
   },
