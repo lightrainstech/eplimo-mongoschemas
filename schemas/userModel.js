@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const uuidv5 = require('uuid/v5')
+const { v5 } = require('uuid')
 
 const socialSchema = {
   url: String
@@ -177,7 +177,7 @@ UserSchema.methods = {
   },
 
   generateRefreshToken: function (str) {
-    return uuid5(str, process.env.UUID_NAMESPACE)
+    return v5(str, process.env.UUID_NAMESPACE)
   },
   authUserNameOrEmail: async function (creds) {
     const User = mongoose.model('User')
