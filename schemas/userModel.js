@@ -91,8 +91,10 @@ const UserSchema = new mongoose.Schema(
         'Nutritionist',
         'Physiotherapist',
         'Psychologist',
-        'Yoga expert'
-      ]
+        'Yoga expert',
+        'Na'
+      ],
+      default: 'Na'
     },
     social: {
       twitter: socialSchema,
@@ -121,8 +123,10 @@ const UserSchema = new mongoose.Schema(
         'Fitness Center / Gym',
         'Wellness Center',
         'Hospital',
-        'Zumba Center'
-      ]
+        'Zumba Center',
+        'Na'
+      ],
+      default: 'Na'
     },
     isKycVerified: {
       type: Boolean,
