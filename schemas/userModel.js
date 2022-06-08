@@ -47,8 +47,7 @@ const UserSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
-      unique: true
+      required: true
     },
     isPhoneVerified: {
       type: Boolean,
@@ -99,10 +98,9 @@ const UserSchema = new mongoose.Schema(
         'Physiotherapist',
         'Psychologist',
         'Yoga expert',
-        'NA',
-        ''
+        'Na'
       ],
-      default: ''
+      default: 'Na'
     },
     social: {
       twitter: socialSchema,
@@ -132,10 +130,9 @@ const UserSchema = new mongoose.Schema(
         'Wellness Center',
         'Hospital',
         'Zumba Center',
-        'NA',
-        ''
+        'Na'
       ],
-      default: ''
+      default: 'Na'
     },
     isKycVerified: {
       type: Boolean,
@@ -150,7 +147,6 @@ UserSchema.virtual('password')
     this._password = password
     this.salt = this.makeSalt()
     this.hashedPassword = this.encryptPassword(password)
-    console.log('hashedPassword', this.hashedPassword)
   })
   .get(function () {
     return this._password
@@ -163,7 +159,11 @@ UserSchema.methods = {
   },
 
   authenticate: function (plainText) {
-    return this.encryptPassword(plainText) === this.hashedPassword
+    if (this.encryptPassword(plainText) === this.hashedPassword) {
+      return { auth: true, data: this }
+    } else {
+      return { auth: false, data: this }
+    }
   },
 
   encryptPassword: function (password) {
@@ -186,15 +186,6 @@ UserSchema.methods = {
     } else {
       return false
     }
-  },
-  generateJWT: function () {
-    return jwt.sign(
-      {
-        hash: this.hashedPassword,
-        exp: Math.floor(Date.now() / 1000) + parseInt(process.env.JWT_EXPIRY)
-      },
-      process.env.JWT_SECRET
-    )
   },
 
   generateRefreshToken: function (str) {
