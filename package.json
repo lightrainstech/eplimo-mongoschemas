@@ -1,6 +1,6 @@
 {
   "name": "eplimo-mongoschemas",
-  "version": "1.0.48",
+  "version": "1.0.49",
   "description": "Mongoschema for all eplimo services",
   "main": "index.js",
   "scripts": {
