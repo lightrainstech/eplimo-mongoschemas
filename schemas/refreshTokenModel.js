@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
+const ObjectId = mongoose.Types.ObjectId
 const Schema = mongoose.Schema
 
 const refreshTokenSchema = {
@@ -30,6 +30,17 @@ RefreshTokenSchema.methods = {
       { user: userId },
       { $addToSet: { refreshTokens: data } },
       { upsert: true, new: true }
+    )
+      .lean()
+      .exec()
+  },
+  revokeRefreshToken: function (userId, tokenId) {
+    console.log(userId, tokenId)
+    const RefreshToken = mongoose.model('RefreshToken')
+    return RefreshToken.findOneAndUpdate(
+      { user: ObjectId(userId) },
+      { $pull: { refreshTokens: { token: tokenId } } },
+      { new: true }
     )
       .lean()
       .exec()
