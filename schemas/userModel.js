@@ -98,7 +98,7 @@ const UserSchema = new mongoose.Schema(
         'Physiotherapist',
         'Psychologist',
         'Yoga expert',
-        'Na',
+        'NA',
         ''
       ],
       default: ''
@@ -131,7 +131,7 @@ const UserSchema = new mongoose.Schema(
         'Wellness Center',
         'Hospital',
         'Zumba Center',
-        'Na',
+        'NA',
         ''
       ],
       default: ''
