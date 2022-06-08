@@ -190,6 +190,14 @@ UserSchema.methods = {
     }
   },
 
+  getById: async function (id) {
+    const User = mongoose.model('User')
+    return await User.findOne(
+      { _id: id },
+      { userName: 1, email: 1, isActive: 1, role: 1, name: 1 }
+    )
+  },
+
   generateRefreshToken: function (str) {
     return v5(str, process.env.UUID_NAMESPACE)
   },
