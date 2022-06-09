@@ -221,6 +221,18 @@ UserSchema.methods = {
       { $set: { authToken: authToken } },
       { new: true }
     )
+  },
+  getUserByEmail: async function (email) {
+    const User = mongoose.model('User'),
+      options = {
+        criteria: { email: email },
+        select: 'email'
+      }
+    return await User.load(options)
+  },
+  getUserById: async function (id) {
+    const User = mongoose.model('User')
+    return await User.findOne({ _id: id })
   }
 }
 
