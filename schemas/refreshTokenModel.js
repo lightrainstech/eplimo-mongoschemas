@@ -2,48 +2,47 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId
 const Schema = mongoose.Schema
 
-const refreshTokenSchema = {
+const RefreshTokenSchema = new mongoose.Schema({
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User'
+  },
   token: {
-    type: String
+    type: String,
+    required: true
   },
-  exp: {
+  createdAt: {
     type: Date,
-    default: new Date(Date.now() + process.env.JWT_REFRESH_TOKEN_EXPIRY * 1000)
+    default: Date.now,
+    expires: 7 * 86400
   }
-}
-
-const RefreshTokenSchema = new mongoose.Schema(
-  {
-    user: {
-      type: Schema.ObjectId,
-      ref: 'User'
-    },
-    refreshTokens: [refreshTokenSchema]
-  },
-  { timestamps: true }
-)
+})
 
 RefreshTokenSchema.methods = {
-  addRefreshToken: async function (userId, data) {
-    const RefreshToken = mongoose.model('RefreshToken')
-    return RefreshToken.findOneAndUpdate(
-      { user: userId },
-      { $addToSet: { refreshTokens: data } },
-      { upsert: true, new: true }
-    )
-      .lean()
-      .exec()
+  addRefreshToken: async function (userId, token) {
+    const RefreshToken = mongoose.model('RefreshToken'),
+      refreshTokenModel = new RefreshToken()
+    try {
+      refreshTokenModel.user = userId
+      refreshTokenModel.token = token
+      return await refreshTokenModel.save()
+    } catch (err) {
+      throw err
+    }
   },
-  revokeRefreshToken: function (userId, tokenId) {
-    console.log(userId, tokenId)
+  removeRefreshTokenByUser: async function (userId) {
+    const RefreshToken = mongoose.model('RefreshToken'),
+      result = await RefreshToken.findOneAndRemove({ user: userId })
+    return result
+  },
+  findByRefreshToken: async function (tokenId) {
     const RefreshToken = mongoose.model('RefreshToken')
-    return RefreshToken.findOneAndUpdate(
-      { user: ObjectId(userId) },
-      { $pull: { refreshTokens: { token: tokenId } } },
-      { new: true }
-    )
-      .lean()
-      .exec()
+    return await RefreshToken.findOne({ token: tokenId })
+  },
+  removeRefreshToken: async function (tokenId) {
+    const RefreshToken = mongoose.model('RefreshToken'),
+      result = await RefreshToken.findOneAndRemove({ token: tokenId })
+    return result
   }
 }
 
