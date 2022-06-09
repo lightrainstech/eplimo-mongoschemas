@@ -19,6 +19,7 @@ const LimoReward = require('./schemas/limoRewardModel.js')
 const LimoStake = require('./schemas/limoStakeModel.js')
 const User = require('./schemas/userModel.js')
 const RefreshToken = require('./schemas/refreshTokenModel.js')
+const LimoPoint = require('./schemas/limoPointModel.js')
 
 module.exports = {
   Admin,
@@ -29,5 +30,6 @@ module.exports = {
   LimoReward,
   LimoStake,
   User,
-  RefreshToken
+  RefreshToken,
+  LimoPoint
 }
