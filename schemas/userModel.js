@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
+const ObjectId = require('mongodb').ObjectId
 const crypto = require('crypto')
-const jwt = require('jsonwebtoken')
 const { v5 } = require('uuid')
 
 const socialSchema = {
@@ -233,6 +232,15 @@ UserSchema.methods = {
   getUserById: async function (id) {
     const User = mongoose.model('User')
     return await User.findOne({ _id: id })
+  },
+  updateProfile: async function (userId, name) {
+    const User = mongoose.model('User'),
+      result = User.findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { name: name },
+        { new: true }
+      )
+    return result
   }
 }
 
