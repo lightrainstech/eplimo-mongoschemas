@@ -230,8 +230,9 @@ UserSchema.methods = {
     return await User.load(options)
   },
   getUserById: async function (id) {
-    const User = mongoose.model('User')
-    return await User.findOne({ _id: id })
+    const User = mongoose.model('User'),
+      result = await User.findOne({ _id: id }).lean().exec()
+    return result
   },
   updateProfile: async function (userId, name) {
     const User = mongoose.model('User'),
