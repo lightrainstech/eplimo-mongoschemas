@@ -48,6 +48,13 @@ LimoStakeSchema.methods = {
       },
       { new: true }
     )
+  },
+  getReleaseTime: async function (wallet) {
+    const LimoStakeModel = mongoose.model('LimoStake')
+    return await LimoStakeModel.findOne(
+      { wallet: wallet },
+      { releaseTime: 1 }
+    ).sort({ createdAt: 1 })
   }
 }
 
