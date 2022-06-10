@@ -28,8 +28,7 @@ const LimoStakeSchema = new mongoose.Schema(
       default: '--'
     },
     releaseTime: {
-      type: String,
-      default: '--'
+      type: String
     }
   },
   { timestamps: true }
