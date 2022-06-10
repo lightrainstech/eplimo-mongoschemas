@@ -36,14 +36,15 @@ const LimoStakeSchema = new mongoose.Schema(
 )
 
 LimoStakeSchema.methods = {
-  updateStatus: async function (id, txnhash) {
+  updateStatus: async function (id, txnhash, releaseTime) {
     const LimoStakeModel = mongoose.model('LimoStake')
     return await LimoStakeModel.findOneAndUpdate(
       { _id: id },
       {
         $set: {
           txnHash: txnhash,
-          isProcessed: true
+          isProcessed: true,
+          releaseTime: releaseTime
         }
       },
       { new: true }
