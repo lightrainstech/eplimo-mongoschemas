@@ -192,11 +192,7 @@ UserSchema.methods = {
     const User = mongoose.model('User')
     return await User.findOne(
       { _id: id },
-      { email: 1,
-      userName: 1,
-      salt: 1,
-      hashedPassword: 1,
-      isActive: 1}
+      { email: 1, userName: 1, salt: 1, hashedPassword: 1, isActive: 1 }
     ).exec()
   },
 
@@ -237,14 +233,21 @@ UserSchema.methods = {
       result = await User.findOne({ _id: id }).lean().exec()
     return result
   },
-  updateProfile: async function (userId, name) {
+  updateProfile: async function (userId, update) {
     const User = mongoose.model('User'),
-      result = User.findOneAndUpdate(
-        { _id: ObjectId(userId) },
-        { name: name },
+      data = await User.findOneAndUpdate(
+        { _id: userId },
+        { $set: update },
         { new: true }
       )
-    return result
+    return data
+  },
+  getUserByUserName: async function (userName) {
+    const User = mongoose.model('User'),
+      options = {
+        criteria: { userName: userName }
+      }
+    return await User.load(options)
   }
 }
 
