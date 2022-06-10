@@ -28,26 +28,33 @@ const LimoStakeSchema = new mongoose.Schema(
       default: '--'
     },
     releaseTime: {
-      type: String,
-      default: '--'
+      type: String
     }
   },
   { timestamps: true }
 )
 
 LimoStakeSchema.methods = {
-  updateStatus: async function (id, txnhash) {
+  updateStatus: async function (id, txnhash, releaseTime) {
     const LimoStakeModel = mongoose.model('LimoStake')
     return await LimoStakeModel.findOneAndUpdate(
       { _id: id },
       {
         $set: {
           txnHash: txnhash,
-          isProcessed: true
+          isProcessed: true,
+          releaseTime: releaseTime
         }
       },
       { new: true }
     )
+  },
+  getReleaseTime: async function (wallet) {
+    const LimoStakeModel = mongoose.model('LimoStake')
+    return await LimoStakeModel.findOne(
+      { wallet: wallet },
+      { releaseTime: 1 }
+    ).sort({ createdAt: 1 })
   }
 }
 
