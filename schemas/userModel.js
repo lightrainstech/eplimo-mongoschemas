@@ -8,6 +8,7 @@ const socialSchema = {
 }
 
 const nonCustodyWalletSchema = {
+  _id: false,
   wallet: {
     type: String
   },
