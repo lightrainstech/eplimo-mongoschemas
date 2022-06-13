@@ -264,6 +264,23 @@ UserSchema.methods = {
         criteria: { userName: userName }
       }
     return await User.load(options)
+  },
+  verifyEmail: async function (userId, otp) {
+    const User = mongoose.model('User'),
+      result = await User.findOneAndUpdate(
+        { _id: userId, authToken: otp },
+        { authToken: null, isEmailVerified: true },
+        { new: true }
+      )
+    return result
+  },
+  setAuthTokenForEmailVerify: async function (email, authToken) {
+    const User = mongoose.model('User')
+    return await User.findOneAndUpdate(
+      { email: email, isEmailVerified: false },
+      { $set: { authToken: authToken } },
+      { new: true }
+    )
   }
 }
 
