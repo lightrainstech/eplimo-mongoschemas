@@ -7,6 +7,11 @@ const socialSchema = {
   url: String
 }
 
+const nonCustodyWalletSchema = {
+  wallet: String,
+  isVerified: false
+}
+
 const UserSchema = new mongoose.Schema(
   {
     role: {
@@ -52,14 +57,12 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    // custodyWallet: {
-    //   type: String,
-    //   required: true,
-    //   unique: true
-    // },
-    // nonCustodyWallet: {
-    //   type: String
-    // },
+    custodyWallet: {
+      type: String
+    },
+    nonCustodyWallet: {
+      type: [nonCustodyWalletSchema]
+    },
     isActive: {
       type: Boolean,
       default: false
