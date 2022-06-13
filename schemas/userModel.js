@@ -201,7 +201,14 @@ UserSchema.methods = {
     const User = mongoose.model('User')
     return await User.findOne(
       { _id: id },
-      { email: 1, userName: 1, salt: 1, hashedPassword: 1, isActive: 1 }
+      {
+        email: 1,
+        userName: 1,
+        salt: 1,
+        hashedPassword: 1,
+        isActive: 1,
+        nonCustodyWallet: 1
+      }
     ).exec()
   },
 
