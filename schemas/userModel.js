@@ -201,7 +201,14 @@ UserSchema.methods = {
     const User = mongoose.model('User')
     return await User.findOne(
       { _id: id },
-      { email: 1, userName: 1, salt: 1, hashedPassword: 1, isActive: 1 }
+      {
+        email: 1,
+        userName: 1,
+        salt: 1,
+        hashedPassword: 1,
+        isActive: 1,
+        nonCustodyWallet: 1
+      }
     ).exec()
   },
 
@@ -257,6 +264,23 @@ UserSchema.methods = {
         criteria: { userName: userName }
       }
     return await User.load(options)
+  },
+  verifyEmail: async function (userId, otp) {
+    const User = mongoose.model('User'),
+      result = await User.findOneAndUpdate(
+        { _id: userId, authToken: otp },
+        { authToken: null, isEmailVerified: true },
+        { new: true }
+      )
+    return result
+  },
+  setAuthTokenForEmailVerify: async function (email, authToken) {
+    const User = mongoose.model('User')
+    return await User.findOneAndUpdate(
+      { email: email, isEmailVerified: false },
+      { $set: { authToken: authToken } },
+      { new: true }
+    )
   }
 }
 
