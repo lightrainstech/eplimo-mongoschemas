@@ -8,8 +8,13 @@ const socialSchema = {
 }
 
 const nonCustodyWalletSchema = {
-  wallet: String,
-  isVerified: false
+  wallet: {
+    type: String
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  }
 }
 
 const UserSchema = new mongoose.Schema(
