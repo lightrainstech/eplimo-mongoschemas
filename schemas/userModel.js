@@ -225,7 +225,8 @@ UserSchema.methods = {
       userName: 1,
       salt: 1,
       hashedPassword: 1,
-      isActive: 1
+      isActive: 1,
+      nonCustodyWallet: 1
     }).exec()
   },
   setAuthToken: async function (email, authToken) {
