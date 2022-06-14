@@ -186,6 +186,10 @@ const UserSchema = new mongoose.Schema(
     isKycVerified: {
       type: Boolean,
       default: false
+    },
+    referalCode: {
+      type: String,
+      default: ''
     }
   },
   { timestamps: true }
