@@ -50,6 +50,10 @@ RewardSchema.methods = {
       },
       { new: true }
     )
+  },
+  getLimoRList: async function () {
+    const Reward = mongoose.model('Reward')
+    return await Reward.find({}, { name: 1, email: 1, phone: 1, limoR: 1 })
   }
 }
 
