@@ -320,6 +320,15 @@ UserSchema.methods = {
       { $set: { authToken: authToken } },
       { new: true }
     )
+  },
+  updateWallet: async function (wallet, userId) {
+    const User = mongoose.model('User'),
+      result = await User.findOneAndUpdate(
+        { _id: userId },
+        { $addToSet: { nonCustodyWallet: { wallet } } },
+        { new: true }
+      )
+    return result
   }
 }
 
