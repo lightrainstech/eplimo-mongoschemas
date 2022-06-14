@@ -77,14 +77,16 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    lpoType: {
+      type: String,
+      enum: ['Organizations', 'Professionals', ''],
+      default: ''
+    },
     lpoCategory: {
       type: String,
-      requires: true,
       enum: [
         'Ayurveda Centre',
         'Fitness Center',
-        'Fitness Centre',
-        'Health Care',
         'Health Food',
         'Health tech products',
         'Hospitals/Clinics',
@@ -102,11 +104,48 @@ const UserSchema = new mongoose.Schema(
         'Medical Doctor',
         'Meditation Guru',
         'Naturopath',
-        'Nutritionist',
         'Physiotherapist',
         'Psychologist',
         'Yoga expert',
-        'NA',
+        ''
+      ],
+      default: ''
+    },
+    lpoSpecialization: {
+      type: String,
+      enum: [
+        'Gym',
+        'Health Clubs',
+        'PhysioTherapy',
+        'Pilates',
+        'Zumba',
+        'General wellness',
+        'Spa',
+        'Speciality',
+        'Clinics',
+        'Panchakarma',
+        'Massage Centre',
+        'Meditation',
+        'Yoga therapy',
+        'Ayurveda',
+        'Chinese',
+        'Functional Medicine',
+        'Homeo',
+        'Integrative Medicine',
+        'Lifestyle medicine',
+        'Naturopathy',
+        'Siddha',
+        'Sowarigpa',
+        'Super Speciality',
+        'Unani',
+        'Fitness',
+        'Health Coaches',
+        'Nutrition',
+        'Yoga',
+        'General',
+        'Training and Development',
+        'Wellness Related',
+        'Other',
         ''
       ],
       default: ''
@@ -225,8 +264,7 @@ UserSchema.methods = {
       userName: 1,
       salt: 1,
       hashedPassword: 1,
-      isActive: 1,
-      nonCustodyWallet: 1
+      isActive: 1
     }).exec()
   },
   setAuthToken: async function (email, authToken) {
