@@ -138,7 +138,7 @@ const AssetSchema = new mongoose.Schema(
 )
 
 AssetSchema.methods = {
-  listAllAssets: async function (args, domain) {
+  listAllAssets: async function (args) {
     const AssetModel = mongoose.model('Asset')
 
     let { category, sort, status, page } = args,

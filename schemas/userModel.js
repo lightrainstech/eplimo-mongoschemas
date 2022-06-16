@@ -79,8 +79,8 @@ const UserSchema = new mongoose.Schema(
     },
     lpoType: {
       type: String,
-      enum: ['Organizations', 'Professionals', ''],
-      default: ''
+      enum: ['Organizations', 'Professionals', 'NA'],
+      default: 'NA'
     },
     lpoCategory: {
       type: String,
@@ -107,9 +107,9 @@ const UserSchema = new mongoose.Schema(
         'Physiotherapist',
         'Psychologist',
         'Yoga expert',
-        ''
+        'NA'
       ],
-      default: ''
+      default: 'NA'
     },
     lpoSpecialization: {
       type: String,
@@ -146,9 +146,9 @@ const UserSchema = new mongoose.Schema(
         'Training and Development',
         'Wellness Related',
         'Other',
-        ''
+        'NA'
       ],
-      default: ''
+      default: 'NA'
     },
     social: {
       twitter: socialSchema,
@@ -178,10 +178,9 @@ const UserSchema = new mongoose.Schema(
         'Wellness Center',
         'Hospital',
         'Zumba Center',
-        'NA',
-        ''
+        'NA'
       ],
-      default: ''
+      default: 'NA'
     },
     isKycVerified: {
       type: Boolean,
