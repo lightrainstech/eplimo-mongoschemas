@@ -30,8 +30,6 @@ const assetPopulateQueries = {
     as: 'auctionDetails'
   },
   assetProject: {
-    // creator: { $first: '$creator' },
-    // owner: { $first: '$owner' },
     creator: 1,
     owner: 1,
     tokenId: 1,
@@ -82,6 +80,26 @@ const AssetSchema = new mongoose.Schema(
     onAuction: {
       type: Boolean,
       default: false
+    },
+    endurance: {
+      type: Number,
+      required: true
+    },
+    grip: {
+      type: Number,
+      required: true
+    },
+    comfort: {
+      type: Number,
+      required: true
+    },
+    flexibility: {
+      type: Number,
+      required: true
+    },
+    efficiency: {
+      type: Number,
+      required: true
     },
     price: {
       type: String,
@@ -159,12 +177,6 @@ AssetSchema.methods = {
       },
       { $limit: limit },
       { $skip: skipLimit },
-      // {
-      //   $lookup: assetPopulateQueries.creator
-      // },
-      // {
-      //   $lookup: assetPopulateQueries.owner
-      // },
       {
         $lookup: assetPopulateQueries.auction
       },
@@ -179,12 +191,6 @@ AssetSchema.methods = {
       {
         $match: { _id: ObjectId(assetId) }
       },
-      // {
-      //   $lookup: assetPopulateQueries.creator
-      // },
-      // {
-      //   $lookup: assetPopulateQueries.owner
-      // },
       {
         $lookup: assetPopulateQueries.auction
       },
@@ -216,12 +222,6 @@ AssetSchema.methods = {
       },
       { $limit: limit },
       { $skip: skipLimit },
-      // {
-      //   $lookup: assetPopulateQueries.creator
-      // },
-      // {
-      //   $lookup: assetPopulateQueries.owner
-      // },
       {
         $lookup: assetPopulateQueries.auction
       },
@@ -229,6 +229,38 @@ AssetSchema.methods = {
         $project: assetPopulateQueries.assetProject
       }
     ])
+  },
+  addToSale: async function (seller, tokenId, price) {
+    const Asset = mongoose.model('Asset'),
+      result = await Asset.findOneAndUpdate(
+        { tokenId, owner: seller },
+        { price, onSale: true },
+        { new: true }
+      )
+    return result
+  },
+  removeFromSale: async function (seller, tokenId) {
+    const Asset = mongoose.model('Asset'),
+      result = await Asset.findOneAndUpdate(
+        { tokenId, owner: seller },
+        { price: 0, onSale: false },
+        { new: true }
+      )
+    return result
+  },
+  transferAssetOwnership: async function (tokenId, buyer) {
+    const AssetModel = mongoose.model('Asset')
+    const result = await AssetModel.findOneAndUpdate(
+      { tokenId },
+      {
+        owner: buyer,
+        onSale: false,
+        onAuction: false,
+        price: '0'
+      },
+      { new: true }
+    )
+    return result
   }
 }
 
