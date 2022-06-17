@@ -81,7 +81,11 @@ const AssetSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    endurance: {
+    durability: {
+      type: Number,
+      required: true
+    },
+    flexibility: {
       type: Number,
       required: true
     },
@@ -93,11 +97,7 @@ const AssetSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    flexibility: {
-      type: Number,
-      required: true
-    },
-    efficiency: {
+    efficiencyIndex: {
       type: Number,
       required: true
     },
