@@ -71,6 +71,11 @@ const AssetSchema = new mongoose.Schema(
     owner: { type: String },
     tokenId: { type: Number },
     name: { type: String, required: true },
+    nftType: {
+      type: String,
+      enum: ['BASIC', 'STANDARD', 'PRO', 'ULTRA'],
+      required: true
+    },
     description: { type: String, required: true },
     asset: asset,
     onSale: {
@@ -82,19 +87,23 @@ const AssetSchema = new mongoose.Schema(
       default: false
     },
     durability: {
-      type: Number,
+      type: String,
+      enum: ['HIGH', 'MEDIUM', 'LOW'],
       required: true
     },
     flexibility: {
-      type: Number,
+      type: String,
+      enum: ['HIGH', 'MEDIUM', 'LOW'],
       required: true
     },
     grip: {
-      type: Number,
+      type: String,
+      enum: ['HIGH', 'MEDIUM', 'LOW'],
       required: true
     },
     comfort: {
-      type: Number,
+      type: String,
+      enum: ['HIGH', 'MEDIUM', 'LOW'],
       required: true
     },
     efficiencyIndex: {
