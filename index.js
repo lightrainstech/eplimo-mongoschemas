@@ -21,6 +21,8 @@ const User = require('./schemas/userModel.js')
 const RefreshToken = require('./schemas/refreshTokenModel.js')
 const LimoPoint = require('./schemas/limoPointModel.js')
 const Asset = require('./schemas/assetModel')
+const Activity = require('./schemas/activityModel.js')
+const ActivityProgress = require('./schemas/activityProgressModel.js')
 
 module.exports = {
   Admin,
@@ -33,5 +35,7 @@ module.exports = {
   User,
   RefreshToken,
   LimoPoint,
-  Asset
+  Asset,
+  Activity,
+  ActivityProgress
 }
