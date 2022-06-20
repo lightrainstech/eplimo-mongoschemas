@@ -31,8 +31,8 @@ const ActivityProgressSchema = new mongoose.Schema({
 
 ActivityProgressSchema.methods = {
   addActivityProgress: async function (
-    activityId,
     userId,
+    activityId,
     distance,
     speed,
     duration,
@@ -50,27 +50,22 @@ ActivityProgressSchema.methods = {
     return result
   },
   listActivityDetails: async function (activityId, userId) {
-    const ActivityProgress = mongoose.model('ActivityProgress')
-    return await ActivityProgress.aggregate([
-      { $match: { activity: ObjectId(activityId), user: ObjectId(userId) } },
-      {
-        $group: {
-          _id: '$activity',
-          totalDistance: { $sum: '$distance' },
-          totalSpeed: { $avg: '$speed' },
-          totalDuration: { $sum: '$duration' }
+    const ActivityProgress = mongoose.model('ActivityProgress'),
+      result = await ActivityProgress.aggregate([
+        { $match: { activity: ObjectId(activityId), user: ObjectId(userId) } },
+        {
+          $group: {
+            _id: '$activity',
+            totalDistance: { $sum: '$distance' },
+            totalSpeed: { $avg: '$speed' },
+            totalDuration: { $sum: '$duration' }
+          }
         }
-      },
-      {
-        $project: {
-          _id: 1,
-          totalDistance: 1,
-          totalSpeed: 1,
-          totalDuration: 1,
-          point: 1
-        }
-      }
-    ])
+      ])
+    if (result.length == 0) {
+      return null
+    }
+    return result[0]
   }
 }
 
