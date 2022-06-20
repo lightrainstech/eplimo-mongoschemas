@@ -170,8 +170,7 @@ AssetSchema.methods = {
     } else if (status == 'onAuction') {
       criteria.onAuction = true
     } else {
-      criteria.onSale = true
-      criteria.onAuction = true
+      $or: [{ 'criteria.onSale': true }, , { 'criteria.onAuction': true }]
     }
     return await AssetModel.aggregate([
       {
