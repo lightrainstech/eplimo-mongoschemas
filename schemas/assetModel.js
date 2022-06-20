@@ -235,6 +235,11 @@ AssetSchema.methods = {
       }
     ])
   },
+  getAssetDetailsByUser: async function (nftId, userId) {
+    const Asset = mongoose.model('Asset'),
+      options = { criteria: { _id: ObjectId(nftId), owner: ObjectId(userId) } }
+    return await Asset.load(options)
+  },
   addToSale: async function (seller, tokenId, price) {
     const Asset = mongoose.model('Asset'),
       result = await Asset.findOneAndUpdate(

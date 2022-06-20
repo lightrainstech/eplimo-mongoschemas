@@ -61,6 +61,22 @@ ActivitySchema.methods = {
       },
       result = await Activity.load(options).lean().exec()
     return result
+  },
+  addActivityTotal: async function (
+    resultActivityId,
+    speed,
+    distance,
+    duration,
+    point,
+    activityType
+  ) {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.findOneAndUpdate(
+        { _id: ObjectId(resultActivityId) },
+        { distance, speed, duration, endTime: new Date(), point, activityType },
+        { new: true }
+      )
+    return result
   }
 }
 
