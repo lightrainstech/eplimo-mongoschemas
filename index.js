@@ -23,6 +23,7 @@ const LimoPoint = require('./schemas/limoPointModel.js')
 const Asset = require('./schemas/assetModel')
 const Activity = require('./schemas/activityModel.js')
 const ActivityProgress = require('./schemas/activityProgressModel.js')
+const Payment = require('./schemas/PaymentModel.js')
 
 module.exports = {
   Admin,
@@ -37,5 +38,6 @@ module.exports = {
   LimoPoint,
   Asset,
   Activity,
-  ActivityProgress
+  ActivityProgress,
+  Payment
 }
