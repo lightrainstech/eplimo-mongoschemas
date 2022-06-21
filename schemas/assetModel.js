@@ -135,6 +135,11 @@ const AssetSchema = new mongoose.Schema(
     royaltyWallet: {
       type: String,
       default: ''
+    },
+    orderStatus: {
+      type: String,
+      enum: ['open', 'closed'],
+      default: 'open'
     }
   },
   {
@@ -233,6 +238,22 @@ AssetSchema.methods = {
         $project: assetPopulateQueries.assetProject
       }
     ])
+  },
+  getAssetByIdForTransfer: async function (assetId) {
+    const Asset = mongoose.model('Asset'),
+      options = {
+        criteria: { _id: ObjectId(assetId), onSale: true, orderStatus: 'open' }
+      }
+    return await Asset.load(options).lean().exec()
+  },
+  updateOrderStatus: async function (asset) {
+    const Asset = mongoose.model('Asset'),
+      result = await Asset.findOneAndUpdate(
+        { _id: ObjectId(asset) },
+        { orderStatus: 'closed' },
+        { new: true }
+      )
+    return result
   },
   getAssetDetailsByUser: async function (nftId, userId) {
     const Asset = mongoose.model('Asset'),
