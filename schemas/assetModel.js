@@ -73,6 +73,9 @@ const AssetSchema = new mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String, required: true },
     asset: asset,
+    display_image: {
+      type: String
+    },
     onSale: {
       type: Boolean,
       default: false
