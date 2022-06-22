@@ -43,6 +43,7 @@ const assetPopulateQueries = {
     flexibility: 1,
     grip: 1,
     comfort: 1,
+    display_image: 1,
     isMinted: 1,
     attributes: 1,
     category: 1,
