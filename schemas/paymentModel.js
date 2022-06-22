@@ -2,7 +2,6 @@
 
 // External Dependancies
 const mongoose = require('mongoose')
-const ObjectId = mongoose.Types.ObjectId
 
 const PaymentSchema = new mongoose.Schema(
   {
@@ -33,16 +32,12 @@ PaymentSchema.methods = {
     const Payment = mongoose.model('Payment')
     try {
       const buyer = data.merchantExtra.extra.buyerId,
-        sales = data.merchantExtra.extra.saleId,
-        paymentDetails = {
-          paidAt: data.paidAt,
-          validatedAt: data.validatedAt,
-          orderId: data.merchantExtra.orderId
-        },
+        asset = data.merchantExtra.extra.nftId,
+        paymentDetails = data,
         transactionHash = data.transaction
       let paymentModel = new Payment()
       paymentModel.buyer = buyer
-      paymentModel.sales = sales
+      paymentModel.asset = asset
       paymentModel.paymentDetails = paymentDetails
       paymentModel.transactionHash = transactionHash
       return await paymentModel.save()
@@ -55,37 +50,14 @@ PaymentSchema.methods = {
       options = {
         criteria: { _id: paymentId, buyer: buyer }
       }
-    return await Payment.load(options)
-      .populate('buyer')
-      .populate({
-        path: 'sales',
-        populate: {
-          path: 'asset'
-        }
-      })
-      .lean()
-      .exec()
+    return await Payment.load(options).populate('asset').lean().exec()
   },
   getPaymentByHash: async function (transactionHash) {
     const Payment = mongoose.model('Payment'),
       options = {
         criteria: { transactionHash }
       }
-    return await Payment.load(options)
-      .populate('buyer')
-      .populate({
-        path: 'sales',
-        populate: [
-          {
-            path: 'asset'
-          },
-          {
-            path: 'owner'
-          }
-        ]
-      })
-      .lean()
-      .exec()
+    return await Payment.load(options).populate('asset').lean().exec()
   }
 }
 
