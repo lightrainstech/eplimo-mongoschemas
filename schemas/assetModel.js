@@ -39,6 +39,10 @@ const assetPopulateQueries = {
     onSale: 1,
     onAuction: 1,
     price: 1,
+    durability: 1,
+    flexibility: 1,
+    grip: 1,
+    comfort: 1,
     isMinted: 1,
     attributes: 1,
     category: 1,
@@ -85,23 +89,19 @@ const AssetSchema = new mongoose.Schema(
       default: false
     },
     durability: {
-      type: String,
-      enum: ['High', 'Medium', 'Low'],
+      type: Number,
       required: true
     },
     flexibility: {
-      type: String,
-      enum: ['High', 'Medium', 'Low'],
+      type: Number,
       required: true
     },
     grip: {
-      type: String,
-      enum: ['High', 'Medium', 'Low'],
+      type: Number,
       required: true
     },
     comfort: {
-      type: String,
-      enum: ['High', 'Medium', 'Low'],
+      type: Number,
       required: true
     },
     efficiencyIndex: {
