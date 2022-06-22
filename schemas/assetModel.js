@@ -73,6 +73,9 @@ const AssetSchema = new mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String, required: true },
     asset: asset,
+    display_image: {
+      type: String
+    },
     onSale: {
       type: Boolean,
       default: false
@@ -83,22 +86,22 @@ const AssetSchema = new mongoose.Schema(
     },
     durability: {
       type: String,
-      enum: ['HIGH', 'MEDIUM', 'LOW'],
+      enum: ['High', 'Medium', 'Low'],
       required: true
     },
     flexibility: {
       type: String,
-      enum: ['HIGH', 'MEDIUM', 'LOW'],
+      enum: ['High', 'Medium', 'Low'],
       required: true
     },
     grip: {
       type: String,
-      enum: ['HIGH', 'MEDIUM', 'LOW'],
+      enum: ['High', 'Medium', 'Low'],
       required: true
     },
     comfort: {
       type: String,
-      enum: ['HIGH', 'MEDIUM', 'LOW'],
+      enum: ['High', 'Medium', 'Low'],
       required: true
     },
     efficiencyIndex: {
@@ -116,7 +119,7 @@ const AssetSchema = new mongoose.Schema(
     attributes: [],
     category: {
       type: String,
-      enum: ['BASIC', 'STANDARD', 'PRO', 'ULTRA'],
+      enum: ['Basic', 'Standard', 'Pro', 'Ultra'],
       required: true
     },
     tags: [
@@ -246,11 +249,11 @@ AssetSchema.methods = {
       }
     return await Asset.load(options).lean().exec()
   },
-  updateOrderStatus: async function (asset) {
+  updateOrderStatus: async function (asset, status) {
     const Asset = mongoose.model('Asset'),
       result = await Asset.findOneAndUpdate(
         { _id: ObjectId(asset) },
-        { orderStatus: 'closed' },
+        { orderStatus: status },
         { new: true }
       )
     return result
