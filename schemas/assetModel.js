@@ -190,8 +190,6 @@ AssetSchema.methods = {
       {
         $sort: sortRule
       },
-      { $limit: limit },
-      { $skip: skipLimit },
       {
         $lookup: assetPopulateQueries.auction
       },
@@ -199,6 +197,8 @@ AssetSchema.methods = {
         $project: assetPopulateQueries.assetProject
       }
     ])
+      .skip(skipLimit)
+      .limit(limit)
   },
   getAssetDetailsByIdForPublic: async function (assetId) {
     const Asset = mongoose.model('Asset')
@@ -235,8 +235,6 @@ AssetSchema.methods = {
       {
         $match: criteria
       },
-      { $limit: limit },
-      { $skip: skipLimit },
       {
         $lookup: assetPopulateQueries.auction
       },
@@ -244,6 +242,8 @@ AssetSchema.methods = {
         $project: assetPopulateQueries.assetProject
       }
     ])
+      .skip(skipLimit)
+      .limit(limit)
   },
   getAssetByIdForTransfer: async function (assetId) {
     const Asset = mongoose.model('Asset'),
