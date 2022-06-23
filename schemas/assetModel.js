@@ -74,7 +74,7 @@ const AssetSchema = new mongoose.Schema(
   {
     creator: { type: String, required: true },
     owner: { type: String },
-    tokenId: { type: Number },
+    tokenId: { type: Number, unique: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
     asset: asset,
