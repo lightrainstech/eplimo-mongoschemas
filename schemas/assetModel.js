@@ -161,7 +161,7 @@ AssetSchema.methods = {
       criteria = {},
       sortRule = {}
     page = page === 0 ? 0 : page - 1
-    let limit = 16,
+    let limit = 18,
       skipLimit = limit * page
 
     if (sort === 'asc') {
@@ -221,7 +221,7 @@ AssetSchema.methods = {
       owner: owner
     }
     page = page === 0 ? 0 : page - 1
-    let limit = 16,
+    let limit = 18,
       skipLimit = limit * page
 
     if (option === 'onSale') {
@@ -317,7 +317,7 @@ AssetSchema.statics = {
   listForPagination: function (options) {
     const criteria = options.criteria || {}
     const page = options.page === 0 ? 0 : options.page - 1
-    const limit = parseInt(options.limit) || 16
+    const limit = parseInt(options.limit) || 18
     const sortRule = options.sortRule || {}
     const select = options.select || ''
     const populate = options.populate || ''

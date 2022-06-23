@@ -83,7 +83,7 @@ PreSaleSchema.statics = {
   list: function (options) {
     const criteria = options.criteria || {}
     const page = options.page - 1
-    const limit = parseInt(options.limit) || 12
+    const limit = parseInt(options.limit) || 18
     const select = options.select || 'firstName lastName email -__v'
     return this.find(criteria)
       .select(select)
