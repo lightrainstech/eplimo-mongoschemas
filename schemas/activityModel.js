@@ -97,7 +97,7 @@ ActivitySchema.statics = {
   listForPagination: function (options) {
     const criteria = options.criteria || {}
     const page = options.page === 0 ? 0 : options.page - 1
-    const limit = parseInt(options.limit) || 16
+    const limit = parseInt(options.limit) || 18
     const sortRule = options.sortRule || {}
     const select = options.select || ''
     const populate = options.populate || ''
