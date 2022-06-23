@@ -40,6 +40,7 @@ const assetPopulateQueries = {
     onAuction: 1,
     price: 1,
     durability: 1,
+    efficiencyIndex: 1,
     flexibility: 1,
     grip: 1,
     comfort: 1,
@@ -51,6 +52,7 @@ const assetPopulateQueries = {
     metaDataUrl: 1,
     royalty: 1,
     royaltyWallet: 1,
+    orderStatus: 1,
     createdAt: 1,
     updatedAt: 1,
     auctionDetails: { $first: '$auctionDetails' }
