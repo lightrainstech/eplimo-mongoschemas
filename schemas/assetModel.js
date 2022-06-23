@@ -185,6 +185,11 @@ AssetSchema.methods = {
     }
     return await AssetModel.aggregate([
       {
+        $set: {
+          price: { $toDouble: '$price' }
+        }
+      },
+      {
         $match: criteria
       },
       {
