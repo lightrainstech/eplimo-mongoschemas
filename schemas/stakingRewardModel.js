@@ -4,8 +4,8 @@ const { ObjectId } = mongoose.Schema
 const StakingRewardSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
-      required: true
+      type: mongoose.Schema.Types.ObjectId,
+      required: 'User'
     },
     email: {
       type: String,
