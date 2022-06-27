@@ -26,7 +26,7 @@ const RewardSchema = new mongoose.Schema(
 RewardSchema.methods = {
   getuserLimoR: async function (email) {
     const Reward = mongoose.model('Reward')
-    return await Reward.findOne({ email: email }, { limoR: 1 })
+    return await Reward.findOne({ email: email }, { limoR: 1 }).lean()
   },
   updateRewardPoints: async function (email, stakeAmount) {
     stakeAmount = Number(stakeAmount) * -1
