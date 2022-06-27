@@ -333,6 +333,38 @@ UserSchema.methods = {
         { new: true }
       )
     return result
+  },
+  getByIdWithLimorStake: async function (userId) {
+    const User = mongoose.model('User')
+    let data = await User.aggregate([
+      { $match: { _id: ObjectId(userId) } },
+      {
+        $lookup: {
+          from: 'stakingrewards',
+          let: { userId: '$_id' },
+          pipeline: [{ $match: { $expr: { $eq: ['$userId', '$$userId'] } } }],
+          as: 'limorstakes'
+        }
+      },
+      {
+        $project: {
+          email: 1,
+          userName: 1,
+          salt: 1,
+          hashedPassword: 1,
+          isActive: 1,
+          nonCustodyWallet: 1,
+          limorstakes: {
+            stakeAmount: 1,
+            isApproved: 1,
+            isProcesses: 1,
+            createdAt: 1
+          },
+          totalStakedLimor: { $sum: '$limorstakes.stakeAmount' }
+        }
+      }
+    ])
+    return data[0]
   }
 }
 
