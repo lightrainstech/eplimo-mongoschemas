@@ -302,6 +302,14 @@ AssetSchema.methods = {
       { new: true }
     )
     return result
+  },
+  getAssetDetailsByWallet: async function (nftId, wallet) {
+    const Asset = mongoose.model('Asset'),
+      result = await Asset.findOne({
+        _id: nftId,
+        owner: { $in: 'wallet.wallet' }
+      })
+    return result
   }
 }
 
