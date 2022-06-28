@@ -368,10 +368,13 @@ UserSchema.methods = {
   },
   getWalletVerifyStatus: async function (userId, wallet) {
     const User = mongoose.model('User'),
-      result = await User.findOne({
-        _id: userId,
-        nonCustodyWallet: { $elemMatch: { wallet: wallet } }
-      })
+      result = await User.findOne(
+        {
+          _id: userId,
+          nonCustodyWallet: { $elemMatch: { wallet: wallet } }
+        },
+        { _id: 0, nonCustodyWallet: { $elemMatch: { wallet: wallet } } }
+      )
     return result
   },
   updateWalletVerifyStatus: async function (userId, wallet) {
