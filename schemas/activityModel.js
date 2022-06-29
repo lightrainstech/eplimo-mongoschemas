@@ -26,6 +26,10 @@ const ActivitySchema = new mongoose.Schema({
     required: true,
     default: 0
   },
+  stackedLimo: {
+    type: Number,
+    default: 0
+  },
   duration: {
     type: Number,
     required: true,
@@ -68,12 +72,21 @@ ActivitySchema.methods = {
     distance,
     duration,
     point,
-    activityType
+    activityType,
+    stackedLimo
   ) {
     const Activity = mongoose.model('Activity'),
       result = await Activity.findOneAndUpdate(
         { _id: ObjectId(resultActivityId) },
-        { distance, speed, duration, endTime: new Date(), point, activityType },
+        {
+          distance,
+          speed,
+          duration,
+          endTime: new Date(),
+          point,
+          activityType,
+          stackedLimo
+        },
         { new: true }
       )
     return result
