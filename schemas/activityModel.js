@@ -59,7 +59,7 @@ ActivitySchema.methods = {
       options = {
         criteria: { _id: ObjectId(activityId), user: ObjectId(userId) }
       },
-      result = await Activity.load(options).lean().exec()
+      result = await Activity.load(options).populate('nft').lean().exec()
     return result
   },
   addActivityTotal: async function (
