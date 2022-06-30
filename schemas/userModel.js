@@ -386,6 +386,21 @@ UserSchema.methods = {
         { new: true }
       )
     return result
+  },
+  getWalletDetails: async function (userId) {
+    const User = mongoose.model('User'),
+      result = await User.findOne(
+        { _id: userId },
+        { 'nonCustodyWallet.wallet': 1 }
+      )
+        .lean()
+        .exec()
+    if (!result.nonCustodyWallet) {
+      return null
+    }
+    return result.nonCustodyWallet.map(obj => {
+      return obj.wallet
+    })
   }
 }
 

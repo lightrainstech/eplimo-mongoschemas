@@ -223,7 +223,7 @@ AssetSchema.methods = {
     const AssetModel = mongoose.model('Asset')
 
     let criteria = {
-      owner: owner
+      owner: { $in: owner }
     }
     page = page === 0 ? 0 : page - 1
     let limit = 18,
@@ -266,11 +266,6 @@ AssetSchema.methods = {
       )
     return result
   },
-  getAssetDetailsByUser: async function (nftId, userId) {
-    const Asset = mongoose.model('Asset'),
-      options = { criteria: { _id: ObjectId(nftId), owner: ObjectId(userId) } }
-    return await Asset.load(options)
-  },
   addToSale: async function (seller, tokenId, price) {
     const Asset = mongoose.model('Asset'),
       result = await Asset.findOneAndUpdate(
@@ -303,13 +298,10 @@ AssetSchema.methods = {
     )
     return result
   },
-  getAssetDetailsByWallet: async function (nftId, wallet) {
+  getAssetDetailById: async function (nftId) {
     const Asset = mongoose.model('Asset'),
-      result = await Asset.findOne({
-        _id: nftId,
-        owner: { $in: 'wallet.wallet' }
-      })
-    return result
+      options = { criteria: { _id: nftId } }
+    return await Asset.load(options)
   }
 }
 
