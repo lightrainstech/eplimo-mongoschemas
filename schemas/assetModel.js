@@ -223,7 +223,7 @@ AssetSchema.methods = {
     const AssetModel = mongoose.model('Asset')
 
     let criteria = {
-      owner: owner
+      owner: { $in: owner }
     }
     page = page === 0 ? 0 : page - 1
     let limit = 18,
