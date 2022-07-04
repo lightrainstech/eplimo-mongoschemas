@@ -9,7 +9,7 @@ const Schema = mongoose.Schema
 const ActivitySchema = new mongoose.Schema({
   activityType: {
     type: String,
-    enum: ['walk', 'run', 'jog', 'started'],
+    enum: ['walk', 'run', 'jog', 'started', 'abandoned'],
     default: 'started',
     required: true
   },
