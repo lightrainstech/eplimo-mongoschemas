@@ -113,6 +113,19 @@ ActivitySchema.methods = {
       ])
     if (result.length > 0) return result[0]
     else return { activityCount: 0 }
+  },
+  listActivityHistory: async function (userId) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          user: ObjectId(userId)
+        }
+      },
+      {
+        $sort: { startTime: -1 }
+      }
+    ])
   }
 }
 
