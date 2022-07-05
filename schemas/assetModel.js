@@ -162,7 +162,7 @@ AssetSchema.methods = {
     const AssetModel = mongoose.model('Asset')
 
     let { category, sort, status, page } = args,
-      criteria = {},
+      criteria = { orderStatus: 'open' },
       sortRule = {}
     page = page === 0 ? 0 : page - 1
     let limit = 18,
