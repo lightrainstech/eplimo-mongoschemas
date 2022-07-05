@@ -111,6 +111,10 @@ const AssetSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    sneakerLife: {
+      type: Number,
+      default: 100
+    },
     price: {
       type: String,
       default: '0'
@@ -158,7 +162,7 @@ AssetSchema.methods = {
     const AssetModel = mongoose.model('Asset')
 
     let { category, sort, status, page } = args,
-      criteria = {},
+      criteria = { orderStatus: 'open' },
       sortRule = {}
     page = page === 0 ? 0 : page - 1
     let limit = 18,
@@ -302,6 +306,15 @@ AssetSchema.methods = {
     const Asset = mongoose.model('Asset'),
       options = { criteria: { _id: nftId } }
     return await Asset.load(options)
+  },
+  updateSneakerLife: async function (nftId, totalDistance) {
+    const Asset = mongoose.model('Asset'),
+      result = await Asset.findOneAndUpdate(
+        { _id: nftId },
+        { $inc: { sneakerLife: -totalDistance } },
+        { new: true }
+      )
+    return result
   }
 }
 

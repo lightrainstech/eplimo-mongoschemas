@@ -1,7 +1,5 @@
 'use strict'
 
-const activityProgressPopulateQueries = {}
-
 // External Dependancies
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId

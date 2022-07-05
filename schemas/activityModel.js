@@ -1,16 +1,15 @@
 'use strict'
 
-const activityPopulateQueries = {}
-
 // External Dependancies
 const mongoose = require('mongoose')
+const moment = require('moment')
 const ObjectId = mongoose.Types.ObjectId
 const Schema = mongoose.Schema
 
 const ActivitySchema = new mongoose.Schema({
   activityType: {
     type: String,
-    enum: ['walk', 'run', 'jog', 'started'],
+    enum: ['walk', 'run', 'jog', 'started', 'abandoned'],
     default: 'started',
     required: true
   },
@@ -26,7 +25,7 @@ const ActivitySchema = new mongoose.Schema({
     required: true,
     default: 0
   },
-  stackedLimo: {
+  stakedLimo: {
     type: Number,
     default: 0
   },
@@ -46,6 +45,10 @@ const ActivitySchema = new mongoose.Schema({
   metaData: {
     type: Object,
     default: {}
+  },
+  dateIndex: {
+    type: String,
+    default: moment(new Date()).format('DDMMYYYY')
   }
 })
 
@@ -73,7 +76,7 @@ ActivitySchema.methods = {
     duration,
     point,
     activityType,
-    stackedLimo
+    stakedLimo
   ) {
     const Activity = mongoose.model('Activity'),
       result = await Activity.findOneAndUpdate(
@@ -85,11 +88,44 @@ ActivitySchema.methods = {
           endTime: new Date(),
           point,
           activityType,
-          stackedLimo
+          stakedLimo
         },
         { new: true }
       )
     return result
+  },
+  getActivityCountOfUser: async function (userId, nft) {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            user: ObjectId(userId),
+            nft: ObjectId(nft),
+            startTime: {
+              $gte: new Date(moment().startOf('day').toISOString()),
+              $lte: new Date(moment().endOf('day').toISOString())
+            }
+          }
+        },
+        {
+          $count: 'activityCount'
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { activityCount: 0 }
+  },
+  listActivityHistory: async function (userId) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          user: ObjectId(userId)
+        }
+      },
+      {
+        $sort: { startTime: -1 }
+      }
+    ])
   }
 }
 
@@ -131,6 +167,9 @@ ActivitySchema.index(
   },
   {
     nft: 1
+  },
+  {
+    dateIndex: 1
   }
 )
 
