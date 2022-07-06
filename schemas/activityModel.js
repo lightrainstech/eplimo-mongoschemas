@@ -69,22 +69,20 @@ ActivitySchema.methods = {
       result = await Activity.load(options).populate('nft').lean().exec()
     return result
   },
-  addActivityTotal: async function (
-    resultActivityId,
-    speed,
-    distance,
-    duration,
-    point,
-    activityType,
-    stakedLimo
-  ) {
+  updateActivity: async function (activityId, distance, speed, duration) {
     const Activity = mongoose.model('Activity'),
       result = await Activity.findOneAndUpdate(
-        { _id: ObjectId(resultActivityId) },
+        { _id: activityId },
+        { distance, speed, duration },
+        { new: true }
+      )
+    return result
+  },
+  endActivity: async function (activityId, point, activityType, stakedLimo) {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.findOneAndUpdate(
+        { _id: ObjectId(activityId) },
         {
-          distance,
-          speed,
-          duration,
           endTime: new Date(),
           point,
           activityType,
