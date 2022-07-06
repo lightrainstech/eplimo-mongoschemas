@@ -22,7 +22,6 @@ const RefreshToken = require('./schemas/refreshTokenModel.js')
 const LimoPoint = require('./schemas/limoPointModel.js')
 const Asset = require('./schemas/assetModel')
 const Activity = require('./schemas/activityModel.js')
-const ActivityProgress = require('./schemas/activityProgressModel.js')
 const Payment = require('./schemas/paymentModel.js')
 
 module.exports = {
@@ -38,6 +37,5 @@ module.exports = {
   LimoPoint,
   Asset,
   Activity,
-  ActivityProgress,
   Payment
 }
