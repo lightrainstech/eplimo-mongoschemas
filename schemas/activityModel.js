@@ -67,6 +67,7 @@ ActivitySchema.methods = {
       .lean()
       .exec()
     result['canProceed'] = true
+    result['remainingKm'] = result.nft.sneakerLife - 10
     return result
   },
   getActivityById: async function (activityId, userId) {
@@ -77,13 +78,25 @@ ActivitySchema.methods = {
       result = await Activity.load(options).populate('nft').lean().exec()
     return result
   },
-  updateActivity: async function (activityId, distance, speed, duration) {
+  updateActivity: async function (
+    activityId,
+    distance,
+    speed,
+    duration,
+    activityType
+  ) {
     const Activity = mongoose.model('Activity'),
       result = await Activity.findOneAndUpdate(
         { _id: activityId },
-        { distance, speed, duration },
+        { distance, speed, duration, activityType },
         { new: true }
       )
+        .populate('nft')
+        .lean()
+        .exec()
+    result.nft.sneakerLife -= distance
+    result['remainingKm'] = result.nft.sneakerLife - 10
+    result['canProceed'] = true
     return result
   },
   endActivity: async function (activityId, point, activityType, stakedLimo) {
@@ -98,6 +111,11 @@ ActivitySchema.methods = {
         },
         { new: true }
       )
+        .populate('nft')
+        .lean()
+        .exec()
+    result['remainingKm'] = result.nft.sneakerLife - 10
+    result['canProceed'] = false
     return result
   },
   getActivityCountOfUser: async function (userId, nft) {
