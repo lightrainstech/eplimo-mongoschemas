@@ -53,6 +53,7 @@ const assetPopulateQueries = {
     royalty: 1,
     royaltyWallet: 1,
     orderStatus: 1,
+    sneakerLife: 1,
     createdAt: 1,
     updatedAt: 1,
     auctionDetails: { $first: '$auctionDetails' }
