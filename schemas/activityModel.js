@@ -58,7 +58,15 @@ ActivitySchema.methods = {
       activityModel = new Activity()
     activityModel.user = user
     activityModel.nft = nft
-    const result = await activityModel.save()
+    const saveResult = await activityModel.save()
+    const options = {
+      criteria: { _id: ObjectId(saveResult._id) }
+    }
+    const result = await Activity.load(options)
+      .populate({ path: 'nft' })
+      .lean()
+      .exec()
+    result['canProceed'] = true
     return result
   },
   getActivityById: async function (activityId, userId) {
