@@ -187,6 +187,10 @@ const UserSchema = new mongoose.Schema(
     referalCode: {
       type: String,
       default: ''
+    },
+    affiliateCode: {
+      type: String,
+      default: ''
     }
   },
   { timestamps: true }
