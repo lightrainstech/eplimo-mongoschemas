@@ -399,6 +399,11 @@ UserSchema.methods = {
     return result.nonCustodyWallet.map(obj => {
       return obj.wallet
     })
+  },
+  findUserByReferalCode: async function (referralCode) {
+    const User = mongoose.model('User'),
+      result = User.findOne({ referalCode: referralCode }).lean().exec()
+    return result
   }
 }
 
@@ -408,5 +413,9 @@ UserSchema.statics = {
     return this.findOne(options.criteria).select(options.select).exec(cb)
   }
 }
+
+UserSchema.index({
+  referalCode: 1
+})
 
 module.exports = mongoose.model('User', UserSchema)
