@@ -12,7 +12,7 @@ mongoose
 
 const Admin = require('./schemas/adminModel.js')
 const PreSale = require('./schemas/presaleModel.js')
-const Referral = require('./schemas/referralModel.js')
+const Affiliate = require('./schemas/affiliateModel')
 const Reward = require('./schemas/rewardModel.js')
 const StakingReward = require('./schemas/stakingRewardModel.js')
 const LimoReward = require('./schemas/limoRewardModel.js')
@@ -23,6 +23,7 @@ const LimoPoint = require('./schemas/limoPointModel.js')
 const Asset = require('./schemas/assetModel')
 const Activity = require('./schemas/activityModel.js')
 const Payment = require('./schemas/paymentModel.js')
+const Referral = require('./schemas/referralModel')
 
 module.exports = {
   Admin,
@@ -37,5 +38,6 @@ module.exports = {
   LimoPoint,
   Asset,
   Activity,
-  Payment
+  Payment,
+  Affiliate
 }

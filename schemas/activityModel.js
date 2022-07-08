@@ -150,6 +150,15 @@ ActivitySchema.methods = {
         $sort: { startTime: -1 }
       }
     ])
+  },
+  abandonActivity: async function (activityId) {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.findOneAndUpdate(
+        { _id: activityId, activityType: 'started' },
+        { activityType: 'abandoned' },
+        { new: true }
+      )
+    return result
   }
 }
 
@@ -191,10 +200,19 @@ ActivitySchema.index(
   },
   {
     nft: 1
-  },
-  {
-    dateIndex: 1
   }
 )
+
+ActivitySchema.index(
+  {
+    dateIndex: 'text'
+  },
+  { autoIndex: true }
+)
+
+ActivitySchema.index({
+  activityType: 'text',
+  partialFilterExpression: { $match: { activityType: 'started' } }
+})
 
 module.exports = mongoose.model('Activity', ActivitySchema)
