@@ -278,7 +278,9 @@ UserSchema.methods = {
       lpoSpecialization: 1,
       isPractitioner: 1,
       practitionerCategory: 1,
-      phone: 1
+      phone: 1,
+      referalCode: 1,
+      affiliateCode: 1
     }).exec()
   },
   setAuthToken: async function (email, authToken) {
@@ -415,6 +417,15 @@ UserSchema.methods = {
   findUserByReferalCode: async function (referralCode) {
     const User = mongoose.model('User'),
       result = User.findOne({ referalCode: referralCode }).lean().exec()
+    return result
+  },
+  updateReferalCode: async function (userId, referalCode) {
+    const User = mongoose.model('User'),
+      result = await User.findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { referalCode },
+        { new: true }
+      )
     return result
   }
 }
