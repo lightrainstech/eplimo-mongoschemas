@@ -48,6 +48,30 @@ ReferralSchema.methods = {
     } catch (err) {
       throw err
     }
+  },
+  getReferringUsers: async function (userId) {
+    const Referral = mongoose.model('Referral'),
+      options = {
+        criteria: { referredUser: userId },
+        populate: {
+          path: 'referringUser',
+          select:
+            'lpoType lpoCategory lpoSpecialization isPractitioner practitionerCategory userName name email'
+        }
+      }
+    return await Referral.list(options).lean().exec()
+  },
+  getReferredByOfAUser: async function (userId) {
+    const Referral = mongoose.model('Referral'),
+      options = {
+        criteria: { referringUser: userId },
+        populate: {
+          path: 'referringUser',
+          select:
+            'lpoType lpoCategory lpoSpecialization isPractitioner practitionerCategory userName name email'
+        }
+      }
+    return await Referral.list(options).lean().exec()
   }
 }
 

@@ -270,7 +270,15 @@ UserSchema.methods = {
       salt: 1,
       hashedPassword: 1,
       isActive: 1,
-      nonCustodyWallet: 1
+      nonCustodyWallet: 1,
+      name: 1,
+      social: 1,
+      lpoType: 1,
+      lpoCategory: 1,
+      lpoSpecialization: 1,
+      isPractitioner: 1,
+      practitionerCategory: 1,
+      phone: 1
     }).exec()
   },
   setAuthToken: async function (email, authToken) {
