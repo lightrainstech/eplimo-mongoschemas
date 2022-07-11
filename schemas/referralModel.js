@@ -72,6 +72,27 @@ ReferralSchema.methods = {
         }
       }
     return await Referral.list(options).lean().exec()
+  },
+  checkReferralValidation: async function (
+    referringUserId,
+    referredUserId,
+    projectName
+  ) {
+    const Referral = mongoose.model('Referral'),
+      result = await Referral.findOne({
+        $or: [
+          {
+            referredUser: referredUserId,
+            referringUser: referringUserId,
+            projectName
+          },
+          {
+            referringUser: referredUserId,
+            projectName
+          }
+        ]
+      })
+    return result
   }
 }
 

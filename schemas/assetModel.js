@@ -54,6 +54,7 @@ const assetPopulateQueries = {
     royaltyWallet: 1,
     orderStatus: 1,
     sneakerLife: 1,
+    projectName: 1,
     createdAt: 1,
     updatedAt: 1,
     auctionDetails: { $first: '$auctionDetails' }
@@ -119,6 +120,12 @@ const AssetSchema = new mongoose.Schema(
     price: {
       type: String,
       default: '0'
+    },
+    projectName: {
+      type: String,
+      enum: ['healthfi', 'wealthfi', 'createfi', 'datafi'],
+      default: 'healthfi',
+      required: true
     },
     isMinted: {
       type: Boolean,
