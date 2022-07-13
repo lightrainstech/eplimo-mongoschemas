@@ -48,6 +48,51 @@ ReferralSchema.methods = {
     } catch (err) {
       throw err
     }
+  },
+  getReferringUsers: async function (userId) {
+    const Referral = mongoose.model('Referral'),
+      options = {
+        criteria: { referredUser: userId },
+        populate: {
+          path: 'referringUser',
+          select:
+            'lpoType lpoCategory lpoSpecialization isPractitioner practitionerCategory userName name email'
+        }
+      }
+    return await Referral.list(options).lean().exec()
+  },
+  getReferredByOfAUser: async function (userId) {
+    const Referral = mongoose.model('Referral'),
+      options = {
+        criteria: { referringUser: userId },
+        populate: {
+          path: 'referringUser',
+          select:
+            'lpoType lpoCategory lpoSpecialization isPractitioner practitionerCategory userName name email'
+        }
+      }
+    return await Referral.list(options).lean().exec()
+  },
+  checkReferralValidation: async function (
+    referringUserId,
+    referredUserId,
+    projectName
+  ) {
+    const Referral = mongoose.model('Referral'),
+      result = await Referral.findOne({
+        $or: [
+          {
+            referredUser: referringUserId,
+            referringUser: referredUserId,
+            projectName
+          },
+          {
+            referringUser: referringUserId,
+            projectName
+          }
+        ]
+      })
+    return result
   }
 }
 
@@ -95,9 +140,6 @@ ReferralSchema.index(
   }
 )
 
-ReferralSchema.index(
-  { projectName: 1, referredUser: 1, referringUser: 1 },
-  { unique: true }
-)
+ReferralSchema.index({ projectName: 1, referringUser: 1 }, { unique: true })
 
 module.exports = mongoose.model('Referral', ReferralSchema)
