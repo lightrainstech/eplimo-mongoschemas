@@ -148,6 +148,31 @@ ActivitySchema.methods = {
       },
       {
         $sort: { startTime: -1 }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'nft',
+          foreignField: '_id',
+          as: 'nft'
+        }
+      },
+      {
+        $project: {
+          nft: { $first: '$nft' },
+          activityType: 1,
+          user: 1,
+          nft: 1,
+          distance: 1,
+          speed: 1,
+          stakedLimo: 1,
+          duration: 1,
+          startTime: 1,
+          endTime: 1,
+          point: 1,
+          metaData: 1,
+          dateIndex: 1
+        }
       }
     ])
   },
