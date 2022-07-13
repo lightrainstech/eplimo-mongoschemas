@@ -82,11 +82,6 @@ ReferralSchema.methods = {
       result = await Referral.findOne({
         $or: [
           {
-            referredUser: referringUserId,
-            referringUser: referredUserId,
-            projectName
-          },
-          {
             referringUser: referringUserId,
             projectName
           }
