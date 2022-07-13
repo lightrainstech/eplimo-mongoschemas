@@ -191,6 +191,10 @@ const UserSchema = new mongoose.Schema(
     affiliateCode: {
       type: String,
       default: ''
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }
@@ -426,6 +430,21 @@ UserSchema.methods = {
         { referalCode },
         { new: true }
       )
+    return result
+  },
+  deleteAccount: async function (userId) {
+    const User = mongoose.model('User'),
+      result = await User.findOneAndUpdate({ _id: userId }, [
+        {
+          $set: {
+            email: { $concat: ['$email', '_deleted'] },
+            userName: { $concat: ['$userName', '_deleted'] },
+            phone: 'deleted',
+            name: 'deleted',
+            isDeleted: true
+          }
+        }
+      ])
     return result
   }
 }
