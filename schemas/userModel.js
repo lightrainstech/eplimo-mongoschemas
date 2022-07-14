@@ -437,8 +437,12 @@ UserSchema.methods = {
       result = await User.findOneAndUpdate({ _id: userId }, [
         {
           $set: {
-            email: { $concat: ['$email', '_deleted'] },
-            userName: { $concat: ['$userName', '_deleted'] },
+            email: {
+              $concat: ['$email', '_deleted_', new Date().toISOString()]
+            },
+            userName: {
+              $concat: ['$userName', '_deleted_', new Date().toISOString()]
+            },
             phone: 'deleted',
             name: 'deleted',
             isDeleted: true
