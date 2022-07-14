@@ -188,6 +188,35 @@ ActivitySchema.methods = {
         { new: true }
       )
     return result
+  },
+  getTotalKm: async function () {
+    const Activity = mongoose.model('Activity'),
+      previousDay = moment().subtract(1, 'day').toISOString(),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            startTime: {
+              $gte: new Date(moment(previousDay).startOf('day').toISOString())
+            },
+            endTime: {
+              $lte: new Date(moment(previousDay).endOf('day').toISOString())
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalKm: { $sum: '$distance' }
+          }
+        },
+        {
+          $project: {
+            totalKm: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalKm: 0 }
   }
 }
 
