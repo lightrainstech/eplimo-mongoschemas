@@ -17,6 +17,9 @@ const PaymentSchema = new mongoose.Schema(
       type: Object,
       default: {}
     },
+    paymentType: {
+      type: String
+    },
     transactionHash: {
       type: String,
       required: true
@@ -34,12 +37,14 @@ PaymentSchema.methods = {
       const buyer = data.merchantExtra.extra.buyerId,
         asset = data.merchantExtra.extra.nftId,
         paymentDetails = data,
-        transactionHash = data.transaction
+        transactionHash = data.transaction,
+        paymentType = data.merchantExtra.extra.paymentType
       let paymentModel = new Payment()
       paymentModel.buyer = buyer
       paymentModel.asset = asset
       paymentModel.paymentDetails = paymentDetails
       paymentModel.transactionHash = transactionHash
+      paymentModel.paymentType = paymentType
       return await paymentModel.save()
     } catch (err) {
       throw err

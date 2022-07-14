@@ -323,6 +323,15 @@ AssetSchema.methods = {
         { new: true }
       )
     return result
+  },
+  repairSneaker: async function (nftId) {
+    const Asset = mongoose.model('Asset'),
+      result = await Asset.findOneAndUpdate(
+        { _id: nftId },
+        { sneakerLife: 100 },
+        { new: true }
+      )
+    return result
   }
 }
 
