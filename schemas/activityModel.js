@@ -167,7 +167,6 @@ ActivitySchema.methods = {
           nft: { $first: '$nft' },
           activityType: 1,
           user: 1,
-          nft: 1,
           distance: 1,
           speed: 1,
           stakedLimo: 1,
