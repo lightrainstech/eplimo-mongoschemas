@@ -138,14 +138,19 @@ ActivitySchema.methods = {
     if (result.length > 0) return result[0]
     else return { activityCount: 0 }
   },
-  listActivityHistory: async function (userId) {
+  listActivityHistory: async function (userId, page) {
     const Activity = mongoose.model('Activity')
+    page = page === 0 ? 0 : page - 1
+    let limit = 18,
+      skipLimit = limit * page
     return await Activity.aggregate([
       {
         $match: {
           user: ObjectId(userId)
         }
       },
+      { $limit: limit },
+      { $skip: skipLimit },
       {
         $sort: { startTime: -1 }
       },
