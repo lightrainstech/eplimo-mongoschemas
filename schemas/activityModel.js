@@ -149,8 +149,6 @@ ActivitySchema.methods = {
           user: ObjectId(userId)
         }
       },
-      { $limit: limit },
-      { $skip: skipLimit },
       {
         $sort: { startTime: -1 }
       },
@@ -179,6 +177,8 @@ ActivitySchema.methods = {
         }
       }
     ])
+      .skip(skipLimit)
+      .limit(limit)
   },
   abandonActivity: async function (activityId) {
     const Activity = mongoose.model('Activity'),
