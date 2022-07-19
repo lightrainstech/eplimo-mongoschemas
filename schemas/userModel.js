@@ -354,9 +354,9 @@ UserSchema.methods = {
       nonCustodyWallet = { wallet, isVerified: true },
       result = await User.findOneAndUpdate(
         {
-          _id: userId
+          _id: ObjectId(userId)
         },
-        { $addToSet: nonCustodyWallet },
+        { $addToSet: { nonCustodyWallet } },
         { new: true }
       )
     return result
