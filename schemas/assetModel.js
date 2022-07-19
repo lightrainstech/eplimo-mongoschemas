@@ -265,7 +265,7 @@ AssetSchema.methods = {
   getAssetByIdForTransfer: async function (assetId) {
     const Asset = mongoose.model('Asset'),
       options = {
-        criteria: { _id: ObjectId(assetId), onSale: true, orderStatus: 'open' }
+        criteria: { _id: ObjectId(assetId), onSale: true }
       }
     return await Asset.load(options).lean().exec()
   },
