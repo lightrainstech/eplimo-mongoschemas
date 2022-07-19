@@ -18,6 +18,17 @@ const nonCustodyWalletSchema = {
   }
 }
 
+const custodyWalletSchema = {
+  _id: false,
+  vault: {
+    type: String
+  },
+  wallet: {
+    type: Boolean,
+    default: false
+  }
+}
+
 const UserSchema = new mongoose.Schema(
   {
     role: {
@@ -62,7 +73,7 @@ const UserSchema = new mongoose.Schema(
       default: false
     },
     custodyWallet: {
-      type: String
+      type: custodyWalletSchema
     },
     nonCustodyWallet: {
       type: [nonCustodyWalletSchema]
@@ -268,24 +279,7 @@ UserSchema.methods = {
     let query = {
       $or: [{ email: creds }, { userName: creds }]
     }
-    return User.findOne(query, {
-      email: 1,
-      userName: 1,
-      salt: 1,
-      hashedPassword: 1,
-      isActive: 1,
-      nonCustodyWallet: 1,
-      name: 1,
-      social: 1,
-      lpoType: 1,
-      lpoCategory: 1,
-      lpoSpecialization: 1,
-      isPractitioner: 1,
-      practitionerCategory: 1,
-      phone: 1,
-      referalCode: 1,
-      affiliateCode: 1
-    }).exec()
+    return User.findOne(query).exec()
   },
   setAuthToken: async function (email, authToken) {
     const User = mongoose.model('User')
@@ -341,11 +335,38 @@ UserSchema.methods = {
       { new: true }
     )
   },
-  updateWallet: async function (wallet, userId) {
+  updateExistingWallet: async function (wallet, userId) {
     const User = mongoose.model('User'),
       result = await User.findOneAndUpdate(
+        {
+          _id: userId,
+          nonCustodyWallet: {
+            $elemMatch: { wallet: wallet, isVerified: false }
+          }
+        },
+        { $set: { 'nonCustodyWallet.$.isVerified': true } },
+        { new: true }
+      )
+    return result
+  },
+  updateWallet: async function (wallet, userId) {
+    const User = mongoose.model('User'),
+      nonCustodyWallet = { wallet, isVerified: true },
+      result = await User.findOneAndUpdate(
+        {
+          _id: userId
+        },
+        { $addToSet: nonCustodyWallet },
+        { new: true }
+      )
+    return result
+  },
+  updateCustodyWallet: async function (userId, vault, wallet) {
+    const User = mongoose.model('User'),
+      custodyWallet = { vault, wallet },
+      result = await User.findOneAndUpdate(
         { _id: userId },
-        { $addToSet: { nonCustodyWallet: { wallet } } },
+        { custodyWallet },
         { new: true }
       )
     return result
@@ -381,27 +402,6 @@ UserSchema.methods = {
       }
     ])
     return data[0]
-  },
-  getWalletVerifyStatus: async function (wallet, userId) {
-    const User = mongoose.model('User'),
-      result = await User.findOneAndUpdate(
-        { _id: userId },
-        { $addToSet: { nonCustodyWallet: { wallet } } },
-        { new: true }
-      ).select({ _id: 0, nonCustodyWallet: { $elemMatch: { wallet: wallet } } })
-    return result
-  },
-  updateWalletVerifyStatus: async function (userId, wallet) {
-    const User = mongoose.model('User'),
-      result = await User.findOneAndUpdate(
-        {
-          _id: userId,
-          nonCustodyWallet: { $elemMatch: { wallet: wallet } }
-        },
-        { $set: { 'nonCustodyWallet.$.isVerified': true } },
-        { new: true }
-      )
-    return result
   },
   getWalletDetails: async function (userId) {
     const User = mongoose.model('User'),
