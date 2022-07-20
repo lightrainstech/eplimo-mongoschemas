@@ -19,6 +19,10 @@ const StakingRewardSchema = new mongoose.Schema(
       type: Number,
       default: 0.0
     },
+    exactStakedAmount: {
+      type: Number,
+      default: 0.0
+    },
     isApproved: {
       type: Boolean,
       default: false
