@@ -24,8 +24,7 @@ const custodyWalletSchema = {
     type: String
   },
   wallet: {
-    type: Boolean,
-    default: false
+    type: String
   }
 }
 
