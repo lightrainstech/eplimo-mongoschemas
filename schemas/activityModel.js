@@ -46,6 +46,10 @@ const ActivitySchema = new mongoose.Schema({
     type: Object,
     default: {}
   },
+  transactionId: {
+    type: String,
+    default: ''
+  },
   dateIndex: {
     type: String,
     default: moment(new Date()).format('DDMMYYYY')
@@ -75,7 +79,11 @@ ActivitySchema.methods = {
       options = {
         criteria: { _id: ObjectId(activityId), user: ObjectId(userId) }
       },
-      result = await Activity.load(options).populate('nft').lean().exec()
+      result = await Activity.load(options)
+        .populate('nft')
+        .populate('user')
+        .lean()
+        .exec()
     return result
   },
   updateActivity: async function (
@@ -217,6 +225,73 @@ ActivitySchema.methods = {
       ])
     if (result.length > 0) return result[0]
     else return { _id: null, totalKm: 0 }
+  },
+  updateTransactionDetails: async function (activityId, transactionId) {
+    const Activity = mongoose.model('Activity')
+    const result = await Activity.findOneAndUpdate(
+      { _id: activityId },
+      { transactionId }
+    )
+    return result
+  },
+  getTotalPointsGainedByAllUsers: async function () {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            startTime: {
+              $gte: new Date(moment().startOf('day').toISOString())
+            },
+            endTime: {
+              $lte: new Date(moment().endOf('day').toISOString())
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            usersList: { $addToSet: '$user' },
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            usersList: 1,
+            totalPoint: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalPoint: 0, usersList: [] }
+  },
+  getTotalPointsGainedByAUser: async function (userId) {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            user: ObjectId(userId),
+            startTime: {
+              $gte: new Date(moment().startOf('day').toISOString())
+            },
+            endTime: {
+              $lte: new Date(moment().endOf('day').toISOString())
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            totalPoint: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalPoint: 0 }
   }
 }
 
