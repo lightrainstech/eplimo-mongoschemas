@@ -35,4 +35,18 @@ const StakingRewardSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+StakingRewardSchema.methods = {
+  total2xReward: async function () {
+    try {
+      const StakingReward = mongoose.model('StakingReward')
+      return StakingReward.aggregate([
+        { $match: {} },
+        { $group: { _id: null, sum: { $sum: '$exactStakedAmount' } } }
+      ])
+    } catch (e) {
+      throw e
+    }
+  }
+}
+
 module.exports = mongoose.model('StakingReward', StakingRewardSchema)
