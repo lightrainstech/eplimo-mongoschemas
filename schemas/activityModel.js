@@ -146,6 +146,49 @@ ActivitySchema.methods = {
     if (result.length > 0) return result[0]
     else return { activityCount: 0 }
   },
+  listSuccessActivityHistory: async function (userId, page) {
+    const Activity = mongoose.model('Activity')
+    page = page === 0 ? 0 : page - 1
+    let limit = 18,
+      skipLimit = limit * page
+    return await Activity.aggregate([
+      {
+        $match: {
+          user: ObjectId(userId),
+          activityType: { $in: ['walk', 'run', 'jog'] }
+        }
+      },
+      {
+        $sort: { startTime: -1 }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'nft',
+          foreignField: '_id',
+          as: 'nft'
+        }
+      },
+      {
+        $project: {
+          nft: { $first: '$nft' },
+          activityType: 1,
+          user: 1,
+          distance: 1,
+          speed: 1,
+          stakedLimo: 1,
+          duration: 1,
+          startTime: 1,
+          endTime: 1,
+          point: 1,
+          metaData: 1,
+          dateIndex: 1
+        }
+      }
+    ])
+      .skip(skipLimit)
+      .limit(limit)
+  },
   listActivityHistory: async function (userId, page) {
     const Activity = mongoose.model('Activity')
     page = page === 0 ? 0 : page - 1
