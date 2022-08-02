@@ -25,6 +25,7 @@ const Activity = require('./schemas/activityModel.js')
 const Payment = require('./schemas/paymentModel.js')
 const Referral = require('./schemas/referralModel')
 const DeleteLog = require('./schemas/deleteLogModel')
+const Transaction = require('./schemas/transactionModel')
 
 module.exports = {
   Admin,
@@ -41,5 +42,6 @@ module.exports = {
   Activity,
   Payment,
   Affiliate,
-  DeleteLog
+  DeleteLog,
+  Transaction
 }

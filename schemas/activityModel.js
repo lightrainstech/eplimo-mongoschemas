@@ -46,6 +46,10 @@ const ActivitySchema = new mongoose.Schema({
     type: Object,
     default: {}
   },
+  transactionId: {
+    type: String,
+    default: ''
+  },
   dateIndex: {
     type: String,
     default: moment(new Date()).format('DDMMYYYY')
@@ -75,7 +79,11 @@ ActivitySchema.methods = {
       options = {
         criteria: { _id: ObjectId(activityId), user: ObjectId(userId) }
       },
-      result = await Activity.load(options).populate('nft').lean().exec()
+      result = await Activity.load(options)
+        .populate('nft')
+        .populate('user')
+        .lean()
+        .exec()
     return result
   },
   updateActivity: async function (
@@ -137,6 +145,49 @@ ActivitySchema.methods = {
       ])
     if (result.length > 0) return result[0]
     else return { activityCount: 0 }
+  },
+  listSuccessActivityHistory: async function (userId, page) {
+    const Activity = mongoose.model('Activity')
+    page = page === 0 ? 0 : page - 1
+    let limit = 18,
+      skipLimit = limit * page
+    return await Activity.aggregate([
+      {
+        $match: {
+          user: ObjectId(userId),
+          activityType: { $in: ['walk', 'run', 'jog'] }
+        }
+      },
+      {
+        $sort: { startTime: -1 }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'nft',
+          foreignField: '_id',
+          as: 'nft'
+        }
+      },
+      {
+        $project: {
+          nft: { $first: '$nft' },
+          activityType: 1,
+          user: 1,
+          distance: 1,
+          speed: 1,
+          stakedLimo: 1,
+          duration: 1,
+          startTime: 1,
+          endTime: 1,
+          point: 1,
+          metaData: 1,
+          dateIndex: 1
+        }
+      }
+    ])
+      .skip(skipLimit)
+      .limit(limit)
   },
   listActivityHistory: async function (userId, page) {
     const Activity = mongoose.model('Activity')
@@ -217,6 +268,73 @@ ActivitySchema.methods = {
       ])
     if (result.length > 0) return result[0]
     else return { _id: null, totalKm: 0 }
+  },
+  updateTransactionDetails: async function (activityId, transactionId) {
+    const Activity = mongoose.model('Activity')
+    const result = await Activity.findOneAndUpdate(
+      { _id: activityId },
+      { transactionId }
+    )
+    return result
+  },
+  getTotalPointsGainedByAllUsers: async function () {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            startTime: {
+              $gte: new Date(moment().startOf('day').toISOString())
+            },
+            endTime: {
+              $lte: new Date(moment().endOf('day').toISOString())
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            usersList: { $addToSet: '$user' },
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            usersList: 1,
+            totalPoint: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalPoint: 0, usersList: [] }
+  },
+  getTotalPointsGainedByAUser: async function (userId) {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            user: ObjectId(userId),
+            startTime: {
+              $gte: new Date(moment().startOf('day').toISOString())
+            },
+            endTime: {
+              $lte: new Date(moment().endOf('day').toISOString())
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            totalPoint: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalPoint: 0 }
   }
 }
 
