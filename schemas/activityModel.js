@@ -279,14 +279,15 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAllUsers: async function () {
     const Activity = mongoose.model('Activity'),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
             startTime: {
-              $gte: new Date(moment().startOf('day').toISOString())
+              $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
             endTime: {
-              $lte: new Date(moment().endOf('day').toISOString())
+              $lte: new Date(moment(previousDay).endOf('day').toISOString())
             }
           }
         },
@@ -309,15 +310,16 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAUser: async function (userId) {
     const Activity = mongoose.model('Activity'),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
             user: ObjectId(userId),
             startTime: {
-              $gte: new Date(moment().startOf('day').toISOString())
+              $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
             endTime: {
-              $lte: new Date(moment().endOf('day').toISOString())
+              $lte: new Date(moment(previousDay).endOf('day').toISOString())
             }
           }
         },

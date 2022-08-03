@@ -26,6 +26,7 @@ const Payment = require('./schemas/paymentModel.js')
 const Referral = require('./schemas/referralModel')
 const DeleteLog = require('./schemas/deleteLogModel')
 const Transaction = require('./schemas/transactionModel')
+const TransferLimo = require('./schemas/transferLimoModel')
 
 module.exports = {
   Admin,
@@ -43,5 +44,6 @@ module.exports = {
   Payment,
   Affiliate,
   DeleteLog,
-  Transaction
+  Transaction,
+  TransferLimo
 }
