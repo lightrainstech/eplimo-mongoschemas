@@ -265,7 +265,8 @@ UserSchema.methods = {
         salt: 1,
         hashedPassword: 1,
         isActive: 1,
-        nonCustodyWallet: 1
+        nonCustodyWallet: 1,
+        custodyWallet: 1
       }
     ).exec()
   },
