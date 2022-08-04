@@ -133,6 +133,7 @@ ActivitySchema.methods = {
           $match: {
             user: ObjectId(userId),
             nft: ObjectId(nft),
+            activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
               $gte: new Date(moment().startOf('day').toISOString()),
               $lte: new Date(moment().endOf('day').toISOString())
