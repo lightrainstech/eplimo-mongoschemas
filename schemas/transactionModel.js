@@ -31,7 +31,8 @@ TransactionSchema.methods = {
     user,
     transactionType,
     transactionId,
-    transactionReference
+    transactionReference,
+    amount
   ) {
     const Transaction = mongoose.model('Transaction'),
       transactionModel = new Transaction()
@@ -44,6 +45,7 @@ TransactionSchema.methods = {
       transactionModel.referral = referral
     }
     transactionModel.transactionId = transactionId
+    transactionModel.amount = amount
     const result = await transactionModel.save()
     return result
   },
