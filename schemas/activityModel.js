@@ -247,6 +247,7 @@ ActivitySchema.methods = {
       result = await Activity.aggregate([
         {
           $match: {
+            activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
               $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
@@ -280,15 +281,17 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAllUsers: async function () {
     const Activity = mongoose.model('Activity'),
-      previousDay = moment().subtract(1, 'day').toISOString(),
+      //shouldchangethis
+      previousDay = moment().subtract(3, 'hour').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
+            activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
-              $gte: new Date(moment(previousDay).startOf('day').toISOString())
+              $gte: new Date(moment(previousDay).toISOString())
             },
             endTime: {
-              $lte: new Date(moment(previousDay).endOf('day').toISOString())
+              $lte: new Date(moment().toISOString())
             }
           }
         },
@@ -311,16 +314,18 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAUser: async function (userId) {
     const Activity = mongoose.model('Activity'),
-      previousDay = moment().subtract(1, 'day').toISOString(),
+      //shouldchangethis
+      previousDay = moment().subtract(3, 'hour').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
             user: ObjectId(userId),
+            activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
-              $gte: new Date(moment(previousDay).startOf('day').toISOString())
+              $gte: new Date(moment(previousDay).toISOString())
             },
             endTime: {
-              $lte: new Date(moment(previousDay).endOf('day').toISOString())
+              $lte: new Date(moment().toISOString())
             }
           }
         },
