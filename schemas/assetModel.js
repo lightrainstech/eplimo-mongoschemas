@@ -134,7 +134,7 @@ const AssetSchema = new mongoose.Schema(
     attributes: [],
     category: {
       type: String,
-      enum: ['Basic', 'Standard', 'Pro', 'Ultra'],
+      enum: ['Basic', 'Standard', 'Pro', 'Ultra', 'Free'],
       required: true
     },
     tags: [
