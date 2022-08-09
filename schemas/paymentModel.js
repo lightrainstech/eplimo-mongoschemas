@@ -5,25 +5,37 @@ const mongoose = require('mongoose')
 
 const PaymentSchema = new mongoose.Schema(
   {
-    buyer: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
+    },
+    paymentType: {
+      type: String,
+      enum: ['fireblocks', 'zoksh'],
+      required: true
+    },
+    transactionType: {
+      type: String,
+      enum: ['activity', 'referral', 'buySneaker', 'repairSneaker']
+    },
+    activityDate: {
+      type: String
     },
     asset: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Asset'
     },
+    referral: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'asset'
+    },
     paymentDetails: {
       type: Object,
       default: {}
     },
-    paymentType: {
-      type: String
-    },
-    transactionHash: {
-      type: String,
-      required: true
-    }
+    status: { type: String, enum: ['added', 'completed'], default: 'added' },
+    transactionId: { type: String, default: '' },
+    amount: { type: String, required: true }
   },
   {
     timestamps: true
@@ -31,36 +43,64 @@ const PaymentSchema = new mongoose.Schema(
 )
 
 PaymentSchema.methods = {
-  addPayment: async function (data) {
-    const Payment = mongoose.model('Payment')
+  addPayment: async function (
+    user,
+    paymentType,
+    transactionType,
+    transferReference,
+    transactionId,
+    amount,
+    paymentDetails
+  ) {
     try {
-      const buyer = data.merchantExtra.extra.buyerId,
-        asset = data.merchantExtra.extra.nftId,
-        paymentDetails = data,
-        transactionHash = data.transaction,
-        paymentType = data.merchantExtra.extra.paymentType
-      let paymentModel = new Payment()
-      paymentModel.buyer = buyer
-      paymentModel.asset = asset
-      paymentModel.paymentDetails = paymentDetails
-      paymentModel.transactionHash = transactionHash
+      let Payment = mongoose.model('Payment'),
+        paymentModel = new Payment()
+      paymentModel.user = user
       paymentModel.paymentType = paymentType
+      // saving payement details of zoksh
+      if (paymentType === 'zoksh') {
+        paymentModel.asset = transferReference
+        paymentModel.transactionType = transactionType
+        paymentModel.paymentDetails = paymentDetails
+        paymentModel.status = 'completed'
+      }
+      // saving payement details of fireblocks
+      if (paymentType === 'fireblocks') {
+        paymentModel.transactionType = transactionType
+        if (transactionType == 'activity') {
+          paymentModel.activity = transferReference
+        }
+        if (transactionType == 'referral') {
+          paymentModel.referral = transferReference
+        }
+      }
+      paymentModel.transactionId = transactionId
+      paymentModel.amount = amount
       return await paymentModel.save()
     } catch (err) {
       throw err
     }
   },
-  getPaymentById: async function (paymentId, buyer) {
+  getPaymentById: async function (paymentId, user) {
     const Payment = mongoose.model('Payment'),
       options = {
-        criteria: { _id: paymentId, buyer: buyer }
+        criteria: { _id: paymentId, user: user }
       }
     return await Payment.load(options).populate('asset').lean().exec()
   },
-  getPaymentByHash: async function (transactionHash) {
+  updateTransaction: async function (transactionId) {
+    const Transaction = mongoose.model('Transaction')
+    const result = await Transaction.findOneAndUpdate(
+      { transactionId },
+      { status: 'completed' },
+      { new: true }
+    )
+    return result
+  },
+  getSneakerRepairHistory: async function (userId) {
     const Payment = mongoose.model('Payment'),
       options = {
-        criteria: { transactionHash }
+        criteria: { transactionType: 'repairSneaker', user: userId }
       }
     return await Payment.load(options).populate('asset').lean().exec()
   }

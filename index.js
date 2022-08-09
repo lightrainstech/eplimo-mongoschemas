@@ -25,7 +25,6 @@ const Activity = require('./schemas/activityModel.js')
 const Payment = require('./schemas/paymentModel.js')
 const Referral = require('./schemas/referralModel')
 const DeleteLog = require('./schemas/deleteLogModel')
-const Transaction = require('./schemas/transactionModel')
 const TransferLimo = require('./schemas/transferLimoModel')
 
 module.exports = {
@@ -44,6 +43,5 @@ module.exports = {
   Payment,
   Affiliate,
   DeleteLog,
-  Transaction,
   TransferLimo
 }
