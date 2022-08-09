@@ -96,6 +96,13 @@ PaymentSchema.methods = {
       { new: true }
     )
     return result
+  },
+  getSneakerRepairHistory: async function (userId) {
+    const Payment = mongoose.model('Payment'),
+      options = {
+        criteria: { transactionType: 'repairSneaker', user: userId }
+      }
+    return await Payment.load(options).populate('asset').lean().exec()
   }
 }
 
