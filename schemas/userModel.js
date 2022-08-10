@@ -349,6 +349,17 @@ UserSchema.methods = {
       )
     return result
   },
+  checkIfWalletExists: async function (wallet) {
+    const User = mongoose.model('User'),
+      options = {
+        criteria: {
+          nonCustodyWallet: {
+            $elemMatch: { wallet: wallet, isVerified: true }
+          }
+        }
+      }
+    return await User.load(options)
+  },
   updateWallet: async function (wallet, userId) {
     const User = mongoose.model('User'),
       nonCustodyWallet = { wallet, isVerified: true },
