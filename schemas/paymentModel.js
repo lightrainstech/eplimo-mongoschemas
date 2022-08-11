@@ -102,7 +102,7 @@ PaymentSchema.methods = {
       options = {
         criteria: { transactionType: 'repairSneaker', user: userId }
       }
-    return await Payment.load(options).populate('asset').lean().exec()
+    return await Payment.list(options).populate('asset').lean().exec()
   }
 }
 
@@ -110,6 +110,13 @@ PaymentSchema.statics = {
   load: function (options) {
     options.select = options.select || ''
     return this.findOne(options.criteria).select(options.select)
+  },
+  list: function (options) {
+    const criteria = options.criteria || {}
+    const sortRule = options.sortRule || {}
+    const select = options.select || ''
+    const populate = options.populate || ''
+    return this.find(criteria).select(select).sort(sortRule).populate(populate)
   }
 }
 
