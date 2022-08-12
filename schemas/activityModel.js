@@ -246,8 +246,35 @@ ActivitySchema.methods = {
       previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
+          $lookup: {
+            from: 'assets',
+            let: { nftId: '$nft' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$_id', '$$nftId'] },
+                      { $ne: ['$category', 'Free'] }
+                    ]
+                  }
+                }
+              },
+              {
+                $project: {
+                  category: 1
+                }
+              }
+            ],
+            as: 'nft'
+          }
+        },
+        {
           $match: {
             activityType: { $in: ['walk', 'run', 'jog'] },
+            'nft.0': {
+              $exists: true
+            },
             startTime: {
               $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
