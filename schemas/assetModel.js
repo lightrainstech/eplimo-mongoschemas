@@ -332,6 +332,11 @@ AssetSchema.methods = {
         { new: true }
       )
     return result
+  },
+  checkAssetTransferStatusForLimo: async function (wallet, nftId) {
+    const Asset = mongoose.model('Asset'),
+      options = { criteria: { _id: nftId, owner: wallet } }
+    return await Asset.load(options)
   }
 }
 

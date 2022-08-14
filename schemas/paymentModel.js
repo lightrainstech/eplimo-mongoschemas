@@ -11,7 +11,7 @@ const PaymentSchema = new mongoose.Schema(
     },
     paymentType: {
       type: String,
-      enum: ['fireblocks', 'zoksh'],
+      enum: ['fireblocks', 'zoksh', 'limoPurchase'],
       required: true
     },
     transactionType: {
@@ -60,13 +60,11 @@ PaymentSchema.methods = {
       // saving payement details of zoksh
       if (paymentType === 'zoksh') {
         paymentModel.asset = transferReference
-        paymentModel.transactionType = transactionType
         paymentModel.paymentDetails = paymentDetails
         paymentModel.status = 'completed'
       }
       // saving payement details of fireblocks
       if (paymentType === 'fireblocks') {
-        paymentModel.transactionType = transactionType
         if (transactionType == 'activity') {
           paymentModel.activity = transferReference
         }
@@ -74,6 +72,11 @@ PaymentSchema.methods = {
           paymentModel.referral = transferReference
         }
       }
+      if (paymentType === 'limoPurchase') {
+        paymentModel.asset = transferReference
+        paymentModel.status = 'completed'
+      }
+      paymentModel.transactionType = transactionType
       paymentModel.transactionId = transactionId
       paymentModel.amount = amount
       return await paymentModel.save()
