@@ -134,7 +134,7 @@ const AssetSchema = new mongoose.Schema(
     attributes: [],
     category: {
       type: String,
-      enum: ['Basic', 'Standard', 'Pro', 'Ultra', 'Free'],
+      enum: ['Basic', 'Standard', 'Pro', 'Ultra', 'Trial'],
       required: true
     },
     tags: [
@@ -193,7 +193,7 @@ AssetSchema.methods = {
     } else if (status == 'onAuction') {
       criteria.onAuction = true
     } else {
-      $or: [{ 'criteria.onSale': true }, , { 'criteria.onAuction': true }]
+      criteria.$or = [{ onSale: true }, { onAuction: true }]
     }
     return await AssetModel.aggregate([
       {
