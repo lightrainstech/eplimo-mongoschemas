@@ -255,7 +255,7 @@ ActivitySchema.methods = {
                   $expr: {
                     $and: [
                       { $eq: ['$_id', '$$nftId'] },
-                      { $ne: ['$category', 'Free'] }
+                      { $ne: ['$category', 'Trial'] }
                     ]
                   }
                 }
