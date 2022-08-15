@@ -303,8 +303,7 @@ AssetSchema.methods = {
       {
         owner: buyer,
         onSale: false,
-        onAuction: false,
-        price: '0'
+        onAuction: false
       },
       { new: true }
     )
