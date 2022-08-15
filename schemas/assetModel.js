@@ -170,7 +170,7 @@ AssetSchema.methods = {
     const AssetModel = mongoose.model('Asset')
 
     let { category, sort, status, page } = args,
-      criteria = { orderStatus: 'open' },
+      criteria = {},
       sortRule = {}
     page = page === 0 ? 0 : page - 1
     let limit = 18,
@@ -333,9 +333,9 @@ AssetSchema.methods = {
       )
     return result
   },
-  checkAssetTransferStatusForLimo: async function (wallet, nftId) {
+  checkAssetDetails: async function (tokenId, nftId) {
     const Asset = mongoose.model('Asset'),
-      options = { criteria: { _id: nftId, owner: wallet } }
+      options = { criteria: { _id: nftId, tokenId: tokenId } }
     return await Asset.load(options)
   }
 }
