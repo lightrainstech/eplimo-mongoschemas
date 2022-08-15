@@ -19,6 +19,9 @@ const presaleRefBonusSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
       default: false
+    },
+    month: {
+      type: String
     }
   },
   { timestamps: true }
