@@ -67,6 +67,9 @@ const UserSchema = new mongoose.Schema(
     phone: {
       type: String
     },
+    countryCode: {
+      type: String
+    },
     isPhoneVerified: {
       type: Boolean,
       default: false
