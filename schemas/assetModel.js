@@ -123,7 +123,14 @@ const AssetSchema = new mongoose.Schema(
     },
     projectName: {
       type: String,
-      enum: ['healthfi', 'wealthfi', 'createfi', 'datafi'],
+      enum: [
+        'healthfi',
+        'wealthfi',
+        'creatfi',
+        'datafi',
+        'modifi',
+        'superHumanTribe'
+      ],
       default: 'healthfi',
       required: true
     },
@@ -336,6 +343,53 @@ AssetSchema.methods = {
     const Asset = mongoose.model('Asset'),
       options = { criteria: { _id: nftId, tokenId: tokenId } }
     return await Asset.load(options)
+  },
+  listMyProjects: async function (owner) {
+    const AssetModel = mongoose.model('Asset')
+    const result = await AssetModel.aggregate([
+      {
+        $match: {
+          owner: { $in: owner }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          myProjects: {
+            $addToSet: {
+              $switch: {
+                branches: [
+                  {
+                    case: { $eq: ['$projectName', 'creatfi'] },
+                    then: 'creatfi'
+                  },
+                  {
+                    case: { $eq: ['$projectName', 'superHumanTribe'] },
+                    then: 'superHumanTribe'
+                  },
+                  {
+                    case: { $eq: ['$projectName', 'healthfi'] },
+                    then: 'healthfi'
+                  },
+                  {
+                    case: { $eq: ['$projectName', 'modifi'] },
+                    then: 'modifi'
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          myProjects: 1
+        }
+      }
+    ])
+    if (result.length > 0) return result[0]
+    else return { _id: 0, myProjects: [] }
   }
 }
 
