@@ -193,6 +193,9 @@ AssetSchema.methods = {
 
     if (category !== undefined) {
       criteria.category = category
+    } else {
+      criteria.category = { $in: ['Basic', 'Standard', 'Pro', 'Ultra'] }
+      criteria.efficiencyIndex = { $in: [20, 25, 30, 35, 40, 45, 50, 55, 60] }
     }
 
     if (status == 'onSale') {
