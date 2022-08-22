@@ -16,10 +16,18 @@ const PaymentSchema = new mongoose.Schema(
     },
     transactionType: {
       type: String,
-      enum: ['activity', 'referral', 'buySneaker', 'repairSneaker']
+      enum: [
+        'activity',
+        'referral',
+        'buySneaker',
+        'repairSneaker',
+        'adminToUerBNBTransfer',
+        'rewardWithdraw'
+      ]
     },
-    activityDate: {
-      type: String
+    activity: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     },
     asset: {
       type: mongoose.Schema.Types.ObjectId,
