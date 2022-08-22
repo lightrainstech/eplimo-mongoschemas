@@ -25,9 +25,8 @@ const PaymentSchema = new mongoose.Schema(
         'rewardWithdraw'
       ]
     },
-    activity: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+    activityDate: {
+      type: String
     },
     asset: {
       type: mongoose.Schema.Types.ObjectId,
@@ -74,7 +73,7 @@ PaymentSchema.methods = {
       // saving payement details of fireblocks
       if (paymentType === 'fireblocks') {
         if (transactionType == 'activity') {
-          paymentModel.activity = transferReference
+          paymentModel.activityDate = transferReference
         }
         if (transactionType == 'referral') {
           paymentModel.referral = transferReference
