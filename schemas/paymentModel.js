@@ -99,8 +99,8 @@ PaymentSchema.methods = {
     return await Payment.load(options).populate('asset').lean().exec()
   },
   updateTransaction: async function (transactionId) {
-    const Transaction = mongoose.model('Transaction')
-    const result = await Transaction.findOneAndUpdate(
+    const Payment = mongoose.model('Payment')
+    const result = await Payment.findOneAndUpdate(
       { transactionId },
       { status: 'completed' },
       { new: true }
