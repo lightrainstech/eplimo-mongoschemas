@@ -298,14 +298,6 @@ ActivitySchema.methods = {
     if (result.length > 0) return result[0]
     else return { _id: null, totalKm: 0 }
   },
-  updateTransactionDetails: async function (activityId, transactionId) {
-    const Activity = mongoose.model('Activity')
-    const result = await Activity.findOneAndUpdate(
-      { _id: activityId },
-      { transactionId }
-    )
-    return result
-  },
   getTotalPointsGainedByAllUsers: async function () {
     const Activity = mongoose.model('Activity'),
       //shouldchangethis
@@ -323,21 +315,108 @@ ActivitySchema.methods = {
           }
         },
         {
+          $lookup: {
+            from: 'assets',
+            let: { nftId: '$nft' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$_id', '$$nftId'] },
+                      { $eq: ['$category', 'Trial'] }
+                    ]
+                  }
+                }
+              },
+              {
+                $project: {
+                  _id: 1,
+                  name: 1,
+                  category: 1
+                }
+              }
+            ],
+            as: 'trialNFT'
+          }
+        },
+        {
+          $lookup: {
+            from: 'assets',
+            let: { nftId: '$nft' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$_id', '$$nftId'] },
+                      { $ne: ['$category', 'Trial'] }
+                    ]
+                  }
+                }
+              },
+              {
+                $project: {
+                  _id: 1,
+                  name: 1,
+                  category: 1
+                }
+              }
+            ],
+            as: 'notTrialNFT'
+          }
+        },
+        {
           $group: {
             _id: null,
-            usersList: { $addToSet: '$user' },
+            trialUsersList: {
+              $addToSet: {
+                $cond: {
+                  if: {
+                    $and: [
+                      { $ne: [{ $size: '$trialNFT' }, 0] },
+                      { $eq: [{ $size: '$notTrialNFT' }, 0] }
+                    ]
+                  },
+                  then: '$user',
+                  else: '$$REMOVE'
+                }
+              }
+            },
+            nonTrialUsersList: {
+              $addToSet: {
+                $cond: {
+                  if: {
+                    $and: [
+                      { $ne: [{ $size: '$notTrialNFT' }, 0] },
+                      { $eq: [{ $size: '$trialNFT' }, 0] }
+                    ]
+                  },
+                  then: '$user',
+                  else: '$$REMOVE'
+                }
+              }
+            },
             totalPoint: { $sum: '$point' }
           }
         },
         {
           $project: {
-            usersList: 1,
+            _id: 1,
+            trialUsersList: 1,
+            nonTrialUsersList: 1,
             totalPoint: 1
           }
         }
       ])
     if (result.length > 0) return result[0]
-    else return { _id: null, totalPoint: 0, usersList: [] }
+    else
+      return {
+        _id: null,
+        totalPoint: 0,
+        trialUsersList: [],
+        nonTrialUsersList: []
+      }
   },
   getTotalPointsGainedByAUser: async function (userId) {
     const Activity = mongoose.model('Activity'),

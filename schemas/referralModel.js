@@ -17,7 +17,14 @@ const ReferralSchema = new mongoose.Schema(
     referredUserPoints: { type: String, default: '0', required: true },
     projectName: {
       type: String,
-      enum: ['healthfi', 'wealthfi', 'createfi', 'datafi'],
+      enum: [
+        'healthfi',
+        'wealthfi',
+        'creatfi',
+        'datafi',
+        'modifi',
+        'superHumanTribe'
+      ],
       default: 'healthfi',
       required: true
     }
