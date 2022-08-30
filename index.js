@@ -27,6 +27,7 @@ const Referral = require('./schemas/referralModel')
 const DeleteLog = require('./schemas/deleteLogModel')
 const TransferLimo = require('./schemas/transferLimoModel')
 const PreSaleRefBonus = require('./schemas/presaleRefBonusModel')
+const WhiteList = require('./schemas/whiteListModel')
 
 module.exports = {
   Admin,
@@ -45,5 +46,6 @@ module.exports = {
   Affiliate,
   DeleteLog,
   TransferLimo,
-  PreSaleRefBonus
+  PreSaleRefBonus,
+  WhiteList
 }
