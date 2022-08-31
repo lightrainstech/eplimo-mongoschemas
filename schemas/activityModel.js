@@ -419,7 +419,6 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAUser: async function (userId) {
     const Activity = mongoose.model('Activity'),
-      //shouldchangethis
       previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
