@@ -314,10 +314,10 @@ ActivitySchema.methods = {
           $match: {
             activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
-              $gte: new Date(moment(previousDay).toISOString())
+              $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
             endTime: {
-              $lte: new Date(moment().toISOString())
+              $lte: new Date(moment(previousDay).endOf('day').toISOString())
             }
           }
         },
@@ -347,10 +347,10 @@ ActivitySchema.methods = {
             user: ObjectId(userId),
             activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
-              $gte: new Date(moment(previousDay).toISOString())
+              $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
             endTime: {
-              $lte: new Date(moment().toISOString())
+              $lte: new Date(moment(previousDay).endOf('day').toISOString())
             }
           }
         },
