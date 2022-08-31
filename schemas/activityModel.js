@@ -300,17 +300,16 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAllUsers: async function () {
     const Activity = mongoose.model('Activity'),
-      //shouldchangethis
-      previousDay = moment().subtract(3, 'hour').toISOString(),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
             activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
-              $gte: new Date(moment(previousDay).toISOString())
+              $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
             endTime: {
-              $lte: new Date(moment().toISOString())
+              $lte: new Date(moment(previousDay).endOf('day').toISOString())
             }
           }
         },
@@ -421,17 +420,17 @@ ActivitySchema.methods = {
   getTotalPointsGainedByAUser: async function (userId) {
     const Activity = mongoose.model('Activity'),
       //shouldchangethis
-      previousDay = moment().subtract(3, 'hour').toISOString(),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
             user: ObjectId(userId),
             activityType: { $in: ['walk', 'run', 'jog'] },
             startTime: {
-              $gte: new Date(moment(previousDay).toISOString())
+              $gte: new Date(moment(previousDay).startOf('day').toISOString())
             },
             endTime: {
-              $lte: new Date(moment().toISOString())
+              $lte: new Date(moment(previousDay).endOf('day').toISOString())
             }
           }
         },
