@@ -11,20 +11,18 @@ const WhiteListSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    wallet: { type: String, required: true },
-    numberOfNFT: { type: Number, required: true }
+    wallet: { type: String, required: true }
   },
   { timestamps: true }
 )
 
 WhiteListSchema.methods = {
-  addWhiteList: async function (email, wallet, numberOfNFT) {
+  addWhiteList: async function (email, wallet) {
     const WhiteList = mongoose.model('WhiteList'),
       whiteListModel = new WhiteList()
     try {
       whiteListModel.email = email
       whiteListModel.wallet = wallet
-      whiteListModel.numberOfNFT = numberOfNFT
       const result = await whiteListModel.save()
       return result
     } catch (err) {
