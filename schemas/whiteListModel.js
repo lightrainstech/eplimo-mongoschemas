@@ -28,6 +28,19 @@ WhiteListSchema.methods = {
     } catch (err) {
       throw err
     }
+  },
+  isWallet: async function (wallet) {
+    const WhiteList = mongoose.model('WhiteList')
+    let isWallet = false
+    try {
+      const result = await WhiteList.findOne({ wallet })
+      if (result) {
+        isWallet = true
+      }
+      return isWallet
+    } catch (err) {
+      throw err
+    }
   }
 }
 
