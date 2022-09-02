@@ -29,7 +29,7 @@ WhiteListSchema.methods = {
       throw err
     }
   },
-  isWallet: async function (wallet) {
+  isWhitelisted: async function (wallet) {
     const WhiteList = mongoose.model('WhiteList')
     let isWallet = false
     try {
