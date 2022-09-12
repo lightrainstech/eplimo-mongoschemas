@@ -405,6 +405,7 @@ UserSchema.methods = {
           hashedPassword: 1,
           isActive: 1,
           nonCustodyWallet: 1,
+          custodyWallet: 1,
           limorstakes: {
             stakeAmount: 1,
             isApproved: 1,
