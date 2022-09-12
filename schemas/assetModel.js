@@ -273,6 +273,25 @@ AssetSchema.methods = {
       .skip(skipLimit)
       .limit(limit)
   },
+  getAllAssetsByOwner: async function (owner) {
+    const AssetModel = mongoose.model('Asset')
+
+    let criteria = {
+      owner: { $in: owner }
+    }
+
+    return await AssetModel.aggregate([
+      {
+        $match: criteria
+      },
+      {
+        $lookup: assetPopulateQueries.auction
+      },
+      {
+        $project: assetPopulateQueries.assetProject
+      }
+    ])
+  },
   getAssetByIdForTransfer: async function (assetId) {
     const Asset = mongoose.model('Asset'),
       options = {
