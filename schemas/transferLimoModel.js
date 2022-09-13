@@ -11,7 +11,8 @@ const transferLimoSchema = new mongoose.Schema(
     vault: { type: String, required: true },
     point: { type: String, required: true },
     transferType: { type: String, required: true },
-    transferReference: { type: String, required: true }
+    transferReference: { type: String, required: true },
+    currency: { type: String, required: true }
   },
   { timestamps: true }
 )
@@ -22,7 +23,8 @@ transferLimoSchema.methods = {
     vault,
     point,
     transferType,
-    transferReference
+    transferReference,
+    currency
   ) {
     const TransferLimo = mongoose.model('TransferLimo'),
       transferLimoModel = new TransferLimo()
@@ -32,6 +34,7 @@ transferLimoSchema.methods = {
       transferLimoModel.point = point
       transferLimoModel.transferType = transferType
       transferLimoModel.transferReference = transferReference
+      transferLimoModel.currency = currency
       const result = await transferLimoModel.save()
       return result
     } catch (err) {
