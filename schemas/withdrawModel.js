@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
 
-const WithdrawalSchema = new mongoose.Schema(
+const WithdrawSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
@@ -31,4 +31,4 @@ const WithdrawalSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-module.exports = mongoose.model('WithdrawalSchema', WithdrawalSchema)
+module.exports = mongoose.model('WithdrawSchema', WithdrawSchema)

@@ -28,6 +28,7 @@ const DeleteLog = require('./schemas/deleteLogModel')
 const TransferLimo = require('./schemas/transferLimoModel')
 const PreSaleRefBonus = require('./schemas/presaleRefBonusModel')
 const WhiteList = require('./schemas/whiteListModel')
+const Withdraw = require('./schemas/withdrawModel')
 
 module.exports = {
   Admin,
@@ -47,5 +48,6 @@ module.exports = {
   DeleteLog,
   TransferLimo,
   PreSaleRefBonus,
-  WhiteList
+  WhiteList,
+  Withdraw
 }
