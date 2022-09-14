@@ -29,6 +29,11 @@ const WithdrawSchema = new mongoose.Schema(
     },
     txnHash: {
       type: String
+    },
+    status: {
+      type: String,
+      required: true,
+      default: 'Initiated'
     }
   },
   { timestamps: true }
@@ -41,7 +46,7 @@ WithdrawSchema.methods = {
       let { userId, amount, transactionId, txHash } = args
       const result = await Withdraw.findOneAndUpdate(
         { userId, txnId: transactionId },
-        { $set: { amount, txnHash: txHash } },
+        { $set: { amount, txnHash: txHash, status: 'Completed' } },
         { new: true }
       )
       return result
