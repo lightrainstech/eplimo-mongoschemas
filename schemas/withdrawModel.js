@@ -34,4 +34,28 @@ const WithdrawSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+WithdrawSchema.methods = {
+  updateStatus: async function (args) {
+    const Withdraw = mongoose.model('WithdrawSchema')
+    try {
+      let { userId, amount, transactionId, txHash } = args
+      const result = await Withdraw.findOneAndUpdate(
+        { userId, txnId: transactionId },
+        { $set: { amount, txnHash: txHash } },
+        { new: true }
+      )
+      return result
+    } catch (err) {
+      throw err
+    }
+  }
+}
+
+WithdrawSchema.index(
+  {
+    userId: 1
+  },
+  { txnId: 1 }
+)
+
 module.exports = mongoose.model('WithdrawSchema', WithdrawSchema)
