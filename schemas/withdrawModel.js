@@ -26,6 +26,9 @@ const WithdrawSchema = new mongoose.Schema(
     vault: {
       type: String,
       required: true
+    },
+    txnHash: {
+      type: String
     }
   },
   { timestamps: true }
