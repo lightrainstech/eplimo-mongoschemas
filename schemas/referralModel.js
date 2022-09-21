@@ -20,7 +20,8 @@ const ReferralSchema = new mongoose.Schema(
       enum: ['healthfi', 'wealthfi', 'createfi', 'datafi'],
       default: 'healthfi',
       required: true
-    }
+    },
+    transferReference: { type: String }
   },
   { timestamps: true }
 )
@@ -32,7 +33,8 @@ ReferralSchema.methods = {
     referringUserPoints,
     referredUser,
     referredUserPoints,
-    projectName
+    projectName,
+    transferReference
   ) {
     const Referral = mongoose.model('Referral'),
       referralModel = new Referral()
@@ -43,6 +45,7 @@ ReferralSchema.methods = {
       referralModel.referringUser = referringUser
       referralModel.referringUserPoints = referringUserPoints
       referralModel.projectName = projectName
+      referralModel.transferReference = transferReference
       const result = await referralModel.save()
       return result
     } catch (err) {
