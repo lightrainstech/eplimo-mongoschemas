@@ -335,6 +335,10 @@ ActivitySchema.methods = {
           }
         }
       ])
+    console.log(`---------------previousDay-------- ${previousDay}`)
+    console.log(
+      `-----------------query result------------- ${result}-------- ${result[0]}`
+    )
     if (result.length > 0) return result[0]
     else return { _id: null, totalPoint: 0, usersList: [] }
   },
