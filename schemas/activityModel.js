@@ -300,8 +300,7 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAllUsers: async function () {
     const Activity = mongoose.model('Activity'),
-      //previousDay = moment().subtract(1, 'day').toISOString(),
-      previousDay = moment().toISOString(),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
@@ -420,8 +419,7 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAUser: async function (userId) {
     const Activity = mongoose.model('Activity'),
-      //previousDay = moment().subtract(1, 'day').toISOString(),
-      previousDay = moment().toISOString(),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
