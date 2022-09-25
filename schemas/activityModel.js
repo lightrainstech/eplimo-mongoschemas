@@ -126,6 +126,13 @@ ActivitySchema.methods = {
     result['canProceed'] = false
     return result
   },
+  sumAllKms: async () => {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      { $match: {} },
+      { $group: { _id: null, sum: { $sum: '$distance' } } }
+    ])
+  },
   getActivityCountOfUser: async function (userId, nft) {
     const Activity = mongoose.model('Activity'),
       result = await Activity.aggregate([
@@ -300,8 +307,7 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAllUsers: async function () {
     const Activity = mongoose.model('Activity'),
-      //previousDay = moment().subtract(1, 'day').toISOString(),
-      previousDay = moment().toISOString(),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
@@ -420,8 +426,7 @@ ActivitySchema.methods = {
   },
   getTotalPointsGainedByAUser: async function (userId) {
     const Activity = mongoose.model('Activity'),
-      //previousDay = moment().subtract(1, 'day').toISOString(),
-      previousDay = moment().toISOString(),
+      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
