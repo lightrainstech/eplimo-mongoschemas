@@ -11,7 +11,7 @@ const PaymentSchema = new mongoose.Schema(
     },
     paymentType: {
       type: String,
-      enum: ['fireblocks', 'zoksh', 'limoPurchase'],
+      enum: ['fireblocks', 'zoksh', 'limoPurchase', 'adminTransfer'],
       required: true
     },
     transactionType: {
