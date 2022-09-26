@@ -126,7 +126,7 @@ ActivitySchema.methods = {
     result['canProceed'] = false
     return result
   },
-  sumAllKms: async () => {
+  sumAllKms: async function () {
     const Activity = mongoose.model('Activity')
     return await Activity.aggregate([
       { $match: {} },
