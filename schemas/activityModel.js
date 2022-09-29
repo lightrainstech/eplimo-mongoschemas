@@ -62,6 +62,8 @@ ActivitySchema.methods = {
       activityModel = new Activity()
     activityModel.user = user
     activityModel.nft = nft
+    activityModel.startTime = new Date()
+    activityModel.dateIndex = moment(new Date()).format('DDMMYYYY')
     const saveResult = await activityModel.save()
     const options = {
       criteria: { _id: ObjectId(saveResult._id) }
