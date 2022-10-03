@@ -74,6 +74,8 @@ PaymentSchema.methods = {
       if (paymentType === 'fireblocks') {
         if (transactionType == 'activity') {
           paymentModel.activityDate = transferReference
+        } else {
+          paymentModel.asset = transferReference
         }
         if (transactionType == 'referral') {
           paymentModel.referral = transferReference
