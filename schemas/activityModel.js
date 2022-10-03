@@ -62,6 +62,8 @@ ActivitySchema.methods = {
       activityModel = new Activity()
     activityModel.user = user
     activityModel.nft = nft
+    activityModel.startTime = new Date()
+    activityModel.dateIndex = moment(new Date()).format('DDMMYYYY')
     const saveResult = await activityModel.save()
     const options = {
       criteria: { _id: ObjectId(saveResult._id) }
@@ -305,19 +307,14 @@ ActivitySchema.methods = {
     if (result.length > 0) return result[0]
     else return { _id: null, totalKm: 0 }
   },
-  getTotalPointsGainedByAllUsers: async function () {
+  getTotalPointsGainedByAllUsers: async function (date) {
     const Activity = mongoose.model('Activity'),
       previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $match: {
             activityType: { $in: ['walk', 'run', 'jog'] },
-            startTime: {
-              $gte: new Date(moment(previousDay).startOf('day').toISOString())
-            },
-            endTime: {
-              $lte: new Date(moment(previousDay).endOf('day').toISOString())
-            }
+            dateIndex: date
           }
         },
         {
@@ -424,7 +421,7 @@ ActivitySchema.methods = {
         nonTrialUsersList: []
       }
   },
-  getTotalPointsGainedByAUser: async function (userId) {
+  getTotalPointsGainedByAUser: async function (userId, date) {
     const Activity = mongoose.model('Activity'),
       previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
@@ -432,12 +429,7 @@ ActivitySchema.methods = {
           $match: {
             user: ObjectId(userId),
             activityType: { $in: ['walk', 'run', 'jog'] },
-            startTime: {
-              $gte: new Date(moment(previousDay).startOf('day').toISOString())
-            },
-            endTime: {
-              $lte: new Date(moment(previousDay).endOf('day').toISOString())
-            }
+            dateIndex: date
           }
         },
         {
