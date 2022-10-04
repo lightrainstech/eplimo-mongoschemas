@@ -7,7 +7,7 @@ const StakeSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    limos: {
+    stake: {
       type: Number,
       default: 0.0
     }
@@ -15,14 +15,14 @@ const StakeSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-LimoStakeSchema.methods = {
-  updateStatus: async function (id, txnhash, releaseTime) {
+StakeSchema.methods = {
+  getStakeByWallets: async function (wallet) {
     const StakeModel = mongoose.model('Stake')
-    return await StakeModel.findOneAndUpdate(
-      { wallet: wallet },
-      { $inc: { sneakerLife: -totalDistance } },
-      { new: true }
-    )
+    return await StakeModel.findOne({ wallet: wallet }, { wallet: 1, stake: 1 })
+  },
+  getAllStake: async function () {
+    const StakeModel = mongoose.model('Stake')
+    return await StakeModel.find({}, { wallet: 1, stake: 1 })
   }
 }
 
