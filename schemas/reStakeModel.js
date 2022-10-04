@@ -34,4 +34,4 @@ ReStakeSchema.methods = {
   }
 }
 
-modusle.exports = mongoose.model('ReStake', ReStakeSchema)
+module.exports = mongoose.model('ReStake', ReStakeSchema)
