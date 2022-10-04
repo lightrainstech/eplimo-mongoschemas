@@ -29,6 +29,8 @@ const TransferLimo = require('./schemas/transferLimoModel')
 const PreSaleRefBonus = require('./schemas/presaleRefBonusModel')
 const WhiteList = require('./schemas/whiteListModel')
 const Withdraw = require('./schemas/withdrawModel')
+const Stake = require('./schemas/stakeModel')
+const ReStake = require('./schemas/reStakeModel')
 
 module.exports = {
   Admin,
@@ -49,5 +51,7 @@ module.exports = {
   TransferLimo,
   PreSaleRefBonus,
   WhiteList,
-  Withdraw
+  Withdraw,
+  Stake,
+  ReStake
 }
