@@ -116,7 +116,7 @@ PaymentSchema.methods = {
     return await Payment.list(options).populate('asset').lean().exec()
   },
   getPaymentData: async function (userId, nftId) {
-    const Payment = mongoose.model('payement')
+    const Payment = mongoose.model('Payment')
     return await Payment.findOne({ user: userId, asset: nftId })
   }
 }
