@@ -74,11 +74,10 @@ PaymentSchema.methods = {
       if (paymentType === 'fireblocks') {
         if (transactionType == 'activity') {
           paymentModel.activityDate = transferReference
+        } else if (transactionType == 'referral') {
+          paymentModel.referral = transferReference
         } else {
           paymentModel.asset = transferReference
-        }
-        if (transactionType == 'referral') {
-          paymentModel.referral = transferReference
         }
       }
       if (paymentType === 'limoPurchase') {
@@ -115,6 +114,10 @@ PaymentSchema.methods = {
         criteria: { transactionType: 'repairSneaker', user: userId }
       }
     return await Payment.list(options).populate('asset').lean().exec()
+  },
+  getPaymentData: async function (userId, nftId) {
+    const Payment = mongoose.model('payement')
+    return await Payment.findOne({ user: userId, asset: nftId })
   }
 }
 
