@@ -246,9 +246,8 @@ ActivitySchema.methods = {
       )
     return result
   },
-  getTotalKm: async function () {
+  getTotalKm: async function (dateIndex) {
     const Activity = mongoose.model('Activity'),
-      previousDay = moment().subtract(1, 'day').toISOString(),
       result = await Activity.aggregate([
         {
           $lookup: {
@@ -280,12 +279,7 @@ ActivitySchema.methods = {
             'nft.0': {
               $exists: true
             },
-            startTime: {
-              $gte: new Date(moment(previousDay).startOf('day').toISOString())
-            },
-            endTime: {
-              $lte: new Date(moment(previousDay).endOf('day').toISOString())
-            }
+            dateIndex
           }
         },
         {
