@@ -134,7 +134,7 @@ ActivitySchema.methods = {
       { $group: { _id: null, sum: { $sum: '$distance' } } }
     ])
   },
-  getActivityCountOfUser: async function (userId, nft) {
+  getActivityCountOfUser: async function (userId, nft, dateIndex) {
     const Activity = mongoose.model('Activity'),
       result = await Activity.aggregate([
         {
