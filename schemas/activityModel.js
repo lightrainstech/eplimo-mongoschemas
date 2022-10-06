@@ -34,7 +34,7 @@ const ActivitySchema = new mongoose.Schema({
     required: true,
     default: 0
   },
-  startTime: { type: Date, required: true, default: new Date() },
+  startTime: { type: Date, required: true },
   endTime: {
     type: Date
   },
@@ -51,8 +51,7 @@ const ActivitySchema = new mongoose.Schema({
     default: ''
   },
   dateIndex: {
-    type: String,
-    default: moment(new Date()).format('DDMMYYYY')
+    type: String
   }
 })
 
