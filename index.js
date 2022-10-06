@@ -15,7 +15,6 @@ const PreSale = require('./schemas/presaleModel.js')
 const Affiliate = require('./schemas/affiliateModel')
 const Reward = require('./schemas/rewardModel.js')
 const StakingReward = require('./schemas/stakingRewardModel.js')
-const LimoStake = require('./schemas/limoStakeModel.js')
 const User = require('./schemas/userModel.js')
 const RefreshToken = require('./schemas/refreshTokenModel.js')
 const LimoPoint = require('./schemas/limoPointModel.js')
@@ -37,8 +36,6 @@ module.exports = {
   Referral,
   Reward,
   StakingReward,
-  LimoReward,
-  LimoStake,
   User,
   RefreshToken,
   LimoPoint,
