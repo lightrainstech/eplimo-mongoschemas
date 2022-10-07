@@ -474,8 +474,15 @@ UserSchema.statics = {
   }
 }
 
-UserSchema.index({
-  referalCode: 1
-})
+UserSchema.index(
+  {
+    referalCode: 1
+  },
+  {
+    email: 1
+  },
+  { authToken: 1 },
+  { userName: 1 }
+)
 
 module.exports = mongoose.model('User', UserSchema)
