@@ -477,15 +477,18 @@ ActivitySchema.index(
   },
   {
     nft: 1
+  },
+  {
+    dateIndex: 1
   }
 )
 
-ActivitySchema.index(
-  {
-    dateIndex: 'text'
-  },
-  { autoIndex: true }
-)
+// ActivitySchema.index(
+//   {
+//     dateIndex: 'text'
+//   },
+//   { autoIndex: true }
+// )
 
 ActivitySchema.index({
   activityType: 'text',
