@@ -482,7 +482,8 @@ UserSchema.index(
     email: 1
   },
   { authToken: 1 },
-  { userName: 1 }
+  { userName: 1 },
+  { email: 1, isEmailVerified: 1 }
 )
 
 module.exports = mongoose.model('User', UserSchema)

@@ -135,6 +135,14 @@ PaymentSchema.statics = {
   }
 }
 
-PaymentSchema.index({ user: 1 })
+PaymentSchema.index(
+  { user: 1 },
+  { transactionId: 1 },
+  { transactionType: 1, user: 1 },
+  {
+    user: 1,
+    asset: 1
+  }
+)
 
 module.exports = mongoose.model('Payment', PaymentSchema)
