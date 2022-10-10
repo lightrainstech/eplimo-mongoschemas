@@ -25,10 +25,10 @@ StakeSchema.methods = {
     stake = Number(stake)
     const Stake = mongoose.model('Stake'),
       stakeModel = new Stake()
-    stake.wallet = wallet
-    stake.stake = stake
-    stake.txnHash = txnHash
-    return await stake.save()
+    stakeModel.wallet = wallet
+    stakeModel.stake = stake
+    stakeModel.txnHash = txnHash
+    return await stakeModel.save()
   },
   getStakeByWallets: async function (wallet) {
     const StakeModel = mongoose.model('Stake')
