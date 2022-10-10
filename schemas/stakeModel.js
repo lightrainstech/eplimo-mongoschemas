@@ -51,5 +51,8 @@ StakeSchema.methods = {
     ])
   }
 }
+StakeSchema.index({
+  wallet: 1
+})
 
 module.exports = mongoose.model('Stake', StakeSchema)
