@@ -49,10 +49,19 @@ StakeSchema.methods = {
       },
       { $group: { _id: '$wallet', sum: { $sum: '$stake' } } }
     ])
+  },
+  getByTransactionHash: async function (txnHash) {
+    const StakeModel = mongoose.model('Stake')
+    return await StakeModel.findOne({ txnHash })
   }
 }
-StakeSchema.index({
-  wallet: 1
-})
+StakeSchema.index(
+  {
+    wallet: 1
+  },
+  {
+    txnHash: 1
+  }
+)
 
 module.exports = mongoose.model('Stake', StakeSchema)
