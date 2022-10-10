@@ -436,6 +436,22 @@ ActivitySchema.methods = {
       ])
     if (result.length > 0) return result[0]
     else return { _id: null, totalPoint: 0 }
+  },
+  getActiveParticipants: async function (date) {
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          dateIndex: date
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          uniqueValues: { $addToSet: '$user' }
+        }
+      }
+    ])
   }
 }
 
