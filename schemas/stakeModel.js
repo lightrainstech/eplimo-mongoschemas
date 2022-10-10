@@ -23,8 +23,8 @@ const StakeSchema = new mongoose.Schema(
 StakeSchema.methods = {
   addStake: async function (wallet, stake, txnHash) {
     stake = Number(stake)
-    const StakeModel = mongoose.model('Stake'),
-      stake = new StakeModel()
+    const Stake = mongoose.model('Stake'),
+      stakeModel = new Stake()
     stake.wallet = wallet
     stake.stake = stake
     stake.txnHash = txnHash
