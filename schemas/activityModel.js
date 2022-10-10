@@ -438,6 +438,7 @@ ActivitySchema.methods = {
     else return { _id: null, totalPoint: 0 }
   },
   getActiveParticipants: async function (date) {
+    const Activity = mongoose.model('Activity')
     return await Activity.aggregate([
       {
         $match: {
