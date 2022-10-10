@@ -34,4 +34,8 @@ ReStakeSchema.methods = {
   }
 }
 
+ReStakeSchema.index({
+  wallet: 1
+})
+
 module.exports = mongoose.model('ReStake', ReStakeSchema)
