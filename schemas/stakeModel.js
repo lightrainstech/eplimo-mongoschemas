@@ -10,28 +10,45 @@ const StakeSchema = new mongoose.Schema(
     stake: {
       type: Number,
       default: 0.0
+    },
+    txnHash: {
+      type: String,
+      required: true,
+      unique: true
     }
   },
   { timestamps: true }
 )
 
 StakeSchema.methods = {
-  addStake: async function (wallet, stake) {
+  addStake: async function (wallet, stake, txnHash) {
     stake = Number(stake)
-    const StakeModel = mongoose.model('Stake')
-    return await StakeModel.findOneAndUpdate(
-      { wallet: wallet },
-      { $inc: { limos: stake } },
-      { upsert: true, new: true }
-    )
+    const StakeModel = mongoose.model('Stake'),
+      stake = new StakeModel()
+    stake.wallet = wallet
+    stake.stake = stake
+    stake.txnHash = txnHash
+    return await stake.save()
   },
   getStakeByWallets: async function (wallet) {
     const StakeModel = mongoose.model('Stake')
-    return await StakeModel.findOne({ wallet: wallet }, { wallet: 1, stake: 1 })
+    return await StakeModel.aggregate([
+      {
+        $match: {
+          wallet: wallet
+        }
+      },
+      { $group: { _id: null, sum: { $sum: '$stake' } } }
+    ])
   },
   getAllStake: async function () {
     const StakeModel = mongoose.model('Stake')
-    return await StakeModel.find({}, { wallet: 1, stake: 1 })
+    return await StakeModel.aggregate([
+      {
+        $match: {}
+      },
+      { $group: { _id: '$wallet', sum: { $sum: '$stake' } } }
+    ])
   }
 }
 
