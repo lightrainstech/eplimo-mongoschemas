@@ -47,7 +47,22 @@ StakeSchema.methods = {
       {
         $match: {}
       },
-      { $group: { _id: '$wallet', sum: { $sum: '$stake' } } }
+      {
+        $group: { _id: '$wallet', sum: { $sum: '$stake' } }
+      }
+    ])
+  },
+  getTotalStake: async function () {
+    const StakeModel = mongoose.model('Stake')
+    return await StakeModel.aggregate([
+      {
+        $group: {
+          _id: 'totalStake',
+          total: {
+            $sum: '$stake'
+          }
+        }
+      }
     ])
   },
   getByTransactionHash: async function (txnHash) {
