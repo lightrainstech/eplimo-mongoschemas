@@ -21,16 +21,30 @@ ReStakeSchema.methods = {
     return await ReStakeModel.findOneAndUpdate(
       { wallet: wallet },
       { $inc: { limos: stake } },
-      { new: true }
+      { new: true, upsert: true }
     )
   },
-  getStakeByWallet: async function (wallet, stake) {
-    const ReStakeModel = mongoose.model('ReStake')
-    return await ReStakeModel.find({}, { wallet: 1, stake: 1 })
+  getStakeByWallets: async function (wallet) {
+    const StakeModel = mongoose.model('ReStake')
+    return await StakeModel.aggregate([
+      {
+        $match: {
+          wallet: wallet
+        }
+      },
+      { $group: { _id: null, sum: { $sum: '$stake' } } }
+    ])
   },
   getAllStake: async function () {
-    const ReStakeModel = mongoose.model('ReStake')
-    return await ReStakeModel.find({}, { wallet: 1, stake: 1 })
+    const StakeModel = mongoose.model('ReStake')
+    return await StakeModel.aggregate([
+      {
+        $match: {}
+      },
+      {
+        $group: { _id: '$wallet', sum: { $sum: '$stake' } }
+      }
+    ])
   }
 }
 

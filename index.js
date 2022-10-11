@@ -29,6 +29,7 @@ const WhiteList = require('./schemas/whiteListModel')
 const Withdraw = require('./schemas/withdrawModel')
 const Stake = require('./schemas/stakeModel')
 const ReStake = require('./schemas/reStakeModel')
+const TwoxStake = require('./schemas/twoxStakeModel')
 
 module.exports = {
   Admin,
@@ -49,5 +50,6 @@ module.exports = {
   WhiteList,
   Withdraw,
   Stake,
-  ReStake
+  ReStake,
+  TwoxStake
 }
