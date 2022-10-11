@@ -281,7 +281,8 @@ UserSchema.methods = {
     let query = {
       $or: [{ email: creds }, { userName: creds }]
     }
-    return User.findOne(query).exec()
+    let result = await User.find(query).limit(1).exec()
+    return result.length > 0 ? result[0] : null
   },
   setAuthToken: async function (email, authToken) {
     const User = mongoose.model('User')
@@ -483,7 +484,8 @@ UserSchema.index(
   },
   { authToken: 1 },
   { userName: 1 },
-  { email: 1, isEmailVerified: 1 }
+  { email: 1, isEmailVerified: 1 },
+  { email: 1, userName: 1 }
 )
 
 module.exports = mongoose.model('User', UserSchema)
