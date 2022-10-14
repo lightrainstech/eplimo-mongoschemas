@@ -17,6 +17,12 @@ const ServiceSchema = new mongoose.Schema(
     isPromoted: {
       type: Boolean,
       default: false
+    },
+    image: {
+      type: String
+    },
+    data: {
+      type: String
     }
   },
   { timestamps: true }
