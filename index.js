@@ -30,6 +30,9 @@ const Withdraw = require('./schemas/withdrawModel')
 const Stake = require('./schemas/stakeModel')
 const ReStake = require('./schemas/reStakeModel')
 const TwoxStake = require('./schemas/twoxStakeModel')
+const Availability = require('./schemas/availabilityModel')
+const Booking = require('./schemas/bookingModel')
+const Service = require('./schemas/serviceModel')
 
 module.exports = {
   Admin,
@@ -51,5 +54,8 @@ module.exports = {
   Withdraw,
   Stake,
   ReStake,
-  TwoxStake
+  TwoxStake,
+  Availability,
+  Booking,
+  Service
 }
