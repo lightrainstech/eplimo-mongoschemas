@@ -3,44 +3,38 @@ const mongoose = require('mongoose')
 const AvailabilitySchema = new mongoose.Schema(
   {
     user: { type: Schema.ObjectId, ref: 'User', required: true },
-    // isAvailable: {
-    //   type: Boolean,
-    //   default: false
-    // }
-    availableDays: [
-      {
-        day: {
-          type: String,
-          enum: [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday'
-          ]
-        },
-        isAvailable: {
-          type: Boolean,
-          default: false
-        }
-      }
-    ]
-    // availableDays: {
-    //   type: String,
-    //   enum: [
-    //     'Sunday',
-    //     'Monday',
-    //     'Tuesday',
-    //     'Wednesday',
-    //     'Thursday',
-    //     'Friday',
-    //     'Saturday'
-    //   ],
-    //   required: true,
-    //   default: ['-NA-']
-    // }
+    isAvailable: {
+      type: Boolean,
+      default: false
+    },
+    sunday: {
+      type: Boolean,
+      default: false
+    },
+    monday: {
+      type: Boolean,
+      default: false
+    },
+    tuesday: {
+      type: Boolean,
+      default: false
+    },
+    wednesday: {
+      type: Boolean,
+      default: false
+    },
+    thursday: {
+      type: Boolean,
+      default: false
+    },
+    friday: {
+      type: Boolean,
+      default: false
+    },
+    saturday: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 )
