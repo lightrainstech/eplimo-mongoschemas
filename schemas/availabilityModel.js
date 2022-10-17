@@ -41,8 +41,8 @@ const AvailabilitySchema = new mongoose.Schema(
 
 AvailabilitySchema.methods = {
   getAvailability: async user => {
-    const Reservation = mongoose.model('Reservation')
-    return await Reservation.find({ user }).limit(1)
+    const Availability = mongoose.model('Availability')
+    return await Availability.find({ user }).limit(1)
   }
 }
 
