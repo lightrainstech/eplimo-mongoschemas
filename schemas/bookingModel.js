@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const slotSchema = new mongoose.Schema({
   day: {
