@@ -465,6 +465,15 @@ UserSchema.methods = {
         }
       ])
     return result
+  },
+  getAllpractitioners: async function (category, featured) {
+    let criteria = { isPractitioner: true }
+    const User = mongoose.model('User')
+    if (category !== 'all') {
+      criteria.category = category
+    }
+    let result = await User.find(criteria)
+    return result
   }
 }
 
