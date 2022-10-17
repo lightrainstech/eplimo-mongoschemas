@@ -465,6 +465,11 @@ UserSchema.methods = {
         }
       ])
     return result
+  },
+  getAllpractitioners: async function () {
+    const User = mongoose.model('User'),
+      result = await User.find({ isPractitioner: true })
+    return result
   }
 }
 
