@@ -474,7 +474,7 @@ UserSchema.methods = {
       }
     const User = mongoose.model('User')
     if (category !== 'all') {
-      criteria.category = category
+      criteria.practitionerCategory = category
     }
     let result = await User.listForPagination(options)
     return result
