@@ -466,13 +466,17 @@ UserSchema.methods = {
       ])
     return result
   },
-  getAllpractitioners: async function (category, featured) {
-    let criteria = { isPractitioner: true }
+  getAllpractitioners: async function (category, featured, page) {
+    let criteria = { isPractitioner: true },
+      options = {
+        criteria,
+        page: Number(page)
+      }
     const User = mongoose.model('User')
     if (category !== 'all') {
       criteria.category = category
     }
-    let result = await User.find(criteria)
+    let result = await User.listForPagination(options)
     return result
   }
 }
@@ -481,6 +485,22 @@ UserSchema.statics = {
   load: function (options, cb) {
     options.select = options.select || 'name userName email createdAt'
     return this.findOne(options.criteria).select(options.select).exec(cb)
+  },
+  listForPagination: function (options) {
+    const criteria = options.criteria || {}
+    const page = options.page === 0 ? 0 : options.page - 1
+    const limit = parseInt(options.limit) || 18
+    const sortRule = options.sortRule || {}
+    const select = options.select || ''
+    const populate = options.populate || ''
+    return this.find(criteria)
+      .select(select)
+      .sort(sortRule)
+      .limit(limit)
+      .skip(limit * page)
+      .populate(populate)
+      .lean()
+      .exec()
   }
 }
 
