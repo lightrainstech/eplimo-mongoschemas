@@ -7,7 +7,11 @@ const ServiceSchema = new mongoose.Schema(
     service: {
       type: String
     },
-    price: {
+    priceInLimo: {
+      type: String,
+      default: '0'
+    },
+    maxLimoR: {
       type: String,
       default: '0'
     },
@@ -20,9 +24,14 @@ const ServiceSchema = new mongoose.Schema(
       default: false
     },
     image: {
-      type: String
+      path: {
+        type: String
+      },
+      mimeType: {
+        type: String
+      }
     },
-    data: {
+    description: {
       type: String
     }
   },
