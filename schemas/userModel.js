@@ -207,6 +207,16 @@ const UserSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false
+    },
+    avatar: {
+      path: {
+        type: String,
+        default: ''
+      },
+      mimeType: {
+        type: String,
+        default: 'image/jpeg'
+      }
     }
   },
   { timestamps: true }
