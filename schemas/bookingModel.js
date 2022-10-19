@@ -1,25 +1,17 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const slotSchema = new mongoose.Schema({
-  day: {
-    type: String,
-    enum: [''],
-    default: 'NA'
-  },
-  date: {
-    type: String
-  },
-  time: {
-    type: String
-  }
-})
 const BookingSchema = new mongoose.Schema(
   {
     user: { type: Schema.ObjectId, ref: 'User', required: true },
     practitioner: { type: Schema.ObjectId, ref: 'User', required: true },
-    slotA: slotSchema,
-    slotB: slotSchema,
+    slotA: {
+      type: String,
+      required: true
+    },
+    slotB: {
+      type: String
+    },
     status: {
       type: String,
       enum: ['waiting', 'approved', 'declined'],
@@ -27,6 +19,11 @@ const BookingSchema = new mongoose.Schema(
     },
     data: {
       type: String
+    },
+    confirmedSlot: {
+      type: String,
+      enum: ['slotA', 'slotB','NA'],
+      default: 'NA'
     }
   },
   { timestamps: true }
