@@ -217,6 +217,14 @@ const UserSchema = new mongoose.Schema(
         type: String,
         default: 'image/jpeg'
       }
+    },
+    isInstitution: {
+      type: Boolean,
+      default: false
+    },
+    bio: {
+      type: String,
+      default: ''
     }
   },
   { timestamps: true }
