@@ -39,13 +39,39 @@ const ServiceSchema = new mongoose.Schema(
 )
 
 ServiceSchema.methods = {
-  getServices: async () => {
+  getServices: async page => {
     const Service = mongoose.model('Service')
-    return await Service.find({})
+    let options = {
+      page: page
+    }
+    return await Service.listForPagination(options)
   },
-  getServicesByuser: async () => {
+  getServicesByPractitioner: async (pId, page) => {
     const Service = mongoose.model('Service')
-    return await Service.find({ user })
+    let options = {
+      criteria: { user: pId },
+      page: page
+    }
+    return await Service.listForPagination(options)
+  }
+}
+
+ServiceSchema.statics = {
+  listForPagination: function (options) {
+    const criteria = options.criteria || {}
+    const page = options.page === 0 ? 0 : options.page - 1
+    const limit = parseInt(options.limit) || 18
+    const sortRule = options.sortRule || {}
+    const select = options.select || ''
+    const populate = options.populate || ''
+    return this.find(criteria)
+      .select(select)
+      .sort(sortRule)
+      .limit(limit)
+      .skip(limit * page)
+      .populate(populate)
+      .lean()
+      .exec()
   }
 }
 

@@ -17,13 +17,22 @@ const BookingSchema = new mongoose.Schema(
       enum: ['waiting', 'approved', 'declined'],
       default: 'waiting'
     },
-    data: {
+    noteU: {
+      type: String
+    },
+    noteP: {
       type: String
     },
     confirmedSlot: {
       type: String,
-      enum: ['slotA', 'slotB','NA'],
+      enum: ['slotA', 'slotB', 'NA'],
       default: 'NA'
+    },
+    phone: {
+      type: String
+    },
+    countryCode: {
+      type: String
     }
   },
   { timestamps: true }
