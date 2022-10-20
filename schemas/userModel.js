@@ -225,6 +225,18 @@ const UserSchema = new mongoose.Schema(
     bio: {
       type: String,
       default: ''
+    },
+    description: {
+      type: String,
+      default: ''
+    },
+    location: {
+      type: String,
+      default: ''
+    },
+    isMetaverse: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }
@@ -493,6 +505,9 @@ UserSchema.methods = {
     const User = mongoose.model('User')
     if (category !== 'all') {
       criteria.practitionerCategory = category
+    }
+    if (featured !== 'all') {
+      criteria.isMetaverse = featured
     }
     let result = await User.listForPagination(options)
     return result
