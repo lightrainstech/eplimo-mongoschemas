@@ -496,7 +496,7 @@ UserSchema.methods = {
       ])
     return result
   },
-  getAllpractitioners: async function (category, featured, page) {
+  getAllpractitioners: async function (category, featured, page, searchTerm) {
     let criteria = { isPractitioner: true },
       options = {
         criteria,
