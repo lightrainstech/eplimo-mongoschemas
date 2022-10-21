@@ -513,7 +513,12 @@ UserSchema.methods = {
           index: 'pvSearch',
           wildcard: {
             query: searchTerm,
-            path: ['name', 'bio', 'location', 'userName'],
+            path: [
+              { value: 'name', multi: 'multiname' },
+              'bio',
+              'location',
+              'userName'
+            ],
             allowAnalyzedField: true
           }
         }
@@ -537,16 +542,6 @@ UserSchema.methods = {
       criteria.isMetaverse = featured
     }
     return await User.aggregate([
-      {
-        $search: {
-          index: 'pvSearch',
-          wildcard: {
-            query: searchTerm,
-            path: ['name', 'bio', 'location', 'userName'],
-            allowAnalyzedField: true
-          }
-        }
-      },
       {
         $match: criteria
       }
