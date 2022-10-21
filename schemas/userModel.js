@@ -514,6 +514,10 @@ UserSchema.methods = {
           text: {
             query: searchTerm,
             path: ['name', 'bio', 'location', 'userName']
+          },
+          wildcard: {
+            path: 'name',
+            query: searchTerm
           }
         }
       },
