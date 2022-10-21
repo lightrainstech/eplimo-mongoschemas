@@ -498,10 +498,8 @@ UserSchema.methods = {
   },
   getAllpractitioners: async function (category, featured, page, searchTerm) {
     let criteria = { isPractitioner: true },
-      options = {
-        criteria,
-        page: Number(page)
-      }
+      limit = 18
+    page = Number(page)
     const User = mongoose.model('User')
     if (category !== 'all') {
       criteria.practitionerCategory = category
@@ -509,8 +507,22 @@ UserSchema.methods = {
     if (featured !== 'all') {
       criteria.isMetaverse = featured
     }
-    let result = await User.listForPagination(options)
-    return result
+    return await AssetModel.aggregate([
+      {
+        $search: {
+          index: 'pvSearch',
+          text: {
+            query: searchTerm,
+            path: ['name', 'bio', 'location', 'userName']
+          }
+        }
+      },
+      {
+        $match: criteria
+      }
+    ])
+      .skip((page - 1) * limit)
+      .limit(limit)
   }
 }
 
@@ -548,7 +560,10 @@ UserSchema.index(
   { userName: 1 },
   { email: 1, isEmailVerified: 1 },
   { email: 1, userName: 1 },
-  { category: 1, practitionerCategory: 1, isMetaverse: 1 }
+  { category: 1, practitionerCategory: 1, isMetaverse: 1 },
+  { name: 1 },
+  { bio: 1 },
+  { location: 1 }
 )
 
 module.exports = mongoose.model('User', UserSchema)
