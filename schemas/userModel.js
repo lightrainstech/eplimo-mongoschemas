@@ -507,7 +507,7 @@ UserSchema.methods = {
     if (featured !== 'all') {
       criteria.isMetaverse = featured
     }
-    return await AssetModel.aggregate([
+    return await User.aggregate([
       {
         $search: {
           index: 'pvSearch',
