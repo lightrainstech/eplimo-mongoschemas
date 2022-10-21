@@ -524,6 +524,35 @@ UserSchema.methods = {
     ])
       .skip((page - 1) * limit)
       .limit(limit)
+  },
+  getAllInstitutions: async function (category, featured, page, searchTerm) {
+    let criteria = { isInstitution: true },
+      limit = 18
+    page = Number(page)
+    const User = mongoose.model('User')
+    if (category !== 'all') {
+      criteria.practitionerCategory = category
+    }
+    if (featured !== 'all') {
+      criteria.isMetaverse = featured
+    }
+    return await User.aggregate([
+      {
+        $search: {
+          index: 'pvSearch',
+          wildcard: {
+            path: ['name', 'bio', 'location', 'userName'],
+            query: searchTerm,
+            allowAnalyzedField: true
+          }
+        }
+      },
+      {
+        $match: criteria
+      }
+    ])
+      .skip((page - 1) * limit)
+      .limit(limit)
   }
 }
 
