@@ -511,13 +511,10 @@ UserSchema.methods = {
       {
         $search: {
           index: 'pvSearch',
-          text: {
-            query: searchTerm,
-            path: ['name', 'bio', 'location', 'userName']
-          },
           wildcard: {
-            path: 'name',
-            query: searchTerm
+            path: ['name', 'bio', 'location', 'userName'],
+            query: searchTerm,
+            allowAnalyzedField: true
           }
         }
       },
