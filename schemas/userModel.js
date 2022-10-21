@@ -562,9 +562,10 @@ UserSchema.index(
   { email: 1, isEmailVerified: 1 },
   { email: 1, userName: 1 },
   { category: 1, practitionerCategory: 1, isMetaverse: 1 },
-  { name: 1 },
-  { bio: 1 },
-  { location: 1 }
+  { name: 'text' },
+  { bio: 'text' },
+  { location: 'text' },
+  { userName: 'text' }
 )
 
 module.exports = mongoose.model('User', UserSchema)

@@ -56,7 +56,14 @@ ServiceSchema.methods = {
   },
   getServiceDetail: async sId => {
     const Service = mongoose.model('Service')
-    return await Service.find({ _id: sId }).limit(1).populate(user).exec()
+    return await Service.find({ _id: sId })
+      .limit(1)
+      .populate({
+        path: 'user',
+        select:
+          'name userName avatar practitionerCategory email referalCode isKycVerified isMetaverse location isPractitioner isInstitution bio description countryCode phone'
+      })
+      .exec()
   }
 }
 
