@@ -513,12 +513,7 @@ UserSchema.methods = {
           index: 'pvSearch',
           wildcard: {
             query: searchTerm,
-            path: [
-              { value: 'name', multi: 'multiname' },
-              'bio',
-              'location',
-              'userName'
-            ],
+            path: 'name',
             allowAnalyzedField: true
           }
         }
