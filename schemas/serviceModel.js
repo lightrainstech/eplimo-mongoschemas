@@ -53,6 +53,10 @@ ServiceSchema.methods = {
       page: page
     }
     return await Service.listForPagination(options)
+  },
+  getServiceDetail: async sId => {
+    const Service = mongoose.model('Service')
+    return await Service.find({ _id: sId }).limit(1).populate(user).exec()
   }
 }
 
