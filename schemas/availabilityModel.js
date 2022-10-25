@@ -44,6 +44,14 @@ AvailabilitySchema.methods = {
   getAvailability: async user => {
     const Availability = mongoose.model('Availability')
     return await Availability.find({ user }).limit(1)
+  },
+  updateAvailability: async (user, days) => {
+    const Availability = mongoose.model('Availability')
+    return await Availability.findOneAndUpdate(
+      { user },
+      { $set: days, isAvailable: days.available },
+      { new: true }
+    )
   }
 }
 
