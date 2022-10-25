@@ -172,8 +172,8 @@ const UserSchema = new mongoose.Schema(
     practitionerCategory: {
       type: String,
       enum: [
-        'Allopathy',
         'All',
+        'Allopathy',
         'Ayurveda',
         'Homeo',
         'Diet',
@@ -502,7 +502,7 @@ UserSchema.methods = {
       limit = 18
     page = Number(page)
     const User = mongoose.model('User')
-    if (category !== 'all') {
+    if (category !== 'All') {
       criteria.practitionerCategory = category
     }
     if (featured !== 'all') {
