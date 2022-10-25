@@ -50,7 +50,7 @@ AvailabilitySchema.methods = {
     return await Availability.findOneAndUpdate(
       { user },
       { $set: days, isAvailable: days.available },
-      { new: true }
+      { new: true, upsert: true }
     )
   }
 }
