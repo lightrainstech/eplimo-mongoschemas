@@ -46,6 +46,23 @@ BookingSchema.methods = {
   getHistoryByStatus: async (user, status) => {
     const Booking = mongoose.model('Booking')
     return await Booking.find({ user, status: status })
+  },
+  getReservations: async (practitioner, status) => {
+    const Booking = mongoose.model('Booking')
+    return await Booking.find({ practitioner, status: status })
+  },
+  updateReservationStatus: async (bookingId, status) => {
+    const Booking = mongoose.model('Booking')
+    let stat = 'waiting'
+    if (status) {
+      stat = 'approved'
+    } else {
+      stat = 'declined'
+    }
+    return await Booking.findOneAndUpdate(
+      { _id: bookingId, status: stat },
+      { new: true }
+    )
   }
 }
 
