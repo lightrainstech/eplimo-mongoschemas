@@ -502,7 +502,7 @@ UserSchema.methods = {
       limit = 18
     page = Number(page)
     const User = mongoose.model('User')
-    if (category !== 'All') {
+    if (category !== 'All' || category !== 'all') {
       criteria.practitionerCategory = category
     }
     if (featured !== 'all') {
@@ -531,7 +531,7 @@ UserSchema.methods = {
       limit = 18
     page = Number(page)
     const User = mongoose.model('User')
-    if (category !== 'all') {
+    if (category !== 'All' || category !== 'all') {
       criteria.practitionerCategory = category
     }
     if (featured !== 'all') {
