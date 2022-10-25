@@ -47,11 +47,19 @@ BookingSchema.methods = {
     const Booking = mongoose.model('Booking')
     return await Booking.find({ user, status: status })
   },
-  getReservations: async (practitioner, status) => {
+  getReservations: async (practitioner, status, page) => {
     const Booking = mongoose.model('Booking')
-    return await Booking.find({ practitioner, status: status })
+    let options = {
+      criteria: {
+        practitioner: practitioner,
+        status: status
+      },
+      page: Number(page)
+    }
+    return await Booking.listForPagination(options)
   },
-  updateReservationStatus: async (bookingId, status) => {
+  updateReservationStatus: async data => {
+    let { userId, bookingId, status, note } = data
     const Booking = mongoose.model('Booking')
     let stat = 'waiting'
     if (status) {
@@ -60,12 +68,42 @@ BookingSchema.methods = {
       stat = 'declined'
     }
     return await Booking.findOneAndUpdate(
-      { _id: bookingId, status: stat },
+      { _id: bookingId, practitioner: userId },
+      { $set: { status: stat, noteP: note } },
       { new: true }
     )
+  },
+  getBookingList: async (user, status, page) => {
+    const Booking = mongoose.model('Booking')
+    let options = {
+      criteria: {
+        user: user,
+        status: status
+      },
+      page: Number(page)
+    }
+    return await Booking.listForPagination(options)
   }
 }
 
+BookingSchema.statics = {
+  listForPagination: function (options) {
+    const criteria = options.criteria || {}
+    const page = options.page === 0 ? 0 : options.page - 1
+    const limit = parseInt(options.limit) || 18
+    const sortRule = options.sortRule || {}
+    const select = options.select || ''
+    const populate = options.populate || ''
+    return this.find(criteria)
+      .select(select)
+      .sort(sortRule)
+      .limit(limit)
+      .skip(limit * page)
+      .populate(populate)
+      .lean()
+      .exec()
+  }
+}
 BookingSchema.index({ user: 1 }, { user: 1, status: 1 })
 
 module.exports = mongoose.model('Booking', BookingSchema)
