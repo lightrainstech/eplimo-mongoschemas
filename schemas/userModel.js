@@ -172,7 +172,7 @@ const UserSchema = new mongoose.Schema(
     practitionerCategory: {
       type: String,
       enum: [
-        'Medicine',
+        'Allopathy',
         'Ayurveda',
         'Homeo',
         'Naturopathy',
@@ -188,6 +188,7 @@ const UserSchema = new mongoose.Schema(
         'Wellness Center',
         'Hospital',
         'Zumba Center',
+        'All',
         'NA'
       ],
       default: 'NA'
