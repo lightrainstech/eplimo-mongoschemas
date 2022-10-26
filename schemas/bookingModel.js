@@ -83,6 +83,13 @@ BookingSchema.methods = {
       page: Number(page)
     }
     return await Booking.listForPagination(options)
+  },
+  getBookingDetails: async (uId, bookingId) => {
+    const Booking = mongoose.model('Booking')
+    return await Booking.find({
+      _id: bookingId,
+      $or: [{ user: uId }, { practitioner: uId }]
+    })
   }
 }
 
