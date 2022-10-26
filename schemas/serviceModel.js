@@ -91,6 +91,6 @@ ServiceSchema.statics = {
   }
 }
 
-ServiceSchema.index({ user: 1 })
+ServiceSchema.index({ user: 1 }, { isPromoted: 1 })
 
 module.exports = mongoose.model('Service', ServiceSchema)
