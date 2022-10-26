@@ -42,15 +42,20 @@ ServiceSchema.methods = {
   getServices: async page => {
     const Service = mongoose.model('Service')
     let options = {
-      page: page
+      page: page,
+      sortRule: { updatedAt: -1 }
     }
     return await Service.listForPagination(options)
   },
   getServicesByPractitioner: async (pId, page) => {
     const Service = mongoose.model('Service')
     let options = {
-      criteria: { user: pId },
-      page: page
+      criteria: {
+        user: pId,
+        $or: [{ isPromoted: true }, { isPromoted: false }]
+      },
+      page: page,
+      sortRule: { isPromoted: -1, updatedAt: -1 }
     }
     return await Service.listForPagination(options)
   },
