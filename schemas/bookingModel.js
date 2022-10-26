@@ -111,6 +111,10 @@ BookingSchema.statics = {
       .exec()
   }
 }
-BookingSchema.index({ user: 1 }, { user: 1, status: 1 })
+BookingSchema.index(
+  { user: 1 },
+  { user: 1, status: 1 },
+  { user: 1, practitioner: 1 }
+)
 
 module.exports = mongoose.model('Booking', BookingSchema)
