@@ -33,6 +33,7 @@ const TwoxStake = require('./schemas/twoxStakeModel')
 const Availability = require('./schemas/availabilityModel')
 const Booking = require('./schemas/bookingModel')
 const Service = require('./schemas/serviceModel')
+const AppLogin = require('./schemas/appLoginModel')
 
 module.exports = {
   Admin,
@@ -57,5 +58,6 @@ module.exports = {
   TwoxStake,
   Availability,
   Booking,
-  Service
+  Service,
+  AppLogin
 }
