@@ -14,6 +14,10 @@ const appLoginSchema = new mongoose.Schema(
     isProcessed: {
       type: Boolean,
       default: false
+    },
+    bonus: {
+      type: Number,
+      default: 0
     }
   },
   { timestamps: true }
