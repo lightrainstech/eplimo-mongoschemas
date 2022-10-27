@@ -498,7 +498,7 @@ UserSchema.methods = {
     return result
   },
   getAllpractitioners: async function (category, featured, page, searchTerm) {
-    let criteria = { isPractitioner: true },
+    let criteria = { isPractitioner: true, isDeleted: false },
       limit = 18
     page = Number(page)
     const User = mongoose.model('User')
