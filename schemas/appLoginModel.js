@@ -38,7 +38,7 @@ appLoginSchema.methods = {
       },
       { $set: { isProcessed: true } },
       { new: true }
-    ).limit(1)
+    )
   }
 }
 appLoginSchema.index({
