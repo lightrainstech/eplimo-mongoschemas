@@ -323,7 +323,7 @@ UserSchema.methods = {
     const User = mongoose.model('User'),
       options = {
         criteria: { email: email },
-        select: 'email'
+        select: 'email, custodyWallet'
       }
     return await User.load(options)
   },
