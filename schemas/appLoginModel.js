@@ -14,6 +14,10 @@ const appLoginSchema = new mongoose.Schema(
     isProcessed: {
       type: Boolean,
       default: false
+    },
+    bonus: {
+      type: Number,
+      default: 0
     }
   },
   { timestamps: true }
@@ -34,7 +38,7 @@ appLoginSchema.methods = {
       },
       { $set: { isProcessed: true } },
       { new: true }
-    ).limit(1)
+    )
   }
 }
 appLoginSchema.index({

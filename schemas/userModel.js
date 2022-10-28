@@ -517,7 +517,8 @@ UserSchema.methods = {
       },
       {
         $match: criteria
-      }
+      },
+      { $sort: { updatedAt: -1 } }
     ])
       .skip((page - 1) * limit)
       .limit(limit)
