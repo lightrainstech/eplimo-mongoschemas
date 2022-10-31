@@ -54,7 +54,11 @@ BookingSchema.methods = {
         practitioner: practitioner,
         status: status
       },
-      page: Number(page)
+      page: Number(page),
+      populate: {
+        path: 'user',
+        select: 'userName name email'
+      }
     }
     return await Booking.listForPagination(options)
   },

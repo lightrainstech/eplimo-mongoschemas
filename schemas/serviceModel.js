@@ -66,7 +66,7 @@ ServiceSchema.methods = {
       .populate({
         path: 'user',
         select:
-          'name userName avatar practitionerCategory email referalCode isKycVerified isMetaverse location isPractitioner isInstitution bio description countryCode phone'
+          'user service priceInLimo maxLimoR onSale isPromoted image description'
       })
       .exec()
   }
