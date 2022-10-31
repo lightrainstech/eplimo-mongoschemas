@@ -6,7 +6,7 @@ const ServicePurchaseSchema = new mongoose.Schema(
     user: { type: Schema.ObjectId, ref: 'User', required: true },
     service: {
       type: Schema.ObjectId,
-      ref: 'User',
+      ref: 'Service',
       required: true
     },
     limo: {
