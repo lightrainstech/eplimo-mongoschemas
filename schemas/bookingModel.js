@@ -63,7 +63,7 @@ BookingSchema.methods = {
     return await Booking.listForPagination(options)
   },
   updateReservationStatus: async data => {
-    let { userId, bookingId, status, note } = data
+    let { userId, bookingId, status, note, slot } = data
     const Booking = mongoose.model('Booking')
     let stat = 'waiting'
     if (status) {
@@ -73,7 +73,7 @@ BookingSchema.methods = {
     }
     return await Booking.findOneAndUpdate(
       { _id: bookingId, practitioner: userId },
-      { $set: { status: stat, noteP: note } },
+      { $set: { status: stat, noteP: note, confirmedSlot: slot } },
       { new: true }
     )
   },
