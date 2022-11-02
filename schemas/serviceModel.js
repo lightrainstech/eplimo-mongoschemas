@@ -69,6 +69,35 @@ ServiceSchema.methods = {
           'user service priceInLimo maxLimoR onSale isPromoted image description'
       })
       .exec()
+  },
+  updateService: async data => {
+    const Service = mongoose.model('Service'),
+      {
+        userId,
+        packageId,
+        service,
+        price,
+        sale,
+        promotion,
+        image,
+        description,
+        maxLimoR
+      } = data
+    return await Service.findOneAndUpdate(
+      { _id: packageId, user: userId },
+      {
+        $set: {
+          service,
+          priceInLimo: price,
+          maxLimoR,
+          onSale: sale,
+          isPromoted: promotion,
+          image,
+          description
+        }
+      },
+      { new: true }
+    )
   }
 }
 
