@@ -67,7 +67,7 @@ BookingSchema.methods = {
     const Booking = mongoose.model('Booking')
     let stat = 'waiting'
     if (status) {
-      stat = 'approved'
+      stat = status
     } else {
       stat = 'declined'
     }
