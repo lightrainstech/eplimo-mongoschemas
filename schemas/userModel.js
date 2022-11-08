@@ -495,6 +495,7 @@ UserSchema.methods = {
   },
   getAllpractitioners: async function (category, featured, page, searchTerm) {
     let criteria = {
+        _id: ObjectId('634e7102f9d9c731c9549274'),
         isPractitioner: true,
         isDeleted: false,
         isActive: true,
