@@ -79,12 +79,16 @@ BookingSchema.methods = {
   },
   getBookingList: async (user, status, page) => {
     const Booking = mongoose.model('Booking')
+    let criteria: {
+      user: user
+    }
+    if (status !== 'all') {
+      criteria.status = status
+    }
     let options = {
-      criteria: {
-        user: user,
-        status: status
-      },
-      page: Number(page)
+      criteria: criteria,
+      page: Number(page),
+      sortRule: { updatedAt: -1 }
     }
     return await Booking.listForPagination(options)
   },
