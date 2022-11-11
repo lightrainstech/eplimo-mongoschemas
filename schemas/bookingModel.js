@@ -79,7 +79,7 @@ BookingSchema.methods = {
   },
   getBookingList: async (user, status, page) => {
     const Booking = mongoose.model('Booking')
-    let criteria: {
+    let criteria = {
       user: user
     }
     if (status !== 'all') {
