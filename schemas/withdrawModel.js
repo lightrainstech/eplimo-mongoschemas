@@ -34,6 +34,12 @@ const WithdrawSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: 'Initiated'
+    },
+    currency: {
+      type: String,
+      required: true,
+      enum: ['LIMO', 'BNB'],
+      default: 'LIMO'
     }
   },
   { timestamps: true }
