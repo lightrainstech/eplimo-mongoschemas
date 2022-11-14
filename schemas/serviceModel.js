@@ -107,7 +107,9 @@ ServiceSchema.statics = {
     const page = options.page === 0 ? 0 : options.page - 1
     const limit = parseInt(options.limit) || 18
     const sortRule = options.sortRule || {}
-    const select = options.select || ''
+    const select =
+      options.select ||
+      'service priceInLimo maxLimoR onSale isPromoted image description'
     const populate = options.populate || ''
     return this.find(criteria)
       .select(select)
