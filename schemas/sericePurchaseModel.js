@@ -16,6 +16,10 @@ const ServicePurchaseSchema = new mongoose.Schema(
     limoR: {
       type: String,
       default: '0'
+    },
+    txnId: {
+      type: String,
+      default: ''
     }
   },
   { timestamps: true }

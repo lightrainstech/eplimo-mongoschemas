@@ -495,7 +495,6 @@ UserSchema.methods = {
   },
   getAllpractitioners: async function (category, featured, page, searchTerm) {
     let criteria = {
-        _id: ObjectId('634e7102f9d9c731c9549274'),
         isPractitioner: true,
         isDeleted: false,
         isActive: true,
@@ -547,6 +546,28 @@ UserSchema.methods = {
     ])
       .skip((page - 1) * limit)
       .limit(limit)
+  },
+  listAllpractitioners: async function () {
+    const User = mongoose.model('User')
+    let criteria = {
+      isDeleted: false,
+      isActive: true,
+      isPractitioner: true
+    }
+
+    return await User.find(criteria).sort({ updatedAt: -1, isKycVerified: 1 })
+  },
+  updateKYCStatus: async function (userId, status) {
+    const User = mongoose.model('User')
+    try {
+      return await User.findOneAndUpdate(
+        { _id: userId },
+        { $set: { isKycVerified: status } },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -588,7 +609,8 @@ UserSchema.index(
   { name: 'text' },
   { bio: 'text' },
   { location: 'text' },
-  { userName: 'text' }
+  { userName: 'text' },
+  { isDeleted: 1, isActive: 1, isPractitioner: 1 }
 )
 
 module.exports = mongoose.model('User', UserSchema)
