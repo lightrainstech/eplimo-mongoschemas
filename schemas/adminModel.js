@@ -89,4 +89,8 @@ AdminSchema.statics = {
   }
 }
 
+AdminSchema.index({
+  email: 1
+})
+
 module.exports = mongoose.model('Admin', AdminSchema)

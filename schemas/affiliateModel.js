@@ -43,4 +43,11 @@ AffiliateSchema.methods = {
   }
 }
 
+AffiliateSchema.index(
+  {
+    email: 1
+  },
+  { wallet: 1 }
+)
+
 module.exports = mongoose.model('Affiliate', AffiliateSchema)
