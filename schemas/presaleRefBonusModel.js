@@ -33,5 +33,5 @@ presaleRefBonusSchema.methods = {
     return await PresaleRefBonus.find({ email }).lean()
   }
 }
-
+presaleRefBonusSchema.index({ email: 1 })
 module.exports = mongoose.model('presaleRefBonus', presaleRefBonusSchema)

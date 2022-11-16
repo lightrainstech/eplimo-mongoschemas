@@ -66,7 +66,9 @@ const PreSaleSchema = new mongoose.Schema(
 PreSaleSchema.methods = {
   getPresaleRequests: async function () {
     const Presale = mongoose.model('PreSale')
-    return await Presale.find({}).sort({ createdAt: 1 })
+    return await Presale.find({ investmentType: 'staking' }).sort({
+      createdAt: 1
+    })
   },
   getByEmail: async function (email) {
     const Presale = mongoose.model('PreSale')
@@ -95,4 +97,5 @@ PreSaleSchema.statics = {
   }
 }
 
+PreSaleSchema.index({ investmentType: 1 }, { email: 1 })
 module.exports = mongoose.model('PreSale', PreSaleSchema)

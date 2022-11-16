@@ -57,4 +57,5 @@ RewardSchema.methods = {
   }
 }
 
+RewardSchema.index({ email: 1 })
 module.exports = mongoose.model('Reward', RewardSchema)

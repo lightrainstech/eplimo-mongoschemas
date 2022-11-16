@@ -45,5 +45,6 @@ RefreshTokenSchema.methods = {
     return result
   }
 }
+RefreshTokenSchema.index({ user: 1 }, { token: 1 })
 
 module.exports = mongoose.model('RefreshToken', RefreshTokenSchema)
