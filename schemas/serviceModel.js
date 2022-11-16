@@ -66,7 +66,7 @@ ServiceSchema.methods = {
       .populate({
         path: 'user',
         select:
-          'user service priceInLimo maxLimoR onSale isPromoted image description'
+          'user service priceInLimo maxLimoR onSale isPromoted image description custodyWallet'
       })
       .exec()
   },
