@@ -498,8 +498,7 @@ UserSchema.methods = {
         isPractitioner: true,
         isDeleted: false,
         isActive: true,
-        isKycVerified: true,
-        'avatar.path': { $ne: '' }
+        isKycVerified: true
       },
       limit = 18
     page = Number(page)
