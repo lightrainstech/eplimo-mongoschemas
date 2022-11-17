@@ -498,6 +498,7 @@ UserSchema.methods = {
         isPractitioner: true,
         isDeleted: false,
         isActive: true,
+        isKycVerified: true,
         'avatar.path': { $ne: '' }
       },
       limit = 18
@@ -610,7 +611,14 @@ UserSchema.index(
   { bio: 'text' },
   { location: 'text' },
   { userName: 'text' },
-  { isDeleted: 1, isActive: 1, isPractitioner: 1 }
+  { isDeleted: 1, isActive: 1, isPractitioner: 1 },
+  {
+    isPractitioner: 1,
+    isDeleted: 1,
+    isActive: 1,
+    isKycVerified: 1,
+    'avatar.path': 1
+  }
 )
 
 module.exports = mongoose.model('User', UserSchema)
