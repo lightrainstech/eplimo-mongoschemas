@@ -161,7 +161,10 @@ ActivitySchema.methods = {
       {
         $match: {
           user: ObjectId(userId),
-          activityType: { $in: ['walk', 'run', 'jog'] }
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          endTime: {
+            $exists: true
+          }
         }
       },
       {
