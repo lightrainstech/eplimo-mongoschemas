@@ -6,54 +6,63 @@ const moment = require('moment')
 const ObjectId = mongoose.Types.ObjectId
 const Schema = mongoose.Schema
 
-const ActivitySchema = new mongoose.Schema({
-  activityType: {
-    type: String,
-    enum: ['walk', 'run', 'jog', 'started', 'abandoned'],
-    default: 'started',
-    required: true
+const ActivitySchema = new mongoose.Schema(
+  {
+    activityType: {
+      type: String,
+      enum: ['walk', 'run', 'jog', 'started', 'abandoned'],
+      default: 'started',
+      required: true
+    },
+    user: { type: Schema.ObjectId, ref: 'User', required: true },
+    nft: { type: Schema.ObjectId, ref: 'Asset', required: true },
+    distance: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    speed: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    stakedLimo: {
+      type: Number,
+      default: 0
+    },
+    duration: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    startTime: { type: Date, required: true, get: formatDate },
+    endTime: {
+      type: Date,
+      get: formatDate
+    },
+    point: {
+      type: Number,
+      default: 0
+    },
+    metaData: {
+      type: Object,
+      default: {}
+    },
+    transactionId: {
+      type: String,
+      default: ''
+    },
+    dateIndex: {
+      type: String
+    }
   },
-  user: { type: Schema.ObjectId, ref: 'User', required: true },
-  nft: { type: Schema.ObjectId, ref: 'Asset', required: true },
-  distance: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  speed: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  stakedLimo: {
-    type: Number,
-    default: 0
-  },
-  duration: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  startTime: { type: Date, required: true },
-  endTime: {
-    type: Date
-  },
-  point: {
-    type: Number,
-    default: 0
-  },
-  metaData: {
-    type: Object,
-    default: {}
-  },
-  transactionId: {
-    type: String,
-    default: ''
-  },
-  dateIndex: {
-    type: String
-  }
-})
+  { toJSON: { getters: true } },
+  { toObject: { getters: true } }
+)
+
+function formatDate(startTime) {
+  return moment(startTime).format('MMM Do YY, h:mm:ss a')
+}
 
 ActivitySchema.methods = {
   addActivity: async function (user, nft) {
