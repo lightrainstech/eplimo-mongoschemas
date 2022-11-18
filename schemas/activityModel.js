@@ -61,7 +61,7 @@ const ActivitySchema = new mongoose.Schema(
 )
 
 function formatDate(startTime) {
-  return moment(startTime).format('D MMM YY,h:mm a')
+  return moment(startTime).format('D MMM YY, h:mm a')
 }
 
 ActivitySchema.methods = {
