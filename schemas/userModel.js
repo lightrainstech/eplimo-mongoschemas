@@ -550,13 +550,15 @@ UserSchema.methods = {
   listAllpractitioners: async function (isKyc, searchTerm, page) {
     const User = mongoose.model('User'),
       limit = 18
+    page = Number(page)
+    page = page === 0 ? 0 : page - 1
     let criteria = {
       isDeleted: false,
       isActive: true,
       isPractitioner: true
     }
     if (isKyc !== '*') {
-      criteria.isKycVerified = isKyc
+      criteria.isKycVerified = true
     }
 
     let options = {
@@ -599,7 +601,7 @@ UserSchema.methods = {
 
       {
         $facet: {
-          users: [{ $skip: +(Number(page) - 1) }, { $limit: +limit }],
+          users: [{ $skip: page * limit }, { $limit: limit }],
           totalCount: [
             {
               $count: 'count'
