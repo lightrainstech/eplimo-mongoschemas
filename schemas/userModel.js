@@ -548,7 +548,8 @@ UserSchema.methods = {
       .limit(limit)
   },
   listAllpractitioners: async function (isKyc, searchTerm, page) {
-    const User = mongoose.model('User')
+    const User = mongoose.model('User'),
+      limit = 18
     let criteria = {
       isDeleted: false,
       isActive: true,
@@ -557,20 +558,71 @@ UserSchema.methods = {
     if (isKyc !== '*') {
       criteria.isKycVerified = isKyc
     }
-    if (searchTerm !== '*') {
-      criteria = {
-        ...criteria,
-        $or: [{ name: searchTerm }, { email: searchTerm }]
-      }
-    }
+
     let options = {
       criteria: criteria,
       page,
       sortRule: { updatedAt: -1, isKycVerified: 1 }
     }
-    let data = await User.listForPagination(options),
-      count = await User.find(criteria).countDocuments()
-    return { data, count }
+    let pipeline = [
+      {
+        $match: criteria
+      },
+      { $sort: { updatedAt: -1 } },
+      {
+        $project: {
+          avatar: 1,
+          role: 1,
+          isEmailVerified: 1,
+          isPhoneVerified: 1,
+          isActive: 1,
+          isBlocked: 1,
+          isPractitioner: 1,
+          practitionerCategory: 1,
+          isKycVerified: 1,
+          referalCode: 1,
+          isInstitution: 1,
+          isDeleted: 1,
+          bio: 1,
+          description: 1,
+          location: 1,
+          isMetaverse: 1,
+          nonCustodyWallet: 1,
+          userName: 1,
+          name: 1,
+          email: 1,
+          phone: 1,
+          countryCode: 1,
+          custodyWallet: 1
+        }
+      },
+
+      {
+        $facet: {
+          users: [{ $skip: +(Number(page) - 1) }, { $limit: +limit }],
+          totalCount: [
+            {
+              $count: 'count'
+            }
+          ]
+        }
+      }
+    ]
+    if (searchTerm !== '*') {
+      pipeline.unshift({
+        $search: {
+          index: 'practitioner',
+          autocomplete: {
+            path: 'name',
+            query: searchTerm,
+            fuzzy: {
+              maxEdits: 1
+            }
+          }
+        }
+      })
+    }
+    return await User.aggregate(pipeline)
   },
   updateKYCStatus: async function (userId, status) {
     const User = mongoose.model('User')
