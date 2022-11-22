@@ -608,7 +608,7 @@ UserSchema.methods = {
         }
       }
     ]
-    if (searchTerm !== '*') {
+    if (searchTerm !== '') {
       pipeline.unshift({
         $search: {
           index: 'practitioner',
