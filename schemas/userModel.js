@@ -547,15 +547,30 @@ UserSchema.methods = {
       .skip((page - 1) * limit)
       .limit(limit)
   },
-  listAllpractitioners: async function () {
+  listAllpractitioners: async function (isKyc, searchTerm, page) {
     const User = mongoose.model('User')
     let criteria = {
       isDeleted: false,
       isActive: true,
       isPractitioner: true
     }
-
-    return await User.find(criteria).sort({ updatedAt: -1, isKycVerified: 1 })
+    if (isKyc !== '*') {
+      criteria.isKycVerified = isKyc
+    }
+    if (searchTerm !== '*') {
+      criteria = {
+        ...criteria,
+        $or: [{ name: searchTerm }, { email: searchTerm }]
+      }
+    }
+    let options = {
+      criteria: criteria,
+      page,
+      sortRule: { updatedAt: -1, isKycVerified: 1 }
+    }
+    let data = await User.listForPagination(options),
+      count = await User.find(criteria).countDocuments()
+    return { data, count }
   },
   updateKYCStatus: async function (userId, status) {
     const User = mongoose.model('User')
@@ -617,7 +632,8 @@ UserSchema.index(
     isActive: 1,
     isKycVerified: 1,
     'avatar.path': 1
-  }
+  },
+  { email: 'text', name: 'text' }
 )
 
 module.exports = mongoose.model('User', UserSchema)
