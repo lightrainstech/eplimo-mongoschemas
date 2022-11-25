@@ -656,6 +656,8 @@ UserSchema.methods = {
           location: 1
         }
       )
+        .lean()
+        .exec()
     } catch (error) {}
   }
 }
