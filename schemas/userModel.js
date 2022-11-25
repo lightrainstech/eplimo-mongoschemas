@@ -637,6 +637,26 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  listAllpractitionersWithoutPagination: async function () {
+    const User = mongoose.model('User')
+    try {
+      return await User.find(
+        { isKycVerified: false, isPractitioner: true },
+        {
+          userName: 1,
+          name: 1,
+          email: 1,
+          bio: 1,
+          description: 1,
+          practitionerCategory: 1,
+          phone: 1,
+          countryCode: 1,
+          avatar: 1,
+          location: 1
+        }
+      )
+    } catch (error) {}
   }
 }
 
