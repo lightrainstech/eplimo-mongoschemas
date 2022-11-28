@@ -529,7 +529,12 @@ UserSchema.methods = {
       .limit(limit)
   },
   getAllInstitutions: async function (category, featured, page, searchTerm) {
-    let criteria = { isInstitution: true, isDeleted: false, isActive: true },
+    let criteria = {
+        isInstitution: true,
+        isDeleted: false,
+        isActive: true,
+        isKycVerified: true
+      },
       limit = 18
     page = Number(page)
     const User = mongoose.model('User')
@@ -541,8 +546,19 @@ UserSchema.methods = {
     }
     return await User.aggregate([
       {
+        $search: {
+          index: 'pvSearch',
+          wildcard: {
+            query: searchTerm,
+            path: 'name',
+            allowAnalyzedField: true
+          }
+        }
+      },
+      {
         $match: criteria
-      }
+      },
+      { $sort: { updatedAt: -1 } }
     ])
       .skip((page - 1) * limit)
       .limit(limit)
