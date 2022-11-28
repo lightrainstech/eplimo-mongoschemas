@@ -503,6 +503,33 @@ ActivitySchema.methods = {
       }
     ])
     return data
+  },
+  getActivityByDate: async function (nftId, dateArray) {
+    try {
+      const Activity = mongoose.model('Activity')
+      let data = await Activity.aggregate([
+        {
+          $match: {
+            nft: ObjectId(nftId),
+            dateIndex: { $in: dateArray },
+            endTime: {
+              $exists: true
+            }
+          }
+        },
+        {
+          $group: {
+            _id: '$dateIndex',
+            totalPoints: { $sum: '$point' },
+            user: { $first: '$user' },
+            nft: { $first: '$nft' }
+          }
+        }
+      ])
+      return data
+    } catch (e) {
+      throw e
+    }
   }
 }
 
@@ -547,6 +574,12 @@ ActivitySchema.index(
   },
   {
     dateIndex: 1
+  },
+  { activityType: 1, point: 1 },
+  {
+    nft: 1,
+    dateIndex: 1,
+    endTime: 1
   }
 )
 
