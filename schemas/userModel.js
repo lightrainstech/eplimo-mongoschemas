@@ -182,6 +182,7 @@ const UserSchema = new mongoose.Schema(
         'Life coaching',
         'Meditation',
         'Naturopathy',
+        'Physiotherapy',
         'Psychology',
         'Yoga',
         'Zumba',

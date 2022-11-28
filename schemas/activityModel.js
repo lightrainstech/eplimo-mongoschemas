@@ -465,6 +465,44 @@ ActivitySchema.methods = {
         }
       }
     ])
+  },
+  getAssetAllData: async function () {
+    const Activity = mongoose.model('Activity')
+    let data = await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          point: { $ne: 0 }
+        }
+      },
+      {
+        $group: {
+          _id: '$nft',
+          totalPoints: { $sum: '$point' }
+        }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'details'
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          totalPoints: 1,
+          'details.tokenId': 1,
+          'details.category': 1,
+          'details._id': 1,
+          'details.efficiencyIndex': 1,
+          'details.sneakerLife': 1,
+          'details.price': 1
+        }
+      }
+    ])
+    return data
   }
 }
 
