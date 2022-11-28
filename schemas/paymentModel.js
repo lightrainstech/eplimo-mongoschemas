@@ -118,6 +118,19 @@ PaymentSchema.methods = {
   getPaymentData: async function (userId, nftId) {
     const Payment = mongoose.model('Payment')
     return await Payment.findOne({ user: userId, asset: nftId })
+  },
+  getSneakerRepairData: async function (nftId) {
+    const Payment = mongoose.model('Payment'),
+      options = {
+        criteria: {
+          transactionType: 'repairSneaker',
+          asset: nftId,
+          status: 'completed'
+        },
+        select: 'amount createdAt',
+        sortRule: { createdAt: 1 }
+      }
+    return await Payment.list(options)
   }
 }
 
@@ -142,6 +155,11 @@ PaymentSchema.index(
   {
     user: 1,
     asset: 1
+  },
+  {
+    transactionType: 1,
+    asset: 1,
+    status: 1
   }
 )
 
