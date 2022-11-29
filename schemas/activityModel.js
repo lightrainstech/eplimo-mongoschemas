@@ -530,6 +530,31 @@ ActivitySchema.methods = {
     } catch (e) {
       throw e
     }
+  },
+  getTotalKiloMeters: async function (date) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          endTime: {
+            $exists: true
+          },
+          dateIndex: date
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalKm: { $sum: '$distance' }
+        }
+      },
+      {
+        $project: {
+          totalKm: 1
+        }
+      }
+    ])
   }
 }
 
@@ -580,6 +605,11 @@ ActivitySchema.index(
     nft: 1,
     dateIndex: 1,
     endTime: 1
+  },
+  {
+    activityType: 1,
+    endTime: 1,
+    dateIndex: 1
   }
 )
 
