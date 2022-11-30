@@ -13,10 +13,6 @@ const ServicePurchaseSchema = new mongoose.Schema(
       type: String,
       default: '0'
     },
-    limoR: {
-      type: String,
-      default: '0'
-    },
     txnId: {
       type: String,
       default: ''
