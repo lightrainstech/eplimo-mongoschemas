@@ -7,11 +7,7 @@ const ServiceSchema = new mongoose.Schema(
     service: {
       type: String
     },
-    priceInLimo: {
-      type: String,
-      default: '0'
-    },
-    maxLimoR: {
+    priceInUSD: {
       type: String,
       default: '0'
     },
