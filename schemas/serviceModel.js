@@ -62,7 +62,7 @@ ServiceSchema.methods = {
       .populate({
         path: 'user',
         select:
-          'user service priceInLimo maxLimoR onSale isPromoted image description custodyWallet'
+          'user service priceInUSD maxLimoR onSale isPromoted image description custodyWallet'
       })
       .exec()
   },
@@ -84,7 +84,7 @@ ServiceSchema.methods = {
       {
         $set: {
           service,
-          priceInLimo: price,
+          priceInUSD: price,
           maxLimoR,
           onSale: sale,
           isPromoted: promotion,
@@ -105,7 +105,7 @@ ServiceSchema.statics = {
     const sortRule = options.sortRule || {}
     const select =
       options.select ||
-      'service priceInLimo maxLimoR onSale isPromoted image description'
+      'service priceInUSD maxLimoR onSale isPromoted image description'
     const populate = options.populate || ''
     return this.find(criteria)
       .select(select)
