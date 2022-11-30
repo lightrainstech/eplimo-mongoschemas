@@ -357,7 +357,7 @@ AssetSchema.methods = {
     const Asset = mongoose.model('Asset'),
       result = await Asset.findOneAndUpdate(
         { _id: nftId },
-        { sneakerLife: 100 },
+        { $set: { sneakerLife: 100 } },
         { new: true }
       )
     return result
@@ -413,6 +413,42 @@ AssetSchema.methods = {
     ])
     if (result.length > 0) return result[0]
     else return { _id: 0, myProjects: [] }
+  },
+  getAssetsAllData: async function () {
+    const Asset = mongoose.model('Asset'),
+      data = await Asset.aggregate([
+        {
+          $match: {
+            category: { $ne: 'Trial' },
+            onSale: false
+          }
+        },
+        {
+          $lookup: {
+            from: 'activities',
+            localField: '_id',
+            foreignField: nft,
+            as: 'activitydata'
+          }
+        },
+        {
+          $unwind: '$activitydata'
+        },
+        {
+          $lookup: {
+            from: 'payments',
+            pipeline: [
+              {
+                $match: {
+                  asset: activitydata._id,
+                  transactionType: 'repairSneaker'
+                }
+              }
+            ],
+            as: 'paymentdata'
+          }
+        }
+      ])
   }
 }
 
