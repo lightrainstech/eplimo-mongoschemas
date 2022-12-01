@@ -659,7 +659,7 @@ UserSchema.methods = {
     const User = mongoose.model('User')
     try {
       return await User.find(
-        { isKycVerified: false, isPractitioner: true },
+        { isPractitioner: true },
         {
           userName: 1,
           name: 1,
@@ -672,7 +672,8 @@ UserSchema.methods = {
           avatar: 1,
           location: 1,
           createdAt: 1,
-          updatedAt: 1
+          updatedAt: 1,
+          isKycVerified: 1
         }
       )
         .sort({ updatedAt: -1 })
