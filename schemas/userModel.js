@@ -670,9 +670,12 @@ UserSchema.methods = {
           phone: 1,
           countryCode: 1,
           avatar: 1,
-          location: 1
+          location: 1,
+          createdAt: 1,
+          updatedAt: 1
         }
       )
+        .sort({ updatedAt: -1 })
         .lean()
         .exec()
     } catch (error) {}
