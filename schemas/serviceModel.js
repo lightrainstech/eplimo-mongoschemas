@@ -64,6 +64,7 @@ ServiceSchema.methods = {
         select:
           'user service priceInUSD maxLimoR onSale isPromoted image description custodyWallet'
       })
+      .lean()
       .exec()
   },
   updateService: async data => {
