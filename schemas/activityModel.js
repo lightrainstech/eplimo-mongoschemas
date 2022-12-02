@@ -81,7 +81,7 @@ ActivitySchema.methods = {
       .lean()
       .exec()
     result['canProceed'] = true
-    result['remainingKm'] = result.nft.sneakerLife - 10
+    result['remainingKm'] = result.nft.sneakerLife
     return result
   },
   getActivityById: async function (activityId, userId) {
@@ -113,7 +113,7 @@ ActivitySchema.methods = {
         .lean()
         .exec()
     result.nft.sneakerLife -= distance
-    result['remainingKm'] = result.nft.sneakerLife - 10
+    result['remainingKm'] = result.nft.sneakerLife
     result['canProceed'] = true
     return result
   },
@@ -132,7 +132,7 @@ ActivitySchema.methods = {
         .populate('nft')
         .lean()
         .exec()
-    result['remainingKm'] = result.nft.sneakerLife - 10
+    result['remainingKm'] = result.nft.sneakerLife
     result['canProceed'] = false
     return result
   },
