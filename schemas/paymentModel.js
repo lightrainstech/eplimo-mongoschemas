@@ -127,7 +127,7 @@ PaymentSchema.methods = {
           asset: nftId,
           status: 'completed'
         },
-        select: 'amount createdAt',
+        select: 'amount createdAt paymentType paymentDetails',
         sortRule: { createdAt: 1 }
       }
     return await Payment.list(options)
