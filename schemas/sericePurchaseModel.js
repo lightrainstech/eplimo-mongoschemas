@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const { ObjectId } = mongoose.Types
 
 const ServicePurchaseSchema = new mongoose.Schema(
   {
@@ -20,5 +21,30 @@ const ServicePurchaseSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+ServicePurchaseSchema.methods = {
+  getAllSales: async function (userId) {
+    try {
+      let ServicePurchaseModel = mongoose.model('ServicePurchase')
+      return await ServicePurchaseModel.aggregate([
+        {
+          $lookup: {
+            from: 'services',
+            localField: 'service',
+            foreignField: '_id',
+            as: 'info'
+          }
+        },
+        {
+          $match: {
+            'info.user': ObjectId(userId)
+          }
+        }
+      ])
+    } catch (e) {
+      throw e
+    }
+  }
+}
 
 module.exports = mongoose.model('ServicePurchase', ServicePurchaseSchema)
