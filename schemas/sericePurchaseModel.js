@@ -39,12 +39,29 @@ ServicePurchaseSchema.methods = {
           $match: {
             'info.user': ObjectId(userId)
           }
+        },
+        {
+          $sort: {
+            createdAt: 1
+          }
         }
       ])
     } catch (e) {
       throw e
     }
+  },
+  getAllPurchases: async function (userId) {
+    try {
+      let ServicePurchaseModel = mongoose.model('ServicePurchase')
+      return await ServicePurchaseModel.find({ user: ObjectId(userId) })
+        .populate({ path: 'service' })
+        .sort({ createdAt: 1 })
+    } catch (e) {
+      throw e
+    }
   }
 }
+
+ServicePurchaseSchema.index({ user: 1 })
 
 module.exports = mongoose.model('ServicePurchase', ServicePurchaseSchema)
