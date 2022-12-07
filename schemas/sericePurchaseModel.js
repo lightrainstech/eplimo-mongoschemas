@@ -15,7 +15,7 @@ const ServicePurchaseSchema = new mongoose.Schema(
     },
     txnId: {
       type: String,
-      default: ''
+      unique: true
     }
   },
   { timestamps: true }
