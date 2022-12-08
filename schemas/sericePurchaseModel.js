@@ -32,17 +32,50 @@ ServicePurchaseSchema.methods = {
             from: 'services',
             localField: 'service',
             foreignField: '_id',
-            as: 'info'
+            as: 'packageInfo'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user',
+            foreignField: '_id',
+            as: 'buyer'
           }
         },
         {
           $match: {
-            'info.user': ObjectId(userId)
+            'packageInfo.user': ObjectId(userId)
           }
         },
+        { $unwind: '$packageInfo' },
+        { $unwind: '$buyer' },
         {
           $sort: {
             createdAt: 1
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            packageInfo: {
+              _id: 1,
+              image: 1,
+              priceInUSD: 1,
+              onSale: 1,
+              isPromoted: 1,
+              service: 1,
+              description: 1
+            },
+            buyer: {
+              _id: 1,
+              userName: 1,
+              name: 1,
+              email: 1,
+              countryCode: 1,
+              phone: 1,
+              avatar: 1
+            }
           }
         }
       ])
