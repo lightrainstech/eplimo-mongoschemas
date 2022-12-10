@@ -2,6 +2,7 @@
 
 // External Dependancies
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Types
 
 const PaymentSchema = new mongoose.Schema(
   {
@@ -131,6 +132,16 @@ PaymentSchema.methods = {
         sortRule: { createdAt: 1 }
       }
     return await Payment.list(options)
+  },
+  checkPurchases: async function (nfts) {
+    const Payment = mongoose.model('Payment'),
+      result = await Payment.find({
+        asset: { $in: nfts },
+        transactionType: 'buySneaker',
+        status: 'completed'
+      }).lean()
+
+    return result
   }
 }
 
@@ -159,6 +170,11 @@ PaymentSchema.index(
   {
     transactionType: 1,
     asset: 1,
+    status: 1
+  },
+  {
+    asset: 1,
+    transactionType: 1,
     status: 1
   }
 )
