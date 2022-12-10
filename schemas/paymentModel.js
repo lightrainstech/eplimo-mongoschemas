@@ -133,10 +133,11 @@ PaymentSchema.methods = {
       }
     return await Payment.list(options)
   },
-  checkPurchases: async function (nfts) {
+  checkPurchases: async function (nfts, user) {
     const Payment = mongoose.model('Payment'),
       result = await Payment.find({
         asset: { $in: nfts },
+        user: ObjectId(user),
         transactionType: 'buySneaker',
         status: 'completed'
       }).lean()
