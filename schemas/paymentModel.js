@@ -65,6 +65,7 @@ PaymentSchema.methods = {
         paymentModel = new Payment()
       paymentModel.user = user
       paymentModel.paymentType = paymentType
+      paymentModel.paymentDetails = paymentDetails
       // saving payement details of zoksh
       if (paymentType === 'zoksh') {
         paymentModel.asset = transferReference
