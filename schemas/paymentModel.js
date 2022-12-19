@@ -145,6 +145,25 @@ PaymentSchema.methods = {
       }).lean()
 
     return result
+  },
+  purchasesByDate: async function (startDate, endDate) {
+    const Payment = mongoose.model('Payment')
+    let options = {
+      criteria: {
+        transactionType: 'buySneaker',
+        status: 'completed',
+        createdAt: { $gte: startDate, $lt: endDate }
+      },
+      populate: [
+        {
+          path: 'asset',
+          select: 'tokenId owner price efficiencyIndex category'
+        },
+        { path: 'user', select: 'email nonCustodyWallet custodyWallet' }
+      ],
+      sortRule: { createdAt: -1 }
+    }
+    return await Payment.list(options)
   }
 }
 
@@ -178,7 +197,8 @@ PaymentSchema.index(
   {
     asset: 1,
     transactionType: 1,
-    status: 1
+    status: 1,
+    createdAt: 1
   }
 )
 
