@@ -159,7 +159,7 @@ PaymentSchema.methods = {
           path: 'asset',
           select: 'tokenId owner price efficiencyIndex category _id'
         },
-        { path: 'user', select: 'email nonCustodyWallet custodyWallet' }
+        { path: 'user', select: 'email nonCustodyWallet custodyWallet name' }
       ],
       sortRule: { createdAt: -1 }
     }
