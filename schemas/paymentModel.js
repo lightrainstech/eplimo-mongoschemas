@@ -157,7 +157,7 @@ PaymentSchema.methods = {
       populate: [
         {
           path: 'asset',
-          select: 'tokenId owner price efficiencyIndex category'
+          select: 'tokenId owner price efficiencyIndex category _id'
         },
         { path: 'user', select: 'email nonCustodyWallet custodyWallet' }
       ],
