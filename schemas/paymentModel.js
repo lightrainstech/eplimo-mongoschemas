@@ -152,14 +152,14 @@ PaymentSchema.methods = {
       criteria: {
         transactionType: 'buySneaker',
         status: 'completed',
-        createdAt: { $gte: startDate, $lt: endDate }
+        createdAt: { $gte: startDate, $lte: endDate }
       },
       populate: [
         {
           path: 'asset',
-          select: 'tokenId owner price efficiencyIndex category'
+          select: 'tokenId owner price efficiencyIndex category _id'
         },
-        { path: 'user', select: 'email nonCustodyWallet custodyWallet' }
+        { path: 'user', select: 'email nonCustodyWallet custodyWallet name' }
       ],
       sortRule: { createdAt: -1 }
     }
