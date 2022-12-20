@@ -152,7 +152,7 @@ PaymentSchema.methods = {
       criteria: {
         transactionType: 'buySneaker',
         status: 'completed',
-        createdAt: { $gte: startDate, $lt: endDate }
+        createdAt: { $gte: startDate, $lte: endDate }
       },
       populate: [
         {
