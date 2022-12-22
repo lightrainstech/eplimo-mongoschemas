@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
+const { customAlphabet } = require('nanoid')
 const nanoidLong = customAlphabet(
   'XU9GRa5PgTNeDVbMmFnCl23H4vwSzYsqfrLdyOIKWZ78hkJ6xEjcQtABpu',
   16
