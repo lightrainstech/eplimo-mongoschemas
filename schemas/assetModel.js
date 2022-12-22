@@ -165,6 +165,9 @@ const AssetSchema = new mongoose.Schema(
       type: String,
       enum: ['open', 'closed'],
       default: 'open'
+    },
+    corporateId: {
+      type: String
     }
   },
   {
