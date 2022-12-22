@@ -35,6 +35,7 @@ const Booking = require('./schemas/bookingModel')
 const Service = require('./schemas/serviceModel')
 const AppLogin = require('./schemas/appLoginModel')
 const ServicePurchase = require('./schemas/sericePurchaseModel')
+const Corporate = require('./schemas/corporateModel')
 
 module.exports = {
   Admin,
@@ -61,5 +62,6 @@ module.exports = {
   Booking,
   Service,
   AppLogin,
-  ServicePurchase
+  ServicePurchase,
+  Corporate
 }

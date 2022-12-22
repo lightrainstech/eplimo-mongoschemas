@@ -54,6 +54,9 @@ const ActivitySchema = new mongoose.Schema(
     },
     dateIndex: {
       type: String
+    },
+    corporateId: {
+      type: String
     }
   },
   { toJSON: { getters: true } },
@@ -555,6 +558,26 @@ ActivitySchema.methods = {
         }
       }
     ])
+  },
+  corporate_addActivity: async function (user, nft, corporateId) {
+    const Activity = mongoose.model('Activity'),
+      activityModel = new Activity()
+    activityModel.user = user
+    activityModel.nft = nft
+    activityModel.startTime = new Date()
+    activityModel.dateIndex = moment(new Date()).format('DDMMYYYY')
+    activityModel.corporateId = corporateId
+    const saveResult = await activityModel.save()
+    const options = {
+      criteria: { _id: ObjectId(saveResult._id) }
+    }
+    const result = await Activity.load(options)
+      .populate({ path: 'nft' })
+      .lean()
+      .exec()
+    result['canProceed'] = true
+    result['remainingKm'] = result.nft.sneakerLife
+    return result
   }
 }
 

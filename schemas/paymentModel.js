@@ -43,7 +43,10 @@ const PaymentSchema = new mongoose.Schema(
     },
     status: { type: String, enum: ['added', 'completed'], default: 'added' },
     transactionId: { type: String, default: '' },
-    amount: { type: String, required: true }
+    amount: { type: String, required: true },
+    corporateId: {
+      type: String
+    }
   },
   {
     timestamps: true
