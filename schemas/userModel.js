@@ -235,6 +235,10 @@ const UserSchema = new mongoose.Schema(
     isMetaverse: {
       type: Boolean,
       default: false
+    },
+    corporateId: {
+      type: String,
+      default: 'limoverse'
     }
   },
   { timestamps: true }
