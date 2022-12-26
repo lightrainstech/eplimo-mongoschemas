@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
 const { customAlphabet } = require('nanoid')
+const crypto = require('crypto')
 const nanoidLong = customAlphabet(
   'XU9GRa5PgTNeDVbMmFnCl23H4vwSzYsqfrLdyOIKWZ78hkJ6xEjcQtABpu',
   32
@@ -75,4 +76,4 @@ CorporateSchema.methods = {
   }
 }
 
-module.exports = mongoose.model('CorporateSchema', CorporateSchema)
+module.exports = mongoose.model('Corporate', CorporateSchema)
