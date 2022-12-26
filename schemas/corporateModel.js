@@ -73,6 +73,17 @@ CorporateSchema.methods = {
     } catch (err) {
       return ''
     }
+  },
+  getCorpDetails: async function (cId) {
+    try {
+      const Corporate = mongoose.model('Corporate')
+      return await Corporate.find(
+        { _id: cId },
+        { email: 1, corpSecret: 1, name: 1 }
+      ).limit(1)
+    } catch (error) {
+      throw error
+    }
   }
 }
 
