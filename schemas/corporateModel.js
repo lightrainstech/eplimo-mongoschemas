@@ -3,7 +3,7 @@ const { ObjectId } = mongoose.Schema
 const { customAlphabet } = require('nanoid')
 const nanoidLong = customAlphabet(
   'XU9GRa5PgTNeDVbMmFnCl23H4vwSzYsqfrLdyOIKWZ78hkJ6xEjcQtABpu',
-  16
+  32
 )
 
 const CorporateSchema = new mongoose.Schema(
@@ -15,9 +15,6 @@ const CorporateSchema = new mongoose.Schema(
       type: String,
       unique: true
     },
-    corporateId: {
-      type: String
-    },
     hashedPassword: {
       type: String
     },
@@ -28,13 +25,16 @@ const CorporateSchema = new mongoose.Schema(
     authToken: {
       type: String,
       default: ''
+    },
+    corpSecret: {
+      type: String
     }
   },
   { timestamps: true }
 )
 
 CorporateSchema.pre('save', async function (next) {
-  this.corporateId = nanoidLong()
+  this.corpSecret = nanoidLong()
   next()
 })
 
