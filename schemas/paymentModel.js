@@ -44,7 +44,7 @@ const PaymentSchema = new mongoose.Schema(
     status: { type: String, enum: ['added', 'completed'], default: 'added' },
     transactionId: { type: String, default: '' },
     amount: { type: String, required: true },
-    corporateId: {
+    corpId: {
       type: String
     }
   },
@@ -167,6 +167,51 @@ PaymentSchema.methods = {
       sortRule: { createdAt: -1 }
     }
     return await Payment.list(options)
+  },
+  corp_addPayment: async function (
+    user,
+    paymentType,
+    transactionType,
+    transferReference,
+    transactionId,
+    amount,
+    paymentDetails,
+    corpId
+  ) {
+    try {
+      let Payment = mongoose.model('Payment'),
+        paymentModel = new Payment()
+      paymentModel.user = user
+      paymentModel.paymentType = paymentType
+      paymentModel.paymentDetails = paymentDetails
+      // saving payement details of zoksh
+      if (paymentType === 'zoksh') {
+        paymentModel.asset = transferReference
+        paymentModel.paymentDetails = paymentDetails
+        paymentModel.status = 'completed'
+      }
+      // saving payement details of fireblocks
+      if (paymentType === 'fireblocks') {
+        if (transactionType == 'activity') {
+          paymentModel.activityDate = transferReference
+        } else if (transactionType == 'referral') {
+          paymentModel.referral = transferReference
+        } else {
+          paymentModel.asset = transferReference
+        }
+      }
+      if (paymentType === 'limoPurchase') {
+        paymentModel.asset = transferReference
+        paymentModel.status = 'completed'
+      }
+      paymentModel.transactionType = transactionType
+      paymentModel.transactionId = transactionId
+      paymentModel.amount = amount
+      paymentModel.corpId = corpId
+      return await paymentModel.save()
+    } catch (err) {
+      throw err
+    }
   }
 }
 

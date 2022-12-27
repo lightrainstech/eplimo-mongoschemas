@@ -55,7 +55,7 @@ const ActivitySchema = new mongoose.Schema(
     dateIndex: {
       type: String
     },
-    corporateId: {
+    corpId: {
       type: String
     }
   },
@@ -559,14 +559,14 @@ ActivitySchema.methods = {
       }
     ])
   },
-  corporate_addActivity: async function (user, nft, corporateId) {
+  corp_addActivity: async function (user, nft, corpId) {
     const Activity = mongoose.model('Activity'),
       activityModel = new Activity()
     activityModel.user = user
     activityModel.nft = nft
     activityModel.startTime = new Date()
     activityModel.dateIndex = moment(new Date()).format('DDMMYYYY')
-    activityModel.corporateId = corporateId
+    activityModel.corpId = corpId
     const saveResult = await activityModel.save()
     const options = {
       criteria: { _id: ObjectId(saveResult._id) }
