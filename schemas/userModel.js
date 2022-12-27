@@ -236,7 +236,7 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    corporateId: {
+    corpId: {
       type: String,
       default: 'limoverse'
     }
