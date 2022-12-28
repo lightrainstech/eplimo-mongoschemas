@@ -452,6 +452,73 @@ AssetSchema.methods = {
           }
         }
       ])
+  },
+  corp_listAllAssets: async function () {
+    const AssetModel = mongoose.model('Asset')
+
+    let { category, sort, status, page, corpId } = args,
+      criteria = {
+        corpId: corpId
+      },
+      sortRule = {}
+    page = page === 0 ? 0 : page - 1
+    let limit = 18,
+      skipLimit = limit * page
+
+    if (sort === 'asc') {
+      sortRule = { price: 1 }
+    } else if (sort === 'desc') {
+      sortRule = { price: -1 }
+    } else {
+      sortRule = { createdAt: -1 }
+    }
+
+    if (category !== undefined) {
+      criteria.category = category
+    }
+
+    if (status == 'onSale') {
+      criteria.onSale = true
+    } else if (status == 'onAuction') {
+      criteria.onAuction = true
+    } else {
+      criteria.$or = [{ onSale: true }, { onAuction: true }]
+    }
+    return await AssetModel.aggregate([
+      {
+        $set: {
+          price: { $toDouble: '$price' }
+        }
+      },
+      {
+        $match: criteria
+      },
+      {
+        $sort: sortRule
+      }
+    ])
+      .skip(skipLimit)
+      .limit(limit)
+  },
+  getCorpAssetsByOwner: async function (owner, corpId) {
+    const AssetModel = mongoose.model('Asset')
+
+    let criteria = {
+      owner: { $in: owner },
+      corpId: corpId
+    }
+
+    return await AssetModel.aggregate([
+      {
+        $match: criteria
+      },
+      {
+        $lookup: assetPopulateQueries.auction
+      },
+      {
+        $project: assetPopulateQueries.assetProject
+      }
+    ])
   }
 }
 
@@ -501,7 +568,11 @@ AssetSchema.index(
   {
     name: 'text'
   },
-  { description: 'text' }
+  { description: 'text' },
+  {
+    owner: 1,
+    corpId: 1
+  }
 )
 
 AssetSchema.index(
