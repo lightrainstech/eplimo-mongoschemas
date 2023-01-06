@@ -524,7 +524,7 @@ AssetSchema.methods = {
     const AssetModel = mongoose.model('Asset')
     try {
       return await AssetModel.findOneAndUpdate(
-        { corpId, owner: owner },
+        { corpId, owner: owner, orderStatus: 'open' },
         { set: { orderStatus: 'closed' } },
         { new: true }
       )
