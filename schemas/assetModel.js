@@ -519,6 +519,18 @@ AssetSchema.methods = {
         $project: assetPopulateQueries.assetProject
       }
     ])
+  },
+  lockCorpNft: async function (corpId, owner) {
+    const AssetModel = mongoose.model('Asset')
+    try {
+      return await AssetModel.findOneAndUpdate(
+        { corpId, owner: owner },
+        { set: { orderStatus: 'closed' } },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
