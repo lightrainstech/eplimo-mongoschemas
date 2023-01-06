@@ -29,6 +29,9 @@ const CorporateSchema = new mongoose.Schema(
     },
     corpSecret: {
       type: String
+    },
+    referralCode: {
+      type: String
     }
   },
   { timestamps: true }
