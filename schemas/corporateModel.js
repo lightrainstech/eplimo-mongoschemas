@@ -87,6 +87,23 @@ CorporateSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  authUserNameOrEmail: async function (creds) {
+    const Corporate = mongoose.model('Corporate')
+    let query = {
+      $or: [{ email: creds }, { userName: creds }]
+    }
+    let result = await Corporate.find(query).limit(1).exec()
+    return result.length > 0 ? result[0] : null
+  },
+  updateReferalCode: async function (userId, referalCode) {
+    const Corporate = mongoose.model('Corporate'),
+      result = await Corporate.findOneAndUpdate(
+        { _id: userId },
+        { $set: { referralCode: referalCode } },
+        { new: true }
+      )
+    return result
   }
 }
 
