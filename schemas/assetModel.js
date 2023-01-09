@@ -453,10 +453,10 @@ AssetSchema.methods = {
         }
       ])
   },
-  corp_listAllAssets: async function () {
+  corp_listAllAssets: async function (args) {
     const AssetModel = mongoose.model('Asset')
 
-    let { category, sort, status, page, corpId } = args,
+    let { page, category, sort, corpId } = args,
       criteria = {
         corpId: corpId
       },
@@ -477,13 +477,6 @@ AssetSchema.methods = {
       criteria.category = category
     }
 
-    if (status == 'onSale') {
-      criteria.onSale = true
-    } else if (status == 'onAuction') {
-      criteria.onAuction = true
-    } else {
-      criteria.$or = [{ onSale: true }, { onAuction: true }]
-    }
     return await AssetModel.aggregate([
       {
         $set: {
