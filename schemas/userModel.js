@@ -684,6 +684,17 @@ UserSchema.methods = {
         .lean()
         .exec()
     } catch (error) {}
+  },
+  getCorpUser: async function (corpId, page) {
+    const User = mongoose.model('User')
+    try {
+      let options = {}
+      options.criteria = { corpId }
+      options.page = page
+      return await User.listForPagination(options)
+    } catch (error) {
+      throw error
+    }
   }
 }
 
