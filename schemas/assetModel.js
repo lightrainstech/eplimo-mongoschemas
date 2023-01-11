@@ -453,7 +453,7 @@ AssetSchema.methods = {
         }
       ])
   },
-  corp_listAllAssets: async function (args) {
+  corpGetAssetsByFilter: async function (args) {
     const AssetModel = mongoose.model('Asset')
 
     let { page, category, sort, corpId } = args,
@@ -521,6 +521,34 @@ AssetSchema.methods = {
         { set: { orderStatus: 'closed' } },
         { new: true }
       )
+    } catch (error) {
+      throw error
+    }
+  },
+  corpGetAllAsset: async function (corpId, creator) {
+    const AssetModel = mongoose.model('Asset')
+    try {
+      let criteria = {
+        owner: { $ne: creator },
+        corpId: corpId
+      }
+
+      return await AssetModel.aggregate([
+        {
+          $match: criteria
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'owner',
+            foreignField: 'custodyWallet.wallet',
+            as: 'users'
+          }
+        },
+        {
+          $project: { users: 1, _id: 0 }
+        }
+      ])
     } catch (error) {
       throw error
     }
