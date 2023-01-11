@@ -25,7 +25,14 @@ const ActivityRewardSchema = new mongoose.Schema(
 )
 
 ActivityRewardSchema.methods = {
-  inserRecord
+  insertRecord: async function (dataArray) {
+    try {
+      const ActivityReward = mongoose.model('ActivityReward')
+      return await ActivityReward.insertMany(dataArray)
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 module.exports = mongoose.model('ActivityReward', ActivityRewardSchema)
