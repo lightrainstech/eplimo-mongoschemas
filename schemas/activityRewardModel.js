@@ -10,6 +10,13 @@ const ActivityRewardSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    limos: {
+      type: String
+    },
+    isTrial: {
+      type: Boolean,
+      default: false
+    },
     dateIndex: {
       type: String
     }
