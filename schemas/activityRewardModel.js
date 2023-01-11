@@ -4,7 +4,9 @@ const { ObjectId } = mongoose.Schema
 const ActivityRewardSchema = new mongoose.Schema(
   {
     user: {
-      type: String
+      type: ObjectId,
+      ref: 'User',
+      required: true
     },
     wallet: {
       type: String,
