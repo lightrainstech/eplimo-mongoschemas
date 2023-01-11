@@ -525,13 +525,15 @@ AssetSchema.methods = {
       throw error
     }
   },
-  corpGetAllAsset: async function (corpId, creator) {
+  corpGetAllAsset: async function (corpId, creator, page) {
     const AssetModel = mongoose.model('Asset')
     try {
       let criteria = {
-        owner: { $ne: creator },
-        corpId: corpId
-      }
+          owner: { $ne: creator },
+          corpId: corpId
+        },
+        limit = 18,
+        skipLimit = limit * page
 
       return await AssetModel.aggregate([
         {
@@ -549,6 +551,8 @@ AssetSchema.methods = {
           $project: { users: 1, _id: 0 }
         }
       ])
+        .skip(skipLimit)
+        .limit(limit)
     } catch (error) {
       throw error
     }
