@@ -36,6 +36,7 @@ const Service = require('./schemas/serviceModel')
 const AppLogin = require('./schemas/appLoginModel')
 const ServicePurchase = require('./schemas/sericePurchaseModel')
 const Corporate = require('./schemas/corporateModel')
+const ActivityReward = require('./schemas/activityRewardModel')
 
 module.exports = {
   Admin,
@@ -63,5 +64,6 @@ module.exports = {
   Service,
   AppLogin,
   ServicePurchase,
-  Corporate
+  Corporate,
+  ActivityReward
 }
