@@ -11,7 +11,7 @@ const ActivityRewardSchema = new mongoose.Schema(
       required: true
     },
     limos: {
-      type: String
+      type: Number
     },
     isTrial: {
       type: Boolean,
@@ -23,5 +23,9 @@ const ActivityRewardSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+ActivityRewardSchema.methods = {
+  inserRecord
+}
 
 module.exports = mongoose.model('ActivityReward', ActivityRewardSchema)
