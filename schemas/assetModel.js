@@ -596,20 +596,14 @@ AssetSchema.methods = {
       throw error
     }
   },
-  corpGetActivity: async function (corpId, creator, searchTerm) {
+  corpGetActivity: async function (args) {
     try {
+      let { corpId, creator, page } = args
+      page = page === 0 ? 0 : page - 1
+      let limit = 18,
+        skipLimit = limit * page
       const AssetModel = mongoose.model('Asset')
       return await AssetModel.aggregate([
-        {
-          $search: {
-            index: 'cvoSearch',
-            wildcard: {
-              query: searchTerm,
-              path: 'name',
-              allowAnalyzedField: true
-            }
-          }
-        },
         {
           $match: {
             corpId,
@@ -625,7 +619,24 @@ AssetSchema.methods = {
           }
         },
         {
-          $unwind: '$users'
+          $unwind: {
+            path: '$users',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: 'activityrewards',
+            localField: 'users._id',
+            foreignField: 'user',
+            as: 'rewards'
+          }
+        },
+        {
+          $unwind: {
+            path: '$rewards',
+            preserveNullAndEmptyArrays: false
+          }
         },
         {
           $lookup: {
@@ -636,14 +647,9 @@ AssetSchema.methods = {
           }
         },
         {
-          $unwind: '$activities'
-        },
-        {
-          $lookup: {
-            from: 'activityrewards',
-            localField: 'activities.user',
-            foreignField: 'user',
-            as: 'rewards'
+          $unwind: {
+            path: '$activities',
+            preserveNullAndEmptyArrays: true
           }
         },
         {
@@ -662,8 +668,45 @@ AssetSchema.methods = {
             ],
             as: 'repairs'
           }
+        },
+        {
+          $unwind: {
+            path: '$repairs',
+            preserveNullAndEmptyArrays: false
+          }
+        },
+        {
+          $group: {
+            _id: '$users._id',
+            tokenId: {
+              $first: '$tokenId'
+            },
+            name: {
+              $first: '$name'
+            },
+            category: {
+              $first: '$category'
+            },
+            efficiencyIndex: {
+              $first: '$efficiencyIndex'
+            },
+            users: { $first: '$users.name' },
+            userName: { $first: '$users.userName' },
+            email: { $first: '$users.email' },
+            totalLimos: {
+              $sum: '$rewards.limos'
+            },
+            totalDistance: {
+              $sum: '$activities.distance'
+            },
+            totalPoints: {
+              $sum: '$activities.point'
+            }
+          }
         }
       ])
+        .skip(skipLimit)
+        .limit(limit)
     } catch (error) {
       throw error
     }
