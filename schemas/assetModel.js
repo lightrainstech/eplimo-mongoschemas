@@ -658,6 +658,9 @@ AssetSchema.methods = {
             tokenId: {
               $first: '$tokenId'
             },
+            nftId: {
+              $first: '$_id'
+            },
             name: {
               $first: '$name'
             },
@@ -667,7 +670,10 @@ AssetSchema.methods = {
             efficiencyIndex: {
               $first: '$efficiencyIndex'
             },
-            users: { $first: '$users.name' },
+            image: {
+              $first: '$asset'
+            },
+            fullName: { $first: '$users.name' },
             userName: { $first: '$users.userName' },
             email: { $first: '$users.email' },
             totalLimos: {

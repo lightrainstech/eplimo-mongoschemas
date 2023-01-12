@@ -695,6 +695,126 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getCorpActivityDetails: async function (userId, nftId) {
+    try {
+      console.log(userId, nftId)
+      const User = mongoose.model('User')
+      return await User.aggregate([
+        {
+          $match: {
+            _id: ObjectId(userId)
+          }
+        },
+        {
+          $lookup: {
+            from: 'assets',
+            let: { assetId: ObjectId(nftId) },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ['$_id', '$$assetId']
+                  }
+                }
+              }
+            ],
+            as: 'asset'
+          }
+        },
+        {
+          $unwind: {
+            path: '$asset',
+            preserveNullAndEmptyArrays: false
+          }
+        },
+        {
+          $lookup: {
+            from: 'activityrewards',
+            localField: '_id',
+            foreignField: 'user',
+            as: 'rewards'
+          }
+        },
+        {
+          $unwind: {
+            path: '$rewards',
+            preserveNullAndEmptyArrays: false
+          }
+        },
+        {
+          $lookup: {
+            from: 'payments',
+            let: { assetId: nftId },
+            pipeline: [
+              {
+                $match: {
+                  $and: [
+                    {
+                      $expr: {
+                        $eq: ['$asset', '$$assetId']
+                      }
+                    },
+                    {
+                      $expr: {
+                        $eq: ['$transactionType', 'repairSneaker']
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            as: 'repairs'
+          }
+        },
+        {
+          $group: {
+            _id: '$_id',
+            email: {
+              $first: '$email'
+            },
+            userName: {
+              $first: '$userName'
+            },
+            name: {
+              $first: '$name'
+            },
+            tokenId: {
+              $first: '$asset.tokenId'
+            },
+            name: {
+              $first: '$asset.name'
+            },
+            category: {
+              $first: '$asset.category'
+            },
+            efficiencyIndex: {
+              $first: '$asset.efficiencyIndex'
+            },
+            image: {
+              $first: '$asset.asset'
+            },
+            price: {
+              $first: '$asset.price'
+            },
+            earnings: {
+              $push: '$rewards'
+            },
+            totalDistance: {
+              $sum: '$activities.distance'
+            },
+            totalPoints: {
+              $sum: '$activities.point'
+            },
+            repairs: {
+              $first: '$repairs'
+            }
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
