@@ -456,7 +456,7 @@ AssetSchema.methods = {
   corpGetAssetsByFilter: async function (args) {
     const AssetModel = mongoose.model('Asset')
 
-    let { page, category, sort, corpId } = args,
+    let { page, sort, corpId } = args,
       criteria = {
         corpId: corpId
       },
@@ -471,10 +471,6 @@ AssetSchema.methods = {
       sortRule = { price: -1 }
     } else {
       sortRule = { createdAt: -1 }
-    }
-
-    if (category !== undefined) {
-      criteria.category = category
     }
 
     return await AssetModel.aggregate([
@@ -553,6 +549,121 @@ AssetSchema.methods = {
       ])
         .skip(skipLimit)
         .limit(limit)
+    } catch (error) {
+      throw error
+    }
+  },
+  corpGetAssetCount: async function (corpId, creator) {
+    try {
+      const AssetModel = mongoose.model('Asset')
+      return await AssetModel.aggregate([
+        {
+          $match: { corpId: corpId }
+        },
+        {
+          $group: {
+            _id: '$corpId',
+            totalNFT: {
+              $sum: 1
+            },
+            soldNFT: {
+              $sum: {
+                $cond: {
+                  if: {
+                    $ne: ['$owner', creator]
+                  },
+
+                  then: 1,
+                  else: 0
+                }
+              }
+            },
+            unSoldNFT: {
+              $sum: {
+                $cond: {
+                  if: {
+                    $eq: ['$owner', creator]
+                  },
+                  then: 1,
+                  else: 0
+                }
+              }
+            }
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
+  },
+  corpGetActivity: async function (corpId, creator, searchTerm) {
+    try {
+      const AssetModel = mongoose.model('Asset')
+      return await AssetModel.aggregate([
+        {
+          $search: {
+            index: 'cvoSearch',
+            wildcard: {
+              query: searchTerm,
+              path: 'name',
+              allowAnalyzedField: true
+            }
+          }
+        },
+        {
+          $match: {
+            corpId,
+            owner: { $ne: creator }
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'owner',
+            foreignField: 'custodyWallet.wallet',
+            as: 'users'
+          }
+        },
+        {
+          $unwind: '$users'
+        },
+        {
+          $lookup: {
+            from: 'activities',
+            localField: 'users._id',
+            foreignField: 'user',
+            as: 'activities'
+          }
+        },
+        {
+          $unwind: '$activities'
+        },
+        {
+          $lookup: {
+            from: 'activityrewards',
+            localField: 'activities.user',
+            foreignField: 'user',
+            as: 'rewards'
+          }
+        },
+        {
+          $lookup: {
+            from: 'payments',
+            let: { nftId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $and: [
+                    { $expr: { $eq: ['$nft', '$$nftId'] } },
+                    { $expr: { $eq: ['$transactionType', 'repairSneaker'] } }
+                  ]
+                }
+              }
+            ],
+            as: 'repairs'
+          }
+        }
+      ])
     } catch (error) {
       throw error
     }
