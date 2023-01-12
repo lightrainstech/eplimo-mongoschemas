@@ -653,29 +653,6 @@ AssetSchema.methods = {
           }
         },
         {
-          $lookup: {
-            from: 'payments',
-            let: { nftId: '$_id' },
-            pipeline: [
-              {
-                $match: {
-                  $and: [
-                    { $expr: { $eq: ['$nft', '$$nftId'] } },
-                    { $expr: { $eq: ['$transactionType', 'repairSneaker'] } }
-                  ]
-                }
-              }
-            ],
-            as: 'repairs'
-          }
-        },
-        {
-          $unwind: {
-            path: '$repairs',
-            preserveNullAndEmptyArrays: false
-          }
-        },
-        {
           $group: {
             _id: '$users._id',
             tokenId: {
