@@ -49,7 +49,7 @@ AvailabilitySchema.methods = {
     const Availability = mongoose.model('Availability')
     return await Availability.findOneAndUpdate(
       { user },
-      { $set: days, isAvailable: days.available },
+      { $set: days, isAvailable: days.isAvailable },
       { new: true, upsert: true }
     )
   }
