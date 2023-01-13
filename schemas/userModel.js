@@ -698,7 +698,6 @@ UserSchema.methods = {
   },
   getCorpActivityDetails: async function (userId, nftId) {
     try {
-      console.log(userId, nftId)
       const User = mongoose.model('User')
       return await User.aggregate([
         {
