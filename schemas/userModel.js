@@ -820,6 +820,149 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  searchCorpUser: async function (args) {
+    try {
+      const User = mongoose.model('User')
+      let { searchTerm, corpId, page } = args,
+        limit = 18
+      page = Number(page)
+      page = page === 0 ? 0 : page - 1
+
+      if (searchTerm !== '') {
+        return await User.aggregate([
+          {
+            $search: {
+              index: 'default',
+              compound: {
+                should: [
+                  {
+                    autocomplete: {
+                      query: searchTerm,
+                      path: 'email',
+                      fuzzy: {
+                        maxEdits: 1,
+                        prefixLength: 1,
+                        maxExpansions: 256
+                      }
+                    }
+                  },
+                  {
+                    autocomplete: {
+                      query: searchTerm,
+                      path: 'name',
+                      fuzzy: {
+                        maxEdits: 1,
+                        prefixLength: 1,
+                        maxExpansions: 256
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            $match: {
+              corpId: corpId
+            }
+          },
+          { $sort: { updatedAt: -1 } },
+
+          {
+            $project: {
+              name: 1,
+              'custodyWallet.wallet': 1,
+              email: 1,
+              userName: 1
+            }
+          },
+          {
+            $lookup: {
+              from: 'assets',
+              localField: 'custodyWallet.wallet',
+              foreignField: 'owner',
+              as: 'asset'
+            }
+          },
+          {
+            $unwind: {
+              path: '$asset',
+              preserveNullAndEmptyArrays: false
+            }
+          },
+          {
+            $lookup: {
+              from: 'activityrewards',
+              localField: '_id',
+              foreignField: 'user',
+              as: 'rewards'
+            }
+          },
+          {
+            $unwind: {
+              path: '$rewards',
+              preserveNullAndEmptyArrays: false
+            }
+          },
+          {
+            $lookup: {
+              from: 'activities',
+              localField: '_id',
+              foreignField: 'user',
+              as: 'activities'
+            }
+          },
+          {
+            $unwind: {
+              path: '$activities',
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $group: {
+              _id: '$_id',
+              tokenId: {
+                $first: '$asset.tokenId'
+              },
+              nftId: {
+                $first: '$asset._id'
+              },
+              name: {
+                $first: '$asset.name'
+              },
+              category: {
+                $first: '$asset.category'
+              },
+              efficiencyIndex: {
+                $first: '$asset.efficiencyIndex'
+              },
+              image: {
+                $first: '$asset.asset'
+              },
+              fullName: { $first: '$name' },
+              userName: { $first: '$userName' },
+              email: { $first: '$email' },
+              totalLimos: {
+                $sum: '$rewards.limos'
+              },
+              totalDistance: {
+                $sum: '$activities.distance'
+              },
+              totalPoints: {
+                $sum: '$activities.point'
+              }
+            }
+          }
+        ])
+          .skip(page * limit)
+          .limit(limit)
+      } else {
+        return []
+      }
+    } catch (error) {
+      throw error
+    }
   }
 }
 
