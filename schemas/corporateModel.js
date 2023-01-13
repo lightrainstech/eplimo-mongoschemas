@@ -104,7 +104,7 @@ CorporateSchema.methods = {
   authUserNameOrEmail: async function (creds) {
     const Corporate = mongoose.model('Corporate')
     let query = {
-      $or: [{ email: creds }, { userName: creds }]
+      email: creds
     }
     let result = await Corporate.find(query).limit(1).exec()
     return result.length > 0 ? result[0] : null
