@@ -77,6 +77,19 @@ CorporateSchema.methods = {
       return ''
     }
   },
+  getById: async function (id) {
+    const Corporate = mongoose.model('Corporate')
+    return await Corporate.findOne(
+      { _id: id },
+      {
+        email: 1,
+        name: 1,
+        corpSecret: 1,
+        salt: 1,
+        hashedPassword: 1
+      }
+    ).exec()
+  },
   getCorpDetails: async function (cId) {
     try {
       const Corporate = mongoose.model('Corporate')
