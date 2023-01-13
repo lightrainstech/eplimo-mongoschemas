@@ -698,7 +698,6 @@ UserSchema.methods = {
   },
   getCorpActivityDetails: async function (userId, nftId) {
     try {
-      console.log(userId, nftId)
       const User = mongoose.model('User')
       return await User.aggregate([
         {
@@ -745,7 +744,7 @@ UserSchema.methods = {
         {
           $lookup: {
             from: 'payments',
-            let: { assetId: nftId },
+            let: { assetId: ObjectId(nftId) },
             pipeline: [
               {
                 $match: {
@@ -776,7 +775,7 @@ UserSchema.methods = {
             userName: {
               $first: '$userName'
             },
-            name: {
+            fullName: {
               $first: '$name'
             },
             tokenId: {
@@ -794,8 +793,14 @@ UserSchema.methods = {
             image: {
               $first: '$asset.asset'
             },
+            thumbnail: {
+              $first: '$asset.thumbnail'
+            },
             price: {
               $first: '$asset.price'
+            },
+            sneakerLife: {
+              $first: '$asset.sneakerLife'
             },
             earnings: {
               $push: '$rewards'
