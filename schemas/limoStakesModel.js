@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema
 
-const StakeSchema = new mongoose.Schema(
+const LimoStakeSchema = new mongoose.Schema(
   {
     wallet: {
       type: String,
@@ -13,17 +13,20 @@ const StakeSchema = new mongoose.Schema(
     },
     txnHash: {
       type: String,
-      required: true,
-      unique: true
+      index: {
+        unique: true,
+        partialFilterExpression: { txnHash: { $type: 'string' } }
+      },
+      default: null
     }
   },
   { timestamps: true }
 )
 
-StakeSchema.methods = {
+LimoStakeSchema.methods = {
   addStake: async function (wallet, stake, txnHash) {
     stake = Number(stake)
-    const Stake = mongoose.model('Stake'),
+    const Stake = mongoose.model('LimoStake'),
       stakeModel = new Stake()
     stakeModel.wallet = wallet
     stakeModel.stake = stake
@@ -31,7 +34,7 @@ StakeSchema.methods = {
     return await stakeModel.save()
   },
   getStakeByWallets: async function (wallet) {
-    const StakeModel = mongoose.model('Stake')
+    const StakeModel = mongoose.model('LimoStake')
     return await StakeModel.aggregate([
       {
         $match: {
@@ -42,7 +45,7 @@ StakeSchema.methods = {
     ])
   },
   getAllStake: async function () {
-    const StakeModel = mongoose.model('Stake')
+    const StakeModel = mongoose.model('LimoStake')
     return await StakeModel.aggregate([
       {
         $match: {}
@@ -53,7 +56,7 @@ StakeSchema.methods = {
     ])
   },
   getTotalStake: async function () {
-    const StakeModel = mongoose.model('Stake')
+    const StakeModel = mongoose.model('LimoStake')
     return await StakeModel.aggregate([
       {
         $group: {
@@ -66,11 +69,11 @@ StakeSchema.methods = {
     ])
   },
   getByTransactionHash: async function (txnHash) {
-    const StakeModel = mongoose.model('Stake')
+    const StakeModel = mongoose.model('LimoStake')
     return await StakeModel.findOne({ txnHash })
   }
 }
-StakeSchema.index(
+LimoStakeSchema.index(
   {
     wallet: 1
   },
@@ -79,4 +82,4 @@ StakeSchema.index(
   }
 )
 
-module.exports = mongoose.model('Stake', StakeSchema)
+module.exports = mongoose.model('LimoStake', LimoStakeSchema)
