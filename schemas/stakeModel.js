@@ -13,11 +13,8 @@ const StakeSchema = new mongoose.Schema(
     },
     txnHash: {
       type: String,
-      index: {
-        unique: true,
-        partialFilterExpression: { txnHash: { $type: 'string' } }
-      },
-      default: null
+      required: true,
+      unique: true
     }
   },
   { timestamps: true }
@@ -82,4 +79,4 @@ StakeSchema.index(
   }
 )
 
-module.exports = mongoose.model('StakeLimo', StakeSchema)
+module.exports = mongoose.model('Stake', StakeSchema)
