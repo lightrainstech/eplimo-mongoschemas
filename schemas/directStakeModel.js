@@ -20,6 +20,9 @@ const DirectStakeSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: ''
+    },
+    dateIndex: {
+      type: String
     }
   },
   { timestamps: true }
