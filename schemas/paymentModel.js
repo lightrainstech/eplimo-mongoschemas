@@ -23,7 +23,8 @@ const PaymentSchema = new mongoose.Schema(
         'buySneaker',
         'repairSneaker',
         'adminToUerBNBTransfer',
-        'rewardWithdraw'
+        'rewardWithdraw',
+        'staking-referral'
       ]
     },
     activityDate: {
@@ -79,7 +80,10 @@ PaymentSchema.methods = {
       if (paymentType === 'fireblocks') {
         if (transactionType == 'activity') {
           paymentModel.activityDate = transferReference
-        } else if (transactionType == 'referral') {
+        } else if (
+          transactionType == 'referral' ||
+          transactionType === 'staking-referral'
+        ) {
           paymentModel.referral = transferReference
         } else {
           paymentModel.asset = transferReference
