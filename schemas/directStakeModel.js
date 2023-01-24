@@ -18,7 +18,6 @@ const DirectStakeSchema = new mongoose.Schema(
     },
     referralCode: {
       type: String,
-      required: true,
       default: ''
     },
     dateIndex: {
