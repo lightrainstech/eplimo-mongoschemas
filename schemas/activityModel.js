@@ -571,10 +571,11 @@ ActivitySchema.methods = {
     result['remainingKm'] = result.nft.sneakerLife
     return result
   },
-  isUserActive: async function (userId, dateIndex) {
+  isUserActive: async function (userId, nftId, dateIndex) {
     const Activity = mongoose.model('Activity'),
       data = await Activity.findOne({
         user: ObjectId(userId),
+        nft: ObjectId(nftId),
         activityType: { $in: ['walk', 'run', 'jog', 'started'] },
         dateIndex,
         endTime: { $exists: false }
