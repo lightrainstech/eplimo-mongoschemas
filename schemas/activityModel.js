@@ -570,6 +570,20 @@ ActivitySchema.methods = {
     result['canProceed'] = true
     result['remainingKm'] = result.nft.sneakerLife
     return result
+  },
+  isUserActive: async function (userId, dateIndex) {
+    const Activity = mongoose.model('Activity'),
+      data = await Activity.findOne({
+        user: ObjectId(userId),
+        activityType: { $in: ['walk', 'run', 'jog', 'started'] },
+        dateIndex,
+        endTime: { $exists: false }
+      })
+    if (data) {
+      return true
+    } else {
+      return false
+    }
   }
 }
 
