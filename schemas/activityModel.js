@@ -151,7 +151,7 @@ ActivitySchema.methods = {
     return await Activity.find({
       user: ObjectId(userId),
       nft: ObjectId(nft),
-      activityType: { $in: ['walk', 'run', 'jog', 'started'] },
+      activityType: { $in: ['walk', 'run', 'jog'] },
       dateIndex
     }).countDocuments()
   },
