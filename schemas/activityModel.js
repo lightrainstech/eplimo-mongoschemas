@@ -152,7 +152,8 @@ ActivitySchema.methods = {
       user: ObjectId(userId),
       nft: ObjectId(nft),
       activityType: { $in: ['walk', 'run', 'jog'] },
-      dateIndex
+      dateIndex,
+      endTime: { $exists: true }
     }).countDocuments()
   },
 
