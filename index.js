@@ -38,6 +38,7 @@ const ServicePurchase = require('./schemas/sericePurchaseModel')
 const Corporate = require('./schemas/corporateModel')
 const ActivityReward = require('./schemas/activityRewardModel')
 const DirectStake = require('./schemas/directStakeModel')
+const WebhookLog = require('./schemas/webhookLogModel')
 
 module.exports = {
   Admin,
@@ -67,5 +68,6 @@ module.exports = {
   ServicePurchase,
   Corporate,
   ActivityReward,
-  DirectStake
+  DirectStake,
+  WebhookLog
 }
