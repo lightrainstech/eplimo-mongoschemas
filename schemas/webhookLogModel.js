@@ -6,7 +6,7 @@ const WebhookLogSchema = new mongoose.Schema(
     transactionType: {
       type: String
     },
-    data: {
+    logData: {
       type: mongoose.Schema.Types.Mixed
     }
   },
