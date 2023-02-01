@@ -81,14 +81,12 @@ ReferralSchema.methods = {
     referredUserId,
     projectName
   ) {
+    //updated by sruthi
     const Referral = mongoose.model('Referral'),
       result = await Referral.findOne({
-        $or: [
-          {
-            referringUser: referringUserId,
-            projectName
-          }
-        ]
+        referringUser: referringUserId,
+        referredUser: referredUserId,
+        projectName
       })
     return result
   }
@@ -138,6 +136,10 @@ ReferralSchema.index(
   }
 )
 
-ReferralSchema.index({ projectName: 1, referringUser: 1 }, { unique: true })
+//updated by sruthi
+ReferralSchema.index(
+  { projectName: 1, referringUser: 1, referredUser: 1 },
+  { unique: true }
+)
 
 module.exports = mongoose.model('Referral', ReferralSchema)
