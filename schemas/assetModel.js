@@ -360,7 +360,7 @@ AssetSchema.methods = {
     const Asset = mongoose.model('Asset'),
       result = await Asset.findOneAndUpdate(
         { _id: nftId },
-        { $set: { sneakerLife: 100 } },
+        { $set: { sneakerLife: 100, orderStatus: 'open' } },
         { new: true }
       )
     return result
