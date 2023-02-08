@@ -75,7 +75,9 @@ ServicePurchaseSchema.methods = {
               countryCode: 1,
               phone: 1,
               avatar: 1
-            }
+            },
+            createdAt: 1,
+            limo: 1
           }
         }
       ])
