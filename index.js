@@ -39,6 +39,7 @@ const Corporate = require('./schemas/corporateModel')
 const ActivityReward = require('./schemas/activityRewardModel')
 const DirectStake = require('./schemas/directStakeModel')
 const WebhookLog = require('./schemas/webhookLogModel')
+const YieldHistory = require('./schemas/yieldHistory.js')
 
 module.exports = {
   Admin,
@@ -69,5 +70,6 @@ module.exports = {
   Corporate,
   ActivityReward,
   DirectStake,
-  WebhookLog
+  WebhookLog,
+  YieldHistory
 }
