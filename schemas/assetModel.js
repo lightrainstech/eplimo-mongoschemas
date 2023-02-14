@@ -191,7 +191,7 @@ AssetSchema.methods = {
     } else if (sort === 'desc') {
       sortRule = { price: -1 }
     } else {
-      sortRule = { createdAt: -1 }
+      sortRule = { updatedAt: -1 }
     }
 
     if (category !== undefined) {
