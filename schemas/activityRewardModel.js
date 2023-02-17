@@ -8,6 +8,11 @@ const ActivityRewardSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
+    nft: {
+      type: ObjectId,
+      ref: 'User',
+      required: true
+    },
     wallet: {
       type: String,
       required: true
