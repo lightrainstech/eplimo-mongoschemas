@@ -398,6 +398,20 @@ ActivitySchema.methods = {
                 }
               }
             },
+            nonTrialNFT: {
+              $addToSet: {
+                $cond: {
+                  if: {
+                    $and: [
+                      { $ne: [{ $size: '$notTrialNFT' }, 0] },
+                      { $eq: [{ $size: '$trialNFT' }, 0] }
+                    ]
+                  },
+                  then: { nft: '$nft', user: '$user' },
+                  else: '$$REMOVE'
+                }
+              }
+            },
             totalPoint: { $sum: '$point' }
           }
         },
@@ -406,7 +420,8 @@ ActivitySchema.methods = {
             _id: 1,
             trialUsersList: 1,
             nonTrialUsersList: 1,
-            totalPoint: 1
+            totalPoint: 1,
+            nonTrialNFT: 1
           }
         }
       ])
@@ -416,7 +431,8 @@ ActivitySchema.methods = {
         _id: null,
         totalPoint: 0,
         trialUsersList: [],
-        nonTrialUsersList: []
+        nonTrialUsersList: [],
+        nonTrialNFT: []
       }
   },
   getTotalPointsGainedByAUser: async function (userId, date) {
