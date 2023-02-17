@@ -602,6 +602,31 @@ ActivitySchema.methods = {
     } else {
       return false
     }
+  },
+  getTotalPointsGainedBySneaker: async function (nftId, date) {
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            nft: ObjectId(nftId),
+            activityType: { $in: ['walk', 'run', 'jog'] },
+            dateIndex: date
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            totalPoint: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalPoint: 0 }
   }
 }
 
