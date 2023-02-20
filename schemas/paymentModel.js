@@ -216,6 +216,23 @@ PaymentSchema.methods = {
     } catch (err) {
       throw err
     }
+  },
+  getLastRepairOfSneaker: async function (nftId) {
+    try {
+      const Payment = mongoose.model('Payment')
+      return await Payment.find(
+        {
+          transactionType: 'repairSneaker',
+          asset: nftId,
+          status: 'completed'
+        },
+        {
+          createdAt: 1
+        }
+      ).limit(1)
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -251,6 +268,12 @@ PaymentSchema.index(
     transactionType: 1,
     status: 1,
     createdAt: 1
+  },
+  {
+    asset: 1,
+    transactionType: 1,
+    status: 1,
+    user: 1
   }
 )
 
