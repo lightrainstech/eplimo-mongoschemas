@@ -225,7 +225,8 @@ AssetSchema.methods = {
       },
       {
         $project: assetPopulateQueries.assetProject
-      }
+      },
+      { $sample: { size: 5500 } }
     ])
       .skip(skipLimit)
       .limit(limit)
