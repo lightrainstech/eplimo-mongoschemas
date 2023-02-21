@@ -627,6 +627,39 @@ ActivitySchema.methods = {
       ])
     if (result.length > 0) return result[0]
     else return { _id: null, totalPoint: 0 }
+  },
+  sneakerPointsInInterval: async function (startDate, endDate, nftId) {
+    try {
+      const Activity = mongoose.model('Activity')
+      let criteria = {
+        nft: ObjectId(nftId),
+        activityType: { $in: ['walk', 'run', 'jog'] }
+      }
+      if (startDate !== null && endDate !== null) {
+        criteria.$and = [
+          { endTime: { $gte: startDate } },
+          { endTime: { $lte: endDate } }
+        ]
+      }
+      return Activity.aggregate([
+        {
+          $match: criteria
+        },
+        {
+          $group: {
+            _id: null,
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            totalPoint: 1
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -682,6 +715,15 @@ ActivitySchema.index(
     activityType: 1,
     endTime: 1,
     dateIndex: 1
+  },
+  {
+    nft: 1,
+    activityType: 1
+  },
+  {
+    nft: 1,
+    activityType: 1,
+    endTime: 1
   }
 )
 
