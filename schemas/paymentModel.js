@@ -229,7 +229,9 @@ PaymentSchema.methods = {
         {
           createdAt: 1
         }
-      ).limit(1)
+      )
+        .sort({ createdAt: -1 })
+        .limit(1)
     } catch (error) {
       throw error
     }
