@@ -300,7 +300,9 @@ UserSchema.methods = {
         hashedPassword: 1,
         isActive: 1,
         nonCustodyWallet: 1,
-        custodyWallet: 1
+        custodyWallet: 1,
+        isInstitution: 1,
+        isPractitioner: 1
       }
     ).exec()
   },
