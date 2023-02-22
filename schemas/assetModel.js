@@ -178,10 +178,23 @@ const AssetSchema = new mongoose.Schema(
 AssetSchema.methods = {
   listAllAssets: async function (args) {
     const AssetModel = mongoose.model('Asset')
-
-    let { category, sort, status, page } = args,
+    let { category, sort, status, page, maxPrice, minPrice } = args,
       criteria = {},
       sortRule = {}
+    criteria = {
+      $and: [
+        {
+          price: {
+            $gte: minPrice
+          }
+        },
+        {
+          price: {
+            $lte: maxPrice
+          }
+        }
+      ]
+    }
     page = page === 0 ? 0 : page - 1
     let limit = 18,
       skipLimit = limit * page
