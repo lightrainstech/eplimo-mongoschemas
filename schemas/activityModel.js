@@ -157,6 +157,16 @@ ActivitySchema.methods = {
     }).countDocuments()
   },
 
+  getActivityCountOfSneaker: async function (nft, dateIndex) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.find({
+      nft: ObjectId(nft),
+      activityType: { $in: ['walk', 'run', 'jog'] },
+      dateIndex,
+      endTime: { $exists: true }
+    }).countDocuments()
+  },
+
   listSuccessActivityHistory: async function (userId, page) {
     const Activity = mongoose.model('Activity')
     page = page === 0 ? 0 : page - 1
