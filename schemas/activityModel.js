@@ -651,6 +651,14 @@ ActivitySchema.methods = {
           { endTime: { $lte: endDate } }
         ]
       }
+
+      if (startDate !== null && endDate === null) {
+        criteria.$and = [{ endTime: { $gte: startDate } }]
+      }
+
+      if (startDate === null && endDate !== null) {
+        criteria.$and = [{ endTime: { $lte: endDate } }]
+      }
       return Activity.aggregate([
         {
           $match: criteria
