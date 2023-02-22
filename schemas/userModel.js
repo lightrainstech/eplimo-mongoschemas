@@ -302,7 +302,8 @@ UserSchema.methods = {
         nonCustodyWallet: 1,
         custodyWallet: 1,
         isInstitution: 1,
-        isPractitioner: 1
+        isPractitioner: 1,
+        isKycVerified: 1
       }
     ).exec()
   },
