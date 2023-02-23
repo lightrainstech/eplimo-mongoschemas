@@ -157,14 +157,24 @@ ActivitySchema.methods = {
     }).countDocuments()
   },
 
-  getActivityCountOfSneaker: async function (nft, dateIndex) {
+  getActivityCountOfSneaker: async function (nft, userId, dateIndex) {
     const Activity = mongoose.model('Activity')
-    return await Activity.find({
-      nft: ObjectId(nft),
-      activityType: { $in: ['walk', 'run', 'jog'] },
-      dateIndex,
-      endTime: { $exists: true }
-    }).countDocuments()
+    if (nft === '62f8c9b0e6a37fdd66bdec60') {
+      return await Activity.find({
+        nft: ObjectId(nft),
+        user: ObjectId(userId),
+        activityType: { $in: ['walk', 'run', 'jog'] },
+        dateIndex,
+        endTime: { $exists: true }
+      }).countDocuments()
+    } else {
+      return await Activity.find({
+        nft: ObjectId(nft),
+        activityType: { $in: ['walk', 'run', 'jog'] },
+        dateIndex,
+        endTime: { $exists: true }
+      }).countDocuments()
+    }
   },
 
   listSuccessActivityHistory: async function (userId, page) {
