@@ -89,6 +89,22 @@ ReferralSchema.methods = {
         projectName
       })
     return result
+  },
+  checkReferralForSneaker: async function (
+    referringUserId,
+    referredUserId,
+    projectName,
+    transferReference
+  ) {
+    //updated by sruthi
+    const Referral = mongoose.model('Referral'),
+      result = await Referral.findOne({
+        referringUser: referringUserId,
+        referredUser: referredUserId,
+        projectName,
+        transferReference: transferReference
+      })
+    return result
   }
 }
 
