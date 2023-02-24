@@ -159,7 +159,7 @@ ActivitySchema.methods = {
 
   getActivityCountOfSneaker: async function (nft, userId, dateIndex) {
     const Activity = mongoose.model('Activity')
-    if (nft === '62f8c9b0e6a37fdd66bdec60') {
+    if (nft.toString() === '62f8c9b0e6a37fdd66bdec60') {
       return await Activity.find({
         nft: ObjectId(nft),
         user: ObjectId(userId),
