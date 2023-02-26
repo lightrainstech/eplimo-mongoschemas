@@ -99,8 +99,8 @@ ReferralSchema.methods = {
     //updated by sruthi
     const Referral = mongoose.model('Referral'),
       result = await Referral.findOne({
-        referringUser: referringUserId,
-        referredUser: referredUserId,
+        referringUser: ObjectId(referringUserId),
+        referredUser: ObjectId(referredUserId),
         projectName,
         transferReference: transferReference
       })
