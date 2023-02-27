@@ -154,7 +154,7 @@ ReferralSchema.index(
 
 //updated by sruthi
 ReferralSchema.index(
-  { projectName: 1, referringUser: 1, referredUser: 1 },
+  { projectName: 1, referringUser: 1, referredUser: 1, transferReference: 1 },
   { unique: true }
 )
 
