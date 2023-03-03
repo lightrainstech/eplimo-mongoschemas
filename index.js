@@ -40,6 +40,7 @@ const ActivityReward = require('./schemas/activityRewardModel')
 const DirectStake = require('./schemas/directStakeModel')
 const WebhookLog = require('./schemas/webhookLogModel')
 const YieldHistory = require('./schemas/yieldHistory.js')
+const ThryveAuthToken = require('./schemas/thryveAuthTokenModel.js')
 
 module.exports = {
   Admin,
@@ -71,5 +72,6 @@ module.exports = {
   ActivityReward,
   DirectStake,
   WebhookLog,
-  YieldHistory
+  YieldHistory,
+  ThryveAuthToken
 }
