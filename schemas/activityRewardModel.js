@@ -54,14 +54,24 @@ ActivityRewardSchema.methods = {
         {
           $match: criteria
         },
+        {
+          $sort: {
+            date: 1
+          }
+        },
         { $group: { _id: '$date', dailyRewards: { $sum: '$limos' } } },
         {
+          $sort: {
+            _id: 1
+          }
+        },
+        {
           $group: {
-            _id: '$_id.rewards',
+            _id: null,
             totalRewards: {
               $sum: '$dailyRewards'
             },
-            data: { $addToSet: '$_id' }
+            data: { $push: '$_id' }
           }
         }
       ])
