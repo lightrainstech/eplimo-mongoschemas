@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema
 const ThryveAuthTokenSchema = new mongoose.Schema(
   {
     user: {
-      type: Schema.ObjectId,
+      type: ObjectId,
       ref: 'User',
       unique: true
     },
