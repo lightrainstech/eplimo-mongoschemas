@@ -19,7 +19,13 @@ const VestingListModelSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-VestingListModelSchema.methods = {}
+VestingListModelSchema.methods = {
+  getVestedAmount: async function (email) {
+    const VestingList = mongoose.model('VestingList')
+    const result = await VestingList.findOne({ email })
+    return result
+  }
+}
 
 VestingListModelSchema.index({
   email: 1
