@@ -41,6 +41,7 @@ const DirectStake = require('./schemas/directStakeModel')
 const WebhookLog = require('./schemas/webhookLogModel')
 const YieldHistory = require('./schemas/yieldHistory.js')
 const ThryveAuthToken = require('./schemas/thryveAuthTokenModel.js')
+const VestingList = require('./schemas/vestingListModel.js')
 
 module.exports = {
   Admin,
@@ -73,5 +74,6 @@ module.exports = {
   DirectStake,
   WebhookLog,
   YieldHistory,
-  ThryveAuthToken
+  ThryveAuthToken,
+  VestingList
 }
