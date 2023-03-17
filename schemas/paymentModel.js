@@ -224,7 +224,8 @@ PaymentSchema.methods = {
         {
           transactionType: 'repairSneaker',
           asset: nftId,
-          status: 'completed'
+          status: 'completed',
+          amount: { $gt: 0 }
         },
         {
           createdAt: 1
