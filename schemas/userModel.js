@@ -240,7 +240,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: 'limoverse'
     },
-    defaultWearable: {
+    wearableNFT: {
       type: String,
       default: null
     }
@@ -971,14 +971,14 @@ UserSchema.methods = {
       throw error
     }
   },
-  setDefaultWearable: async function (userId, nftId) {
+  setDefaultWearableNFT: async function (userId, nftId) {
     try {
       const User = mongoose.model('User')
       return await User.findOneAndUpdate(
         { _id: ObjectId(userId) },
         {
           $set: {
-            defaultWearable: nftId
+            wearableNFT: nftId
           }
         },
         {
