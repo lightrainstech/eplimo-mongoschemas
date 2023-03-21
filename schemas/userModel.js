@@ -970,6 +970,24 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  setDefaultWearable: async function (userId, nftId) {
+    try {
+      const User = mongoose.model('User')
+      return await User.findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        {
+          $set: {
+            defaultWearable: nftId
+          }
+        },
+        {
+          new: true
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
