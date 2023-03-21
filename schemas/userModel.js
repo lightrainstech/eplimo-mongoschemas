@@ -239,6 +239,10 @@ const UserSchema = new mongoose.Schema(
     corpId: {
       type: String,
       default: 'limoverse'
+    },
+    defaultWearable: {
+      type: String,
+      default: null
     }
   },
   { timestamps: true }
