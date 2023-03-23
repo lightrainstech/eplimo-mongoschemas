@@ -183,9 +183,7 @@ AssetSchema.methods = {
   listAllAssets: async function (args) {
     const AssetModel = mongoose.model('Asset')
     let { category, sort, status, page, maxPrice, minPrice, isWearable } = args,
-      criteria = {
-        isWearable: isWearable
-      },
+      criteria = {},
       sortRule = {}
     criteria = {
       $and: [
@@ -201,6 +199,7 @@ AssetSchema.methods = {
         }
       ]
     }
+    criteria.isWearable = isWearable
     page = page === 0 ? 0 : page - 1
     let limit = 18,
       skipLimit = limit * page
