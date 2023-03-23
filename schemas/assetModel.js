@@ -265,11 +265,14 @@ AssetSchema.methods = {
       }
     ])
   },
-  listAssetByOwner: async function (owner, option, page) {
+  listAssetByOwner: async function (owner, option, isWearable, page) {
     const AssetModel = mongoose.model('Asset')
 
     let criteria = {
       owner: { $in: owner }
+    }
+    if (isWearable) {
+      criteria.isWearable = isWearable
     }
     page = page === 0 ? 0 : page - 1
     let limit = 18,
