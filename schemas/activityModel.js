@@ -239,7 +239,7 @@ ActivitySchema.methods = {
       skipLimit = limit * page
 
     let criteria = {}
-    criteria.userId = ObjectId(userId)
+    criteria.user = ObjectId(userId)
     if (isWearable) {
       criteria.isWearable = isWearable
     }
