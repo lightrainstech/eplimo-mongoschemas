@@ -57,6 +57,10 @@ const ActivitySchema = new mongoose.Schema(
     },
     corpId: {
       type: String
+    },
+    isWearable: {
+      type: Boolean,
+      default: false
     }
   },
   { toJSON: { getters: true } },
@@ -177,20 +181,25 @@ ActivitySchema.methods = {
     }
   },
 
-  listSuccessActivityHistory: async function (userId, page) {
+  listSuccessActivityHistory: async function (userId, page, isWearable) {
     const Activity = mongoose.model('Activity')
     page = page === 0 ? 0 : page - 1
     let limit = 18,
       skipLimit = limit * page
+
+    let criteria = {
+      user: ObjectId(userId),
+      activityType: { $in: ['walk', 'run', 'jog'] },
+      endTime: {
+        $exists: true
+      }
+    }
+    if (isWearable) {
+      criteria.isWearable = isWearable
+    }
     return await Activity.aggregate([
       {
-        $match: {
-          user: ObjectId(userId),
-          activityType: { $in: ['walk', 'run', 'jog'] },
-          endTime: {
-            $exists: true
-          }
-        }
+        $match: criteria
       },
       {
         $sort: { startTime: -1 }
@@ -223,16 +232,20 @@ ActivitySchema.methods = {
       .skip(skipLimit)
       .limit(limit)
   },
-  listActivityHistory: async function (userId, page) {
+  listActivityHistory: async function (userId, page, isWearable) {
     const Activity = mongoose.model('Activity')
     page = page === 0 ? 0 : page - 1
     let limit = 18,
       skipLimit = limit * page
+
+    let criteria = {}
+    criteria.userId = ObjectId(userId)
+    if (isWearable) {
+      criteria.isWearable = isWearable
+    }
     return await Activity.aggregate([
       {
-        $match: {
-          user: ObjectId(userId)
-        }
+        $match: criteria
       },
       {
         $sort: { startTime: -1 }
