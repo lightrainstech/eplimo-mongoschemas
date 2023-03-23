@@ -199,7 +199,9 @@ AssetSchema.methods = {
         }
       ]
     }
-    criteria.isWearable = isWearable
+    if (isWearable) {
+      criteria.isWearable = isWearable
+    }
     page = page === 0 ? 0 : page - 1
     let limit = 18,
       skipLimit = limit * page
