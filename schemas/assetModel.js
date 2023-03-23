@@ -168,6 +168,10 @@ const AssetSchema = new mongoose.Schema(
     },
     corpId: {
       type: String
+    },
+    isWearable: {
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -178,8 +182,10 @@ const AssetSchema = new mongoose.Schema(
 AssetSchema.methods = {
   listAllAssets: async function (args) {
     const AssetModel = mongoose.model('Asset')
-    let { category, sort, status, page, maxPrice, minPrice } = args,
-      criteria = {},
+    let { category, sort, status, page, maxPrice, minPrice, isWearable } = args,
+      criteria = {
+        isWearable: isWearable
+      },
       sortRule = {}
     criteria = {
       $and: [
