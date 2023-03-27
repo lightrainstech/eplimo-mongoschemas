@@ -3,7 +3,7 @@ const { ObjectId } = mongoose.Schema
 
 const BonusReleaseConsentSchema = new mongoose.Schema(
   {
-    user: { type: ObjectId, ref: 'User', required: true },
+    user: { type: ObjectId, ref: 'User', required: true, unique: true },
     mode: {
       type: String,
       require: true,
@@ -16,6 +16,13 @@ const BonusReleaseConsentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+BonusReleaseConsentSchema.methods = {
+  checkForConsent: async user => {
+    const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
+    return await BonusReleaseConsent.find({ user }).limit(1).lean()
+  }
+}
 
 module.exports = mongoose.model(
   'BonusReleaseConsent',
