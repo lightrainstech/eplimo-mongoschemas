@@ -42,6 +42,7 @@ const WebhookLog = require('./schemas/webhookLogModel')
 const YieldHistory = require('./schemas/yieldHistory.js')
 const ThryveAuthToken = require('./schemas/thryveAuthTokenModel.js')
 const VestingList = require('./schemas/vestingListModel.js')
+const BonusReleaseConsent = require('./schemas/bonusReleaseConsentModel')
 
 module.exports = {
   Admin,
@@ -75,5 +76,6 @@ module.exports = {
   WebhookLog,
   YieldHistory,
   ThryveAuthToken,
-  VestingList
+  VestingList,
+  BonusReleaseConsent
 }
