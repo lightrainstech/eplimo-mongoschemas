@@ -3,7 +3,7 @@ const { ObjectId } = mongoose.Schema
 
 const BonusReleaseConsentSchema = new mongoose.Schema(
   {
-    user: { type: Schema.ObjectId, ref: 'User', required: true },
+    user: { type: ObjectId, ref: 'User', required: true },
     mode: {
       type: String,
       require: true,
