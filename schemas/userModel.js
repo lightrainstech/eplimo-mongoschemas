@@ -395,6 +395,7 @@ UserSchema.methods = {
     const User = mongoose.model('User'),
       options = {
         criteria: {
+          isDeleted: false,
           nonCustodyWallet: {
             $elemMatch: { wallet: wallet, isVerified: true }
           }
