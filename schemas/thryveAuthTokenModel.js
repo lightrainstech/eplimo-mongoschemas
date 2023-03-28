@@ -29,6 +29,15 @@ ThryveAuthTokenSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getAccessTokens: async function () {
+    try {
+      const ThryveAuthTokenModel = mongoose.model('ThryveAuthToken'),
+        tokens = []
+      return await ThryveAuthTokenModel.find({}, { _id: 0, authToken: 1 })
+    } catch (error) {
+      throw error
+    }
   }
 }
 module.exports = mongoose.model('ThryveAuthToken', ThryveAuthTokenSchema)
