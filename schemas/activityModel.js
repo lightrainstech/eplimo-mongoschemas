@@ -61,6 +61,10 @@ const ActivitySchema = new mongoose.Schema(
     isWearable: {
       type: Boolean,
       default: false
+    },
+    burnedCalories: {
+      type: Number,
+      default: 0
     }
   },
   { toJSON: { getters: true } },
