@@ -706,21 +706,25 @@ ActivitySchema.methods = {
       throw error
     }
   },
-  getTotalCalBySneaker: async function (date, nftId, userId) {
+  getTotalCalBySneaker: async function (nftId, userId, date) {
     try {
       const Activity = mongoose.model('Activity')
-      await Activity.aggregate([
+      let criteria = {
+        nft: ObjectId(nftId)
+      }
+      if (date !== null) {
+        criteria.createdAt = {
+          $gt: date
+        }
+      }
+
+      return await Activity.aggregate([
         {
-          $match: {
-            createdAt: {
-              $gt: date
-            },
-            nft: ObjectId(nftId)
-          }
+          $match: criteria
         },
         {
           $group: {
-            _id: nft,
+            _id: 'nft',
             totalCal: { $sum: '$burnedCalories' }
           }
         },
