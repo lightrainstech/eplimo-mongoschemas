@@ -229,7 +229,8 @@ ActivitySchema.methods = {
           endTime: 1,
           point: 1,
           metaData: 1,
-          dateIndex: 1
+          dateIndex: 1,
+          burnedCalories: 1
         }
       }
     ])
