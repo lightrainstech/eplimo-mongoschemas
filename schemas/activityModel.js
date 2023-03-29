@@ -10,7 +10,7 @@ const ActivitySchema = new mongoose.Schema(
   {
     activityType: {
       type: String,
-      enum: ['walk', 'run', 'jog', 'started', 'abandoned'],
+      enum: ['walk', 'run', 'jog', 'started', 'abandoned', 'workout'],
       default: 'started',
       required: true
     },
@@ -193,7 +193,7 @@ ActivitySchema.methods = {
 
     let criteria = {
       user: ObjectId(userId),
-      activityType: { $in: ['walk', 'run', 'jog'] },
+      activityType: { $in: ['walk', 'run', 'jog', 'workout'] },
       endTime: {
         $exists: true
       }
@@ -702,6 +702,58 @@ ActivitySchema.methods = {
           }
         }
       ])
+    } catch (error) {
+      throw error
+    }
+  },
+  getTotalCalBySneaker: async function (nftId, userId, date) {
+    try {
+      const Activity = mongoose.model('Activity')
+      let criteria = {
+        nft: ObjectId(nftId)
+      }
+      if (date !== null) {
+        criteria.createdAt = {
+          $gt: date
+        }
+      }
+
+      return await Activity.aggregate([
+        {
+          $match: criteria
+        },
+        {
+          $group: {
+            _id: 'nft',
+            totalCal: { $sum: '$burnedCalories' }
+          }
+        },
+        {
+          $project: {
+            totalCal: 1
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
+  },
+  addActivityFromWearable: async function (args) {
+    try {
+      const Activity = mongoose.model('Activity'),
+        activityModel = new Activity(),
+        { user, nft, cal, startTime, dateIndex, endTime, isWearable, point } =
+          args
+      activityModel.user = user
+      activityModel.nft = nft
+      activityModel.startTime = new Date()
+      activityModel.dateIndex = moment(new Date()).format('DDMMYYYY')
+      activityModel.isWearable = isWearable
+      activityModel.point = point
+      activityModel.burnedCalories = cal
+      activityModel.endTime = endTime
+      activityModel.activityType = 'workout'
+      return await activityModel.save()
     } catch (error) {
       throw error
     }
