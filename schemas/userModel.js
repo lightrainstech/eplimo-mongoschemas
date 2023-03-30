@@ -473,6 +473,37 @@ UserSchema.methods = {
       return obj.wallet
     })
   },
+  getVerifiedWalletDetails: async function (userId) {
+    try {
+      const User = mongoose.model('User'),
+        result = await User.aggregate([
+          {
+            $match: {
+              _id: ObjectId(userId),
+              nonCustodyWallet: { $elemMatch: { isVerified: true } }
+            }
+          },
+          {
+            $project: {
+              matchingElements: {
+                $filter: {
+                  input: '$nonCustodyWallet',
+                  as: 'el',
+                  cond: { $eq: ['$$el.isVerified', true] }
+                }
+              }
+            }
+          }
+        ])
+      if (result.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
+      throw error
+    }
+  },
   findUserByReferalCode: async function (referralCode) {
     const User = mongoose.model('User'),
       result = User.findOne({ referalCode: referralCode }).lean().exec()
