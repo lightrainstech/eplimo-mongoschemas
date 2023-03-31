@@ -48,6 +48,18 @@ ServiceSchema.methods = {
     let options = {
       criteria: {
         user: pId,
+        $or: [{ isPromoted: true }, { isPromoted: false }]
+      },
+      page: page,
+      sortRule: { isPromoted: -1, updatedAt: -1 }
+    }
+    return await Service.listForPagination(options)
+  },
+  getPublicServicesByPractitioner: async (pId, page) => {
+    const Service = mongoose.model('Service')
+    let options = {
+      criteria: {
+        user: pId,
         onSale: true,
         $or: [{ isPromoted: true }, { isPromoted: false }]
       },
