@@ -8,7 +8,7 @@ const AffiliateSchema = new mongoose.Schema(
       required: true,
       unique: true,
       minlength: 8,
-      maxlength: 8
+      maxlength: 12
     },
     email: {
       type: String,
