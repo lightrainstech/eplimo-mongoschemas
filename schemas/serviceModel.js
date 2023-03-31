@@ -48,6 +48,7 @@ ServiceSchema.methods = {
     let options = {
       criteria: {
         user: pId,
+        onSale: true,
         $or: [{ isPromoted: true }, { isPromoted: false }]
       },
       page: page,
