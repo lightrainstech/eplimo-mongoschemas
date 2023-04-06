@@ -715,10 +715,12 @@ ActivitySchema.methods = {
       }
       if (nftId.toString() === '6426a2b6a26f62f9ae79d951') {
         criteria.user = ObjectId(userId)
-      }
-      if (date !== null) {
-        criteria.createdAt = {
-          $gt: date
+        criteria.dateIndex = date
+      } else {
+        if (date !== null) {
+          criteria.createdAt = {
+            $gt: date
+          }
         }
       }
 
