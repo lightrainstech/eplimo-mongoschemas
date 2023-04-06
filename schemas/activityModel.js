@@ -763,6 +763,49 @@ ActivitySchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  corp_getTotalKiloMeters: async function (corpId) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          endTime: {
+            $exists: true
+          },
+          corpId: corpId
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalKm: { $sum: '$distance' }
+        }
+      },
+      {
+        $project: {
+          totalKm: 1
+        }
+      }
+    ])
+  },
+  corp_getActiveParticipants: async function (date, corpId) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          dateIndex: date,
+          corpId: corpId
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          uniqueValues: { $addToSet: '$user' }
+        }
+      }
+    ])
   }
 }
 
