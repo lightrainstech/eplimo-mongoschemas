@@ -806,6 +806,60 @@ ActivitySchema.methods = {
         }
       }
     ])
+  },
+  corp_getPointsStat: async function (date, corpId) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          corpId: corpId,
+          endTime: {
+            $exists: true
+          }
+        }
+      },
+      {
+        $sort: { endTime: -1 }
+      },
+      {
+        $group: {
+          _id: '$dateIndex',
+          points: { $sum: '$point' }
+        }
+      }
+    ])
+  },
+  corp_getPointsStat: async function (corpId, startDate, endDate) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          corpId: corpId,
+          endTime: {
+            $exists: true
+          },
+          $and: [
+            {
+              endTime: { $gte: startDate }
+            },
+            {
+              endTime: { $lte: endDate }
+            }
+          ]
+        }
+      },
+      {
+        $sort: { endTime: 1 }
+      },
+      {
+        $group: {
+          _id: '$dateIndex',
+          points: { $sum: '$point' }
+        }
+      }
+    ])
   }
 }
 
