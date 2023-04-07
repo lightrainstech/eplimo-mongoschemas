@@ -43,6 +43,7 @@ const YieldHistory = require('./schemas/yieldHistory.js')
 const ThryveAuthToken = require('./schemas/thryveAuthTokenModel.js')
 const VestingList = require('./schemas/vestingListModel.js')
 const BonusReleaseConsent = require('./schemas/bonusReleaseConsentModel')
+const CorpChallenge = require('./schemas/corpChallengeModel')
 
 module.exports = {
   Admin,
@@ -77,5 +78,6 @@ module.exports = {
   YieldHistory,
   ThryveAuthToken,
   VestingList,
-  BonusReleaseConsent
+  BonusReleaseConsent,
+  CorpChallenge
 }
