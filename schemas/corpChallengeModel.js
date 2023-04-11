@@ -27,12 +27,24 @@ const CorpChallengeSchema = new mongoose.Schema(
       mimeType: {
         type: String
       }
+    },
+    corpId: {
+      type: ObjectId,
+      ref: 'Corporate',
+      required: true
     }
   },
   { timestamps: true }
 )
 
-CorpChallengeSchema.methods = {}
+CorpChallengeSchema.methods = {
+  getChallengeById: async function (challengeId) {
+    const challengeModel = mongoose.model('CorpChallenge')
+    return await challengeModel.find({
+      _id: ObjectId(challengeId)
+    })
+  }
+}
 
 CorpChallengeSchema.index({})
 
