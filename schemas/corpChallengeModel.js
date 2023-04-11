@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Types
 
 const CorpChallengeSchema = new mongoose.Schema(
   {
@@ -38,14 +38,18 @@ const CorpChallengeSchema = new mongoose.Schema(
 )
 
 CorpChallengeSchema.methods = {
-  getChallengeById: async function (challengeId) {
+  getChallengeById: async function (corpId, challengeId) {
     const challengeModel = mongoose.model('CorpChallenge')
     return await challengeModel.find({
-      _id: ObjectId(challengeId)
+      _id: ObjectId(challengeId),
+      corpId: ObjectId(corpId)
     })
   }
 }
 
-CorpChallengeSchema.index({})
+CorpChallengeSchema.index({
+  _id: 1,
+  corpId: 1
+})
 
 module.exports = mongoose.model('CorpChallenge', CorpChallengeSchema)

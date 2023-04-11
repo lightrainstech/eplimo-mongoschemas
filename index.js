@@ -44,6 +44,7 @@ const ThryveAuthToken = require('./schemas/thryveAuthTokenModel.js')
 const VestingList = require('./schemas/vestingListModel.js')
 const BonusReleaseConsent = require('./schemas/bonusReleaseConsentModel')
 const CorpChallenge = require('./schemas/corpChallengeModel')
+const CorpChallengeParticipant = require('./schemas/corpChallengeParticipantModel')
 
 module.exports = {
   Admin,
@@ -79,5 +80,6 @@ module.exports = {
   ThryveAuthToken,
   VestingList,
   BonusReleaseConsent,
-  CorpChallenge
+  CorpChallenge,
+  CorpChallengeParticipant
 }
