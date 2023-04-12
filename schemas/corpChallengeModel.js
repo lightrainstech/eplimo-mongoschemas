@@ -44,6 +44,30 @@ CorpChallengeSchema.methods = {
       _id: ObjectId(challengeId),
       corpId: ObjectId(corpId)
     })
+  },
+  getAllChallengesByCorp: async function (corpId, page) {
+    const challengeModel = mongoose.model('CorpChallenge')
+    let options = { criteria: { corpId: ObjectId(corpId) }, page: Number(page) }
+    console.log(options)
+    return await challengeModel.listForPagination(options)
+  }
+}
+CorpChallengeSchema.statics = {
+  listForPagination: function (options) {
+    const criteria = options.criteria || {}
+    const page = options.page === 0 ? 0 : options.page - 1
+    const limit = parseInt(options.limit) || 18
+    const sortRule = options.sortRule || {}
+    const select = options.select || ''
+    const populate = options.populate || ''
+    return this.find(criteria)
+      .select(select)
+      .sort(sortRule)
+      .limit(limit)
+      .skip(limit * page)
+      .populate(populate)
+      .lean()
+      .exec()
   }
 }
 
