@@ -768,23 +768,50 @@ ActivitySchema.methods = {
     const Activity = mongoose.model('Activity')
     return await Activity.aggregate([
       {
-        $match: {
-          activityType: { $in: ['walk', 'run', 'jog'] },
-          endTime: {
-            $exists: true
-          },
-          corpId: corpId
+        $match: { corpId: corpId, point: { $gt: 0 } }
+      },
+      {
+        $group: {
+          _id: '$user',
+          totalDistance: { $sum: '$distance' },
+          totalPoints: { $sum: '$point' }
+        }
+      },
+      {
+        $sort: {
+          totalPoints: -1
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'userData'
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          user: '$_id',
+          totalDistance: 1,
+          totalPoints: 1,
+          name: { $arrayElemAt: ['$userData.name', 0] },
+          email: { $arrayElemAt: ['$userData.email', 0] }
         }
       },
       {
         $group: {
           _id: null,
-          totalKm: { $sum: '$distance' }
-        }
-      },
-      {
-        $project: {
-          totalKm: 1
+          totalDistance: { $sum: '$totalDistance' },
+          users: {
+            $push: {
+              user: '$user',
+              name: '$name',
+              totalDistance: '$totalDistance',
+              totalPoints: '$totalPoints'
+            }
+          }
         }
       }
     ])
@@ -924,6 +951,11 @@ ActivitySchema.index(
     nft: 1,
     activityType: 1,
     endTime: 1
+  },
+  { corpId: 1 },
+  {
+    corpId: 1,
+    point: 1
   }
 )
 
