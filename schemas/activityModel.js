@@ -808,6 +808,7 @@ ActivitySchema.methods = {
             $push: {
               user: '$user',
               name: '$name',
+              email: '$email',
               totalDistance: '$totalDistance',
               totalPoints: '$totalPoints'
             }
@@ -834,30 +835,7 @@ ActivitySchema.methods = {
       }
     ])
   },
-  corp_getPointsStat: async function (date, corpId) {
-    const Activity = mongoose.model('Activity')
-    return await Activity.aggregate([
-      {
-        $match: {
-          activityType: { $in: ['walk', 'run', 'jog'] },
-          corpId: corpId,
-          endTime: {
-            $exists: true
-          }
-        }
-      },
-      {
-        $sort: { endTime: -1 }
-      },
-      {
-        $group: {
-          _id: '$dateIndex',
-          points: { $sum: '$point' }
-        }
-      }
-    ])
-  },
-  corp_getPointsStat: async function (corpId, startDate, endDate) {
+  corp_getSenakerStat: async function (corpId, startDate) {
     const Activity = mongoose.model('Activity')
     return await Activity.aggregate([
       {
@@ -867,18 +845,43 @@ ActivitySchema.methods = {
           endTime: {
             $exists: true
           },
-          $and: [
-            {
-              endTime: { $gte: startDate }
-            },
-            {
-              endTime: { $lte: endDate }
-            }
-          ]
+          startTime: { $gte: startDate }
         }
       },
       {
-        $sort: { endTime: 1 }
+        $group: {
+          _id: null,
+          unique_values: { $addToSet: '$nft' }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          unique_count: { $size: '$unique_values' }
+        }
+      }
+    ])
+  },
+  corp_getPointsStat: async function (corpId, startDate) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          corpId: corpId,
+          endTime: {
+            $exists: true
+          },
+
+          startTime: { $gte: startDate }
+        }
+      },
+      {
+        $project: {
+          dateIndex: 1,
+          point: 1,
+          _id: 1
+        }
       },
       {
         $group: {
