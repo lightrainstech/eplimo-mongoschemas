@@ -45,6 +45,7 @@ const VestingList = require('./schemas/vestingListModel.js')
 const BonusReleaseConsent = require('./schemas/bonusReleaseConsentModel')
 const CorpChallenge = require('./schemas/corpChallengeModel')
 const CorpChallengeParticipant = require('./schemas/corpChallengeParticipantModel')
+const StakeReleaseConsent = require('./schemas/stakeReleaseConsentModel')
 
 module.exports = {
   Admin,
@@ -81,5 +82,6 @@ module.exports = {
   VestingList,
   BonusReleaseConsent,
   CorpChallenge,
-  CorpChallengeParticipant
+  CorpChallengeParticipant,
+  StakeReleaseConsent
 }
