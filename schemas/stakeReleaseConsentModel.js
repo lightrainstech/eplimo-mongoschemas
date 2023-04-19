@@ -10,7 +10,7 @@ const StakeReleaseConsentSchema = new mongoose.Schema(
     mode: {
       type: Number,
       require: true,
-      enum: [2, 3]
+      enum: [1, 2]
     },
     isAgree: {
       type: Boolean,
