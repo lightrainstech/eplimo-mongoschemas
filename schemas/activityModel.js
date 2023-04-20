@@ -888,6 +888,30 @@ ActivitySchema.methods = {
           _id: '$dateIndex',
           points: { $sum: '$point' }
         }
+      },
+      {
+        $project: {
+          _id: 1,
+          points: 1,
+          totalPoints: { $sum: '$points' }
+        }
+      }
+    ])
+  },
+  corp_getActiveSneakers: async function (corpId) {
+    const Activity = mongoose.model('Activity')
+    return await Activity.aggregate([
+      {
+        $match: {
+          activityType: { $in: ['walk', 'run', 'jog'] },
+          corpId: corpId
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          uniqueValues: { $addToSet: '$nft' }
+        }
       }
     ])
   }
