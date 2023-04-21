@@ -13,6 +13,11 @@ const CorpChallengeParticipantSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
+    nft: {
+      type: ObjectId,
+      ref: 'Asset',
+      required: true
+    },
     corpId: {
       type: ObjectId,
       ref: 'Corporate',
@@ -24,7 +29,9 @@ const CorpChallengeParticipantSchema = new mongoose.Schema(
 
 CorpChallengeParticipantSchema.methods = {}
 
-CorpChallengeParticipantSchema.index({})
+CorpChallengeParticipantSchema.index({
+  challenge: 1
+})
 
 module.exports = mongoose.model(
   'CorpChallengeParticipant',
