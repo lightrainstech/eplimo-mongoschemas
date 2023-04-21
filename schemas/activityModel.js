@@ -876,24 +876,45 @@ ActivitySchema.methods = {
           startTime: { $gte: startDate }
         }
       },
-      {
-        $project: {
-          dateIndex: 1,
-          point: 1,
-          _id: 1
-        }
-      },
+      // {
+      //   $project: {
+      //     dateIndex: 1,
+      //     point: 1,
+      //     _id: 1,
+      //     startTime: 1
+      //   }
+      // },
+
       {
         $group: {
-          _id: '$dateIndex',
+          _id: {
+            dateIndex: '$dateIndex',
+            startTime: '$startTime',
+            activityId: '$_id'
+          },
           points: { $sum: '$point' }
         }
       },
       {
-        $project: {
-          _id: 1,
-          points: 1,
-          totalPoints: { $sum: '$points' }
+        $sort: {
+          '_id.activityId': 1
+        }
+      },
+      {
+        $limit: 10
+      },
+      {
+        $group: {
+          _id: null,
+          totalPoints: {
+            $sum: '$points'
+          },
+          data: {
+            $push: {
+              _id: '$_id.dateIndex',
+              point: '$points'
+            }
+          }
         }
       }
     ])

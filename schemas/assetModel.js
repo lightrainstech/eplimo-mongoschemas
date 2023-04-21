@@ -640,8 +640,16 @@ AssetSchema.methods = {
         {
           $lookup: {
             from: 'users',
-            localField: 'owner',
-            foreignField: 'custodyWallet.wallet',
+            let: { owner: '$owner' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$custodyWallet.wallet', '$$owner'] }
+                }
+              },
+              { $project: { userName: 1, email: 1 } }
+              //  { $limit: 100 }
+            ],
             as: 'users'
           }
         },
@@ -662,7 +670,7 @@ AssetSchema.methods = {
         {
           $unwind: {
             path: '$rewards',
-            preserveNullAndEmptyArrays: false
+            preserveNullAndEmptyArrays: true
           }
         },
         {
