@@ -40,7 +40,7 @@ const CorpChallengeSchema = new mongoose.Schema(
 CorpChallengeSchema.methods = {
   getChallengeById: async function (corpId, challengeId) {
     const challengeModel = mongoose.model('CorpChallenge')
-    return await ChallengeModel.aggregate([
+    return await challengeModel.aggregate([
       {
         $match: {
           _id: ObjectId(challengeId)
