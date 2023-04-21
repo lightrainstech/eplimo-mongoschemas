@@ -763,7 +763,7 @@ UserSchema.methods = {
         {
           $unwind: {
             path: '$asset',
-            preserveNullAndEmptyArrays: false
+            preserveNullAndEmptyArrays: true
           }
         },
         {
@@ -777,7 +777,7 @@ UserSchema.methods = {
         {
           $unwind: {
             path: '$rewards',
-            preserveNullAndEmptyArrays: false
+            preserveNullAndEmptyArrays: true
           }
         },
         {
