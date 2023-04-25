@@ -1004,6 +1004,17 @@ ActivitySchema.index(
   {
     corpId: 1,
     point: 1
+  },
+  { activityType: 1, corpId: 1, endTime: 1, startTime: 1 },
+  { activityType: 1, corpId: 1 },
+  { activityType: 1, dateIndex: 1, corpId: 1 },
+  { nft: 1, user: 1, dateIndex: 1 },
+  {
+    user: 1,
+    nft: 1,
+    activityType: 1,
+    dateIndex: 1,
+    endTime: 1
   }
 )
 
