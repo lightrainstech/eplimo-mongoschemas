@@ -972,15 +972,48 @@ ActivitySchema.statics = {
 
 ActivitySchema.index(
   {
+    _id: 1,
     user: 1
   },
   {
-    nft: 1
+    user: 1,
+    nft: 1,
+    activityType: 1,
+    dateIndex: 1,
+    endTime: 1
   },
   {
+    user: 1,
+    activityType: 1,
+    endTime: 1
+  },
+  {
+    user: 1,
+    activityType: 1,
+    endTime: 1,
+    isWearable: 1
+  },
+  {
+    user: 1,
+    isWearable: 1
+  },
+  {
+    _id: 1,
+    activityType: 1
+  },
+  {
+    activityType: 1,
     dateIndex: 1
   },
-  { activityType: 1, point: 1 },
+  {
+    user: 1,
+    activityType: 1,
+    dateIndex: 1
+  },
+  {
+    activityType: 1,
+    point: 1
+  },
   {
     nft: 1,
     dateIndex: 1,
@@ -993,28 +1026,32 @@ ActivitySchema.index(
   },
   {
     nft: 1,
-    activityType: 1
+    activityType: 1,
+    dateIndex: 1
   },
   {
     nft: 1,
     activityType: 1,
     endTime: 1
   },
-  { corpId: 1 },
   {
     corpId: 1,
     point: 1
   },
-  { activityType: 1, corpId: 1, endTime: 1, startTime: 1 },
-  { activityType: 1, corpId: 1 },
-  { activityType: 1, dateIndex: 1, corpId: 1 },
-  { nft: 1, user: 1, dateIndex: 1 },
   {
-    user: 1,
-    nft: 1,
     activityType: 1,
     dateIndex: 1,
-    endTime: 1
+    corpId: 1
+  },
+  {
+    activityType: 1,
+    corpId: 1,
+    endTime: 1,
+    startTime: 1
+  },
+  {
+    activityType: 1,
+    corpId: 1
   }
 )
 
