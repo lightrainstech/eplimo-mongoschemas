@@ -761,23 +761,11 @@ UserSchema.methods = {
           }
         },
         {
-          $unwind: {
-            path: '$asset',
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
           $lookup: {
             from: 'activityrewards',
             localField: '_id',
             foreignField: 'user',
             as: 'rewards'
-          }
-        },
-        {
-          $unwind: {
-            path: '$rewards',
-            preserveNullAndEmptyArrays: true
           }
         },
         {
@@ -806,53 +794,22 @@ UserSchema.methods = {
           }
         },
         {
-          $group: {
-            _id: '$_id',
-            email: {
-              $first: '$email'
-            },
-            userName: {
-              $first: '$userName'
-            },
-            fullName: {
-              $first: '$name'
-            },
-            tokenId: {
-              $first: '$asset.tokenId'
-            },
-            name: {
-              $first: '$asset.name'
-            },
-            category: {
-              $first: '$asset.category'
-            },
-            efficiencyIndex: {
-              $first: '$asset.efficiencyIndex'
-            },
-            image: {
-              $first: '$asset.asset'
-            },
-            thumbnail: {
-              $first: '$asset.thumbnail'
-            },
-            price: {
-              $first: '$asset.price'
-            },
-            sneakerLife: {
-              $first: '$asset.sneakerLife'
-            },
-            earnings: {
-              $push: '$rewards'
-            },
-            totalDistance: {
-              $sum: '$activities.distance'
-            },
-            totalPoints: {
-              $sum: '$activities.point'
-            },
-            repairs: {
-              $first: '$repairs'
-            }
+          $project: {
+            email: 1,
+            userName: 1,
+            fullName: '$name',
+            tokenId: { $arrayElemAt: ['$asset.tokenId', 0] },
+            name: { $arrayElemAt: ['$asset.name', 0] },
+            category: { $arrayElemAt: ['$asset.category', 0] },
+            efficiencyIndex: { $arrayElemAt: ['$asset.efficiencyIndex', 0] },
+            image: { $arrayElemAt: ['$asset.asset', 0] },
+            thumbnail: { $arrayElemAt: ['$asset.thumbnail', 0] },
+            price: { $arrayElemAt: ['$asset.price', 0] },
+            sneakerLife: { $arrayElemAt: ['$asset.sneakerLife', 0] },
+            earnings: '$rewards',
+            totalDistance: { $sum: '$activities.distance' },
+            totalPoints: { $sum: '$activities.point' },
+            repairs: '$repairs'
           }
         }
       ])
