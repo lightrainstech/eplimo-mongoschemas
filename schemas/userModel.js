@@ -1048,28 +1048,56 @@ UserSchema.statics = {
 
 UserSchema.index(
   {
-    referalCode: 1
-  },
-  {
     email: 1
   },
-  { authToken: 1 },
-  { userName: 1 },
-  { email: 1, isEmailVerified: 1 },
+  { _id: 1 },
   { email: 1, userName: 1 },
-  { category: 1, practitionerCategory: 1, isMetaverse: 1 },
-  { name: 'text' },
-  { bio: 'text' },
-  { location: 'text' },
-  { userName: 'text' },
-  { isDeleted: 1, isActive: 1, isPractitioner: 1 },
+  { userName: 1 },
+  { _id: 1, authToken: 1 },
+  { email: 1, isEmailVerified: 1 },
+  { _id: 1, 'nonCustodyWallet.wallet': 1, 'nonCustodyWallet.isVerified': 1 },
+  {
+    isDeleted: 1,
+    'nonCustodyWallet.wallet': 1,
+    'nonCustodyWallet.isVerified': 1
+  },
+  { _id: 1, 'nonCustodyWallet.isVerified': 1 },
+  { referralCode: 1 },
+  {
+    isPractitioner: 1,
+    isDeleted: 1,
+    isActive: 1,
+    isKycVerified: 1
+  },
   {
     isPractitioner: 1,
     isDeleted: 1,
     isActive: 1,
     isKycVerified: 1,
-    'avatar.path': 1
+    practitionerCategory: 1,
+    isMetaverse: 1
   },
+  {
+    isInstitution: 1,
+    isDeleted: 1,
+    isActive: 1,
+    isKycVerified: 1
+  },
+  {
+    isInstitution: 1,
+    isDeleted: 1,
+    isActive: 1,
+    isKycVerified: 1,
+    practitionerCategory: 1,
+    isMetaverse: 1
+  },
+  { isDeleted: 1, isActive: 1, isPractitioner: 1, isKycVerified: 1 },
+  { isPractitioner: 1 },
+  { corpId: 1 },
+  { name: 'text' },
+  { bio: 'text' },
+  { location: 'text' },
+  { userName: 'text' },
   { email: 'text', name: 'text' }
 )
 
