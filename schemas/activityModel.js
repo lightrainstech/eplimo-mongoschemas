@@ -1045,7 +1045,8 @@ ActivitySchema.index(
   {
     activityType: 1,
     corpId: 1
-  }
+  },
+  { user: 1 }
 )
 
 // ActivitySchema.index(
