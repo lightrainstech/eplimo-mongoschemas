@@ -1007,7 +1007,6 @@ UserSchema.index(
   {
     email: 1
   },
-  { _id: 1 },
   { email: 1, userName: 1 },
   { userName: 1 },
   { _id: 1, authToken: 1 },
