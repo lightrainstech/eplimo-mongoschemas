@@ -863,28 +863,12 @@ UserSchema.methods = {
               corpId: corpId
             }
           },
-          { $sort: { updatedAt: -1 } },
-
-          {
-            $project: {
-              name: 1,
-              'custodyWallet.wallet': 1,
-              email: 1,
-              userName: 1
-            }
-          },
           {
             $lookup: {
               from: 'assets',
               localField: 'custodyWallet.wallet',
               foreignField: 'owner',
-              as: 'asset'
-            }
-          },
-          {
-            $unwind: {
-              path: '$asset',
-              preserveNullAndEmptyArrays: false
+              as: 'assets'
             }
           },
           {
@@ -896,12 +880,6 @@ UserSchema.methods = {
             }
           },
           {
-            $unwind: {
-              path: '$rewards',
-              preserveNullAndEmptyArrays: false
-            }
-          },
-          {
             $lookup: {
               from: 'activities',
               localField: '_id',
@@ -910,31 +888,25 @@ UserSchema.methods = {
             }
           },
           {
-            $unwind: {
-              path: '$activities',
-              preserveNullAndEmptyArrays: true
-            }
-          },
-          {
             $group: {
               _id: '$_id',
               tokenId: {
-                $first: '$asset.tokenId'
+                $first: { $arrayElemAt: ['$assets.tokenId', 0] }
               },
               nftId: {
-                $first: '$asset._id'
+                $first: { $arrayElemAt: ['$assets._id', 0] }
               },
               name: {
-                $first: '$asset.name'
+                $first: { $arrayElemAt: ['$assets.name', 0] }
               },
               category: {
-                $first: '$asset.category'
+                $first: { $arrayElemAt: ['$assets.category', 0] }
               },
               efficiencyIndex: {
-                $first: '$asset.efficiencyIndex'
+                $first: { $arrayElemAt: ['$assets.efficiencyIndex', 0] }
               },
               image: {
-                $first: '$asset.asset'
+                $first: { $arrayElemAt: ['$assets.asset', 0] }
               },
               fullName: { $first: '$name' },
               userName: { $first: '$userName' },
@@ -1054,7 +1026,8 @@ UserSchema.index(
   { bio: 'text' },
   { location: 'text' },
   { userName: 'text' },
-  { email: 'text', name: 'text' }
+  { email: 'text', name: 'text' },
+  { corpId: 1, email: 1, name: 1 }
 )
 
 module.exports = mongoose.model('User', UserSchema)
