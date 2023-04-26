@@ -764,6 +764,7 @@ AssetSchema.statics = {
 }
 
 AssetSchema.index(
+  { _id: 1 },
   {
     owner: 1
   },

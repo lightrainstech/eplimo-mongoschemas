@@ -82,6 +82,7 @@ ActivityRewardSchema.methods = {
 }
 
 ActivityRewardSchema.index(
+  { user: 1 },
   {
     nft: 1,
     date: 1

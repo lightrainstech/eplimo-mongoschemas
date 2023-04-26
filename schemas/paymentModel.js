@@ -277,6 +277,10 @@ PaymentSchema.index(
     transactionType: 1,
     status: 1,
     user: 1
+  },
+  {
+    asset: 1,
+    transactionType: 1
   }
 )
 
