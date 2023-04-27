@@ -58,9 +58,30 @@ CorpChallengeSchema.methods = {
   },
   getAllChallengesByCorp: async function (corpId, page) {
     const challengeModel = mongoose.model('CorpChallenge')
-    let options = { criteria: { corpId: ObjectId(corpId) }, page: Number(page) }
-    console.log(options)
-    return await challengeModel.listForPagination(options)
+    return await challengeModel.aggregate([
+      { $match: { corpId: ObjectId(corpId) } },
+      {
+        $lookup: {
+          from: 'corpchallengeparticipants',
+          localField: '_id',
+          foreignField: 'challenge',
+          as: 'participants'
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          startDate: 1,
+          endDate: 1,
+          image: 1,
+          totalParticipants: { $size: '$participants' }
+        }
+      },
+      { $skip: (Number(page) - 1) * 18 },
+      { $limit: 18 }
+    ])
   },
   getChallengeParticipants: async function (challengeId, page) {
     const ChallengeModel = mongoose.model('CorpChallenge')
