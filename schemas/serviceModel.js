@@ -51,7 +51,9 @@ ServiceSchema.methods = {
         $or: [{ isPromoted: true }, { isPromoted: false }]
       },
       page: page,
-      sortRule: { isPromoted: -1, updatedAt: -1 }
+      sortRule: { isPromoted: -1, updatedAt: -1 },
+      select:
+        'user service priceInUSD maxLimoR onSale isPromoted image description custodyWallet name email'
     }
     return await Service.listForPagination(options)
   },
@@ -64,7 +66,9 @@ ServiceSchema.methods = {
         $or: [{ isPromoted: true }, { isPromoted: false }]
       },
       page: page,
-      sortRule: { isPromoted: -1, updatedAt: -1 }
+      sortRule: { isPromoted: -1, updatedAt: -1 },
+      select:
+        'user service priceInUSD maxLimoR onSale isPromoted image description custodyWallet name email'
     }
     return await Service.listForPagination(options)
   },
