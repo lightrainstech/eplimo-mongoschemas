@@ -37,10 +37,10 @@ const CorporateSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-CorporateSchema.pre('save', async function (next) {
-  this.corpSecret = nanoidLong()
-  next()
-})
+// CorporateSchema.pre('save', async function (next) {
+//   this.corpSecret = nanoidLong()
+//   next()
+// })
 
 CorporateSchema.virtual('password')
   .set(function (password) {
