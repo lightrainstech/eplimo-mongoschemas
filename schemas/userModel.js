@@ -540,7 +540,7 @@ UserSchema.methods = {
   getAllpractitioners: async function (category, featured, page, searchTerm) {
     let criteria = {
         isPractitioner: true,
-        isDeleted: false,
+        isDeleted: { $ne: true },
         isActive: true,
         isKycVerified: true
       },
