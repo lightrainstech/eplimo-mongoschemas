@@ -31,6 +31,11 @@ presaleRefBonusSchema.methods = {
   getPresaleReferralBonus: async function (email) {
     const PresaleRefBonus = mongoose.model('presaleRefBonus')
     return await PresaleRefBonus.find({ email }).lean()
+  },
+  checkPresaleReferralBonus: async function (email) {
+    const PresaleRefBonus = mongoose.model('presaleRefBonus')
+    const result = await PresaleRefBonus.findOne({ email })
+    return result
   }
 }
 presaleRefBonusSchema.index({ email: 1 })
