@@ -95,11 +95,15 @@ const UserSchema = new mongoose.Schema(
     lpoCategory: {
       type: String,
       enum: [
+        'Aesthetics',
+        'Alternate Healing',
         'Ayurveda Centre',
+        'Energy Healing',
         'Fitness Center',
         'Health Food',
         'Health tech products',
         'Hospitals/Clinics',
+        'Mind Coach',
         'Other',
         'Training Company',
         'Wellness Centre',
@@ -186,6 +190,10 @@ const UserSchema = new mongoose.Schema(
         'Psychology',
         'Physiotherapy',
         'Life coaching',
+        'Aesthetics',
+        'Alternate Healing',
+        'Energy Healing',
+        'Mind Coach',
         'NA'
       ],
       default: 'NA'
