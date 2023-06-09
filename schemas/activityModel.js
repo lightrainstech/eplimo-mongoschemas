@@ -200,6 +200,8 @@ ActivitySchema.methods = {
     }
     if (isWearable) {
       criteria.isWearable = isWearable
+    } else {
+      criteria.isWearable = { $ne: true }
     }
     return await Activity.aggregate([
       {
@@ -247,6 +249,8 @@ ActivitySchema.methods = {
     criteria.user = ObjectId(userId)
     if (isWearable) {
       criteria.isWearable = isWearable
+    } else {
+      criteria.isWearable = { $ne: true }
     }
     return await Activity.aggregate([
       {
