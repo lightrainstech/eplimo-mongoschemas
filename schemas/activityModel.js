@@ -199,9 +199,12 @@ ActivitySchema.methods = {
       }
     }
     if (isWearable) {
-      criteria.isWearable = isWearable
+      criteria.$and = [{ isWearable: true }, { isWearable: { $exists: true } }]
     } else {
-      criteria.isWearable = { $ne: true }
+      criteria.$or = [
+        { isWearable: { $ne: true } },
+        { isWearable: { $exists: false } }
+      ]
     }
     return await Activity.aggregate([
       {
@@ -232,7 +235,8 @@ ActivitySchema.methods = {
           point: 1,
           metaData: 1,
           dateIndex: 1,
-          burnedCalories: 1
+          burnedCalories: 1,
+          isWearable: 1
         }
       }
     ])
@@ -248,9 +252,12 @@ ActivitySchema.methods = {
     let criteria = {}
     criteria.user = ObjectId(userId)
     if (isWearable) {
-      criteria.isWearable = isWearable
+      criteria.$and = [{ isWearable: true }, { isWearable: { $exists: true } }]
     } else {
-      criteria.isWearable = { $ne: true }
+      criteria.$or = [
+        { isWearable: { $ne: true } },
+        { isWearable: { $exists: false } }
+      ]
     }
     return await Activity.aggregate([
       {
@@ -280,7 +287,8 @@ ActivitySchema.methods = {
           endTime: 1,
           point: 1,
           metaData: 1,
-          dateIndex: 1
+          dateIndex: 1,
+          isWearable: 1
         }
       }
     ])
