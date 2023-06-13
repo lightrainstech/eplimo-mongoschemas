@@ -511,6 +511,32 @@ ActivitySchema.methods = {
     if (result.length > 0) return result[0]
     else return { _id: null, totalPoint: 0 }
   },
+  getTotalTrialWearablePointsOfAUser: async function (userId, date) {
+    const Activity = mongoose.model('Activity'),
+      previousDay = moment().subtract(1, 'day').toISOString(),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            user: ObjectId(userId),
+            activityType: { $in: ['workout'] },
+            dateIndex: date
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            totalPoint: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalPoint: 0 }
+  },
   getActiveParticipants: async function (date) {
     const Activity = mongoose.model('Activity')
     return await Activity.aggregate([
