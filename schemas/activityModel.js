@@ -361,7 +361,7 @@ ActivitySchema.methods = {
       result = await Activity.aggregate([
         {
           $match: {
-            activityType: { $in: ['walk', 'run', 'jog'] },
+            activityType: { $in: ['walk', 'run', 'jog', 'workout'] },
             dateIndex: date
           }
         },
@@ -429,7 +429,7 @@ ActivitySchema.methods = {
                       { $eq: [{ $size: '$notTrialNFT' }, 0] }
                     ]
                   },
-                  then: '$user',
+                  then: { user: '$user', isWearable: '$isWearable' },
                   else: '$$REMOVE'
                 }
               }
@@ -443,7 +443,7 @@ ActivitySchema.methods = {
                       { $eq: [{ $size: '$trialNFT' }, 0] }
                     ]
                   },
-                  then: '$user',
+                  then: { user: '$user' },
                   else: '$$REMOVE'
                 }
               }
@@ -492,7 +492,33 @@ ActivitySchema.methods = {
         {
           $match: {
             user: ObjectId(userId),
-            activityType: { $in: ['walk', 'run', 'jog'] },
+            activityType: { $in: ['walk', 'run', 'jog', 'workout'] },
+            dateIndex: date
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalPoint: { $sum: '$point' }
+          }
+        },
+        {
+          $project: {
+            totalPoint: 1
+          }
+        }
+      ])
+    if (result.length > 0) return result[0]
+    else return { _id: null, totalPoint: 0 }
+  },
+  getTotalTrialWearablePointsOfAUser: async function (userId, date) {
+    const Activity = mongoose.model('Activity'),
+      previousDay = moment().subtract(1, 'day').toISOString(),
+      result = await Activity.aggregate([
+        {
+          $match: {
+            user: ObjectId(userId),
+            activityType: { $in: ['workout'] },
             dateIndex: date
           }
         },
