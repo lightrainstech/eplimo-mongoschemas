@@ -685,7 +685,7 @@ ActivitySchema.methods = {
         {
           $match: {
             nft: ObjectId(nftId),
-            activityType: { $in: ['walk', 'run', 'jog'] },
+            activityType: { $in: ['walk', 'run', 'jog', 'workout'] },
             dateIndex: date
           }
         },
