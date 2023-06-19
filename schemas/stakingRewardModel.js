@@ -30,6 +30,10 @@ const StakingRewardSchema = new mongoose.Schema(
     isProcesses: {
       type: Boolean,
       default: false
+    },
+    wallet: {
+      type: String,
+      default: ''
     }
   },
   { timestamps: true }
