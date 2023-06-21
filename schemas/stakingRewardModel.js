@@ -50,6 +50,25 @@ StakingRewardSchema.methods = {
     } catch (e) {
       throw e
     }
+  },
+  updateSubmission: async function (data) {
+    try {
+      let { submissionId, amount, wallet, email } = data
+      const StakingReward = mongoose.model('StakingReward')
+      return StakingReward.findOneAndUpdate(
+        {
+          email: email,
+          _id: submissionId
+        },
+        {
+          amount: amount,
+          wallet: wallet
+        },
+        { new: true }
+      )
+    } catch (error) {
+      throw e
+    }
   }
 }
 
