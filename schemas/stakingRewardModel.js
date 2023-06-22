@@ -53,7 +53,7 @@ StakingRewardSchema.methods = {
   },
   updateSubmission: async function (data) {
     try {
-      let { submissionId, amount, wallet, email } = data
+      let { submissionId, wallet, email } = data
       const StakingReward = mongoose.model('StakingReward')
       return StakingReward.findOneAndUpdate(
         {
@@ -62,7 +62,6 @@ StakingRewardSchema.methods = {
         },
         {
           $set: {
-            amount: amount,
             wallet: wallet
           }
         },
