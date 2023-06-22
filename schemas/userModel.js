@@ -459,7 +459,8 @@ UserSchema.methods = {
             isApproved: 1,
             isProcesses: 1,
             createdAt: 1,
-            wallet: 1
+            wallet: 1,
+            _id: 1
           },
           totalStakedLimor: { $sum: '$limorstakes.stakeAmount' }
         }
