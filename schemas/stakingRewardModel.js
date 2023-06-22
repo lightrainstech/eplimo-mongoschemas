@@ -61,8 +61,10 @@ StakingRewardSchema.methods = {
           _id: submissionId
         },
         {
-          amount: amount,
-          wallet: wallet
+          $set: {
+            amount: amount,
+            wallet: wallet
+          }
         },
         { new: true }
       )
