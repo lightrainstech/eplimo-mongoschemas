@@ -543,7 +543,7 @@ AssetSchema.methods = {
     try {
       return await AssetModel.findOneAndUpdate(
         { corpId, owner: owner, orderStatus: 'open' },
-        { set: { orderStatus: 'closed' } },
+        { $set: { orderStatus: 'closed' } },
         { new: true }
       )
     } catch (error) {
