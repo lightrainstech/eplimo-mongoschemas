@@ -25,9 +25,26 @@ BonusReleaseConsentSchema.methods = {
   getLinearReleaseSubmission: async user => {
     const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
     return await BonusReleaseConsent.findOne({ user, mode: 'linear-release' })
+  },
+  updateSubmission: async args => {
+    const { user, consentId } = args
+    const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
+    return await BonusReleaseConsent.findOneAndUpdate(
+      {
+        user: ObjectId(user),
+        _id: ObjectId(consentId)
+      },
+      {
+        $set: {
+          mode: 'admin-stake'
+        }
+      },
+      { new: true }
+    )
   }
 }
-BonusReleaseConsentSchema.index({ user: 1 })
+
+BonusReleaseConsentSchema.index({ user: 1 }, { _id: 1, user: 1 })
 
 module.exports = mongoose.model(
   'BonusReleaseConsent',
