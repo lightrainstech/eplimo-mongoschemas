@@ -21,8 +21,13 @@ BonusReleaseConsentSchema.methods = {
   checkForConsent: async user => {
     const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
     return await BonusReleaseConsent.find({ user }).limit(1).lean()
+  },
+  getLinearReleaseSubmission: async user => {
+    const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
+    return await BonusReleaseConsent.findOne({ user, mode: 'linear-release' })
   }
 }
+BonusReleaseConsentSchema.index({ user: 1 })
 
 module.exports = mongoose.model(
   'BonusReleaseConsent',
