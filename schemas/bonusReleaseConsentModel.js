@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Types
 
 const BonusReleaseConsentSchema = new mongoose.Schema(
   {
@@ -32,7 +32,8 @@ BonusReleaseConsentSchema.methods = {
     return await BonusReleaseConsent.findOneAndUpdate(
       {
         user: ObjectId(user),
-        _id: ObjectId(consentId)
+        _id: ObjectId(consentId),
+        mode: 'linear-release'
       },
       {
         $set: {
