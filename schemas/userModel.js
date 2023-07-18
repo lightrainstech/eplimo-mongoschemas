@@ -251,6 +251,14 @@ const UserSchema = new mongoose.Schema(
     wearableNFT: {
       type: String,
       default: null
+    },
+    isKycStatus: {
+      type: String,
+      default: null
+    },
+    kycReferencId: {
+      type: String,
+      default: null
     }
   },
   { timestamps: true }
@@ -315,7 +323,8 @@ UserSchema.methods = {
         custodyWallet: 1,
         isInstitution: 1,
         isPractitioner: 1,
-        isKycVerified: 1
+        isKycVerified: 1,
+        isKycStatus: 1
       }
     ).exec()
   },
