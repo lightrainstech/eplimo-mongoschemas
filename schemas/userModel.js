@@ -252,11 +252,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: null
     },
-    isKycStatus: {
+    kycStatus: {
       type: String,
       default: null
     },
-    kycReferencId: {
+    kycReferenceId: {
       type: String,
       default: null
     }
@@ -324,7 +324,7 @@ UserSchema.methods = {
         isInstitution: 1,
         isPractitioner: 1,
         isKycVerified: 1,
-        isKycStatus: 1
+        kycStatus: 1
       }
     ).exec()
   },
@@ -968,6 +968,34 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  updateKycReferenceId: async function (id, kycReferenceId) {
+    const User = mongoose.model('User')
+    return User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          kycReferenceId: kycReferenceId
+        }
+      },
+      {
+        new: true
+      }
+    )
+  },
+  updateKycDocVerificationStatus: async function (id, kycStatus) {
+    const User = mongoose.model('User')
+    return User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          kycStatus: kycStatus
+        }
+      },
+      {
+        new: true
+      }
+    )
   }
 }
 
