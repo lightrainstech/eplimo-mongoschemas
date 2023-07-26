@@ -47,6 +47,7 @@ const CorpChallenge = require('./schemas/corpChallengeModel')
 const CorpChallengeParticipant = require('./schemas/corpChallengeParticipantModel')
 const StakeReleaseConsent = require('./schemas/stakeReleaseConsentModel')
 const Testimonial = require('./schemas/partnerverse/testimonialModel')
+const B2B = require('./schemas/b2bUsers')
 
 module.exports = {
   Admin,
@@ -85,5 +86,6 @@ module.exports = {
   CorpChallenge,
   CorpChallengeParticipant,
   StakeReleaseConsent,
-  Testimonial
+  Testimonial,
+  B2B
 }
