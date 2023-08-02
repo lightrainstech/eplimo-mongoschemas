@@ -32,6 +32,11 @@ const CorporateSchema = new mongoose.Schema(
     },
     referralCode: {
       type: String
+    },
+    category: {
+      type: String,
+      enum: ['corp', 'b2b'],
+      default: 'corp'
     }
   },
   { timestamps: true }
