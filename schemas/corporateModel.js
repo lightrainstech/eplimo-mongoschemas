@@ -99,7 +99,7 @@ CorporateSchema.methods = {
     try {
       const Corporate = mongoose.model('Corporate')
       return await Corporate.find(
-        { _id: cId },
+        { _id: ObjectId(cId) },
         { email: 1, corpSecret: 1, name: 1, referralCode: 1 }
       ).limit(1)
     } catch (error) {
