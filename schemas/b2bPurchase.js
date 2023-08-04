@@ -11,8 +11,7 @@ const B2BPurchaseSchema = new mongoose.Schema(
       required: true
     },
     referalCode: {
-      type: String,
-      required: true
+      type: String
     },
     nft: {
       type: Schema.ObjectId,
