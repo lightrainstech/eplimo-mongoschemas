@@ -259,6 +259,11 @@ const UserSchema = new mongoose.Schema(
     kycReferenceId: {
       type: String,
       default: null
+    },
+    referredBy: {
+      type: ObjectId,
+      ref: 'User',
+      default: null
     }
   },
   { timestamps: true }
@@ -337,7 +342,10 @@ UserSchema.methods = {
     let query = {
       $or: [{ email: creds }, { userName: creds }]
     }
-    let result = await User.find(query).limit(1).exec()
+    let result = await User.find(query)
+      .limit(1)
+      .populate({ path: 'referredBy', select: 'email' })
+      .exec()
     return result.length > 0 ? result[0] : null
   },
   setAuthToken: async function (email, authToken) {
@@ -996,6 +1004,30 @@ UserSchema.methods = {
         new: true
       }
     )
+  },
+  getFiveLevelReferral: async function (user) {
+    try {
+      const User = mongoose.model('User')
+    } catch (error) {
+      throw error
+    }
+  },
+  addParent: async function (userId, parent) {
+    try {
+      console.log(userId, parent)
+      const user = mongoose.model('User')
+      return await user.findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        {
+          $set: {
+            referredBy: parent
+          }
+        },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
