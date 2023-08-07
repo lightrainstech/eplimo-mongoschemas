@@ -1014,7 +1014,6 @@ UserSchema.methods = {
   },
   addParent: async function (userId, parent) {
     try {
-      console.log(userId, parent)
       const user = mongoose.model('User')
       return await user.findOneAndUpdate(
         { _id: ObjectId(userId) },
