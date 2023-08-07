@@ -23,7 +23,6 @@ const RelationshipSchema = new mongoose.Schema(
 RelationshipSchema.methods = {
   getUserLevel: async function (child) {
     try {
-      console.log(child)
       const RelationshipModel = mongoose.model('RelationshipSchema')
       return await RelationshipModel.findOne({ child: ObjectId(child) })
     } catch (error) {
