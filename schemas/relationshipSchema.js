@@ -49,7 +49,37 @@ RelationshipSchema.methods = {
     } catch (error) {
       console.log(error)
     }
+  },
+  getIfChild: async function (user) {
+    try {
+      const RelationshipModel = mongoose.model('RelationshipSchema')
+      return await RelationshipModel.findOne({
+        child: ObjectId(user)
+      })
+    } catch (error) {
+      throw error
+    }
+  },
+  getIfParent: async function (user) {
+    try {
+      const RelationshipModel = mongoose.model('RelationshipSchema')
+      return await RelationshipModel.findOne({
+        parent: ObjectId(user)
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
+
+RelationshipSchema.index(
+  {
+    parent: 1
+  },
+  {
+    child: 1
+  },
+  { parent: 1, child: 1 }
+)
 
 module.exports = mongoose.model('RelationshipSchema', RelationshipSchema)
