@@ -709,7 +709,7 @@ ActivitySchema.methods = {
       const Activity = mongoose.model('Activity')
       let criteria = {
         nft: ObjectId(nftId),
-        activityType: { $in: ['walk', 'run', 'jog'] }
+        activityType: { $in: ['walk', 'run', 'jog', 'workout'] }
       }
       if (startDate !== null && endDate !== null) {
         criteria.$and = [
