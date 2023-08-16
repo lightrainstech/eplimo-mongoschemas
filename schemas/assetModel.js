@@ -57,6 +57,7 @@ const assetPopulateQueries = {
     projectName: 1,
     createdAt: 1,
     updatedAt: 1,
+    isWearable: 1,
     auctionDetails: { $first: '$auctionDetails' }
   }
 }
