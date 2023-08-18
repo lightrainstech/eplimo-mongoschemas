@@ -10,7 +10,7 @@ const B2BPurchaseSchema = new mongoose.Schema(
       ref: 'Corporate',
       required: true
     },
-    referalCode: {
+    referralCode: {
       type: String
     },
     nft: {
@@ -27,6 +27,23 @@ const B2BPurchaseSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-B2BPurchaseSchema.methods = {}
+B2BPurchaseSchema.methods = {
+  getSalesByReferral: async referralCode => {
+    try {
+      const B2BPurchase = mongoose.model('B2BPurchase')
+      return await B2BPurchase.find({ referralCode: referralCode })
+        .populate({
+          path: 'user',
+          select: 'email referalCode'
+        })
+        .populate({
+          path: 'nft',
+          select: 'name price tokenId thumbnail'
+        })
+    } catch (error) {
+      throw error
+    }
+  }
+}
 
 module.exports = mongoose.model('B2BPurchase', B2BPurchaseSchema)
