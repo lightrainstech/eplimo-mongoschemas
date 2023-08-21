@@ -656,16 +656,8 @@ AssetSchema.methods = {
         {
           $lookup: {
             from: 'users',
-            let: { owner: '$owner' },
-            pipeline: [
-              {
-                $match: {
-                  $expr: { $eq: ['$custodyWallet.wallet', '$$owner'] }
-                }
-              },
-              { $project: { userName: 1, email: 1 } }
-              //  { $limit: 100 }
-            ],
+            localField: 'owner', // Use localField as it's directly from the asset
+            foreignField: 'custodyWallet.wallet', // Assuming this is how the relationship works
             as: 'users'
           }
         },
@@ -684,12 +676,6 @@ AssetSchema.methods = {
           }
         },
         {
-          $unwind: {
-            path: '$rewards',
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
           $lookup: {
             from: 'activities',
             localField: 'users._id',
@@ -698,49 +684,25 @@ AssetSchema.methods = {
           }
         },
         {
-          $unwind: {
-            path: '$activities',
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
           $group: {
             _id: '$users._id',
-            tokenId: {
-              $first: '$tokenId'
-            },
-            nftId: {
-              $first: '$_id'
-            },
-            name: {
-              $first: '$name'
-            },
-            category: {
-              $first: '$category'
-            },
-            efficiencyIndex: {
-              $first: '$efficiencyIndex'
-            },
-            image: {
-              $first: '$asset'
-            },
+            tokenId: { $first: '$tokenId' },
+            nftId: { $first: '$_id' },
+            name: { $first: '$name' },
+            category: { $first: '$category' },
+            efficiencyIndex: { $first: '$efficiencyIndex' },
+            image: { $first: '$asset' },
             fullName: { $first: '$users.name' },
             userName: { $first: '$users.userName' },
             email: { $first: '$users.email' },
-            totalLimos: {
-              $sum: '$rewards.limos'
-            },
-            totalDistance: {
-              $sum: '$activities.distance'
-            },
-            totalPoints: {
-              $sum: '$activities.point'
-            }
+            totalLimos: { $sum: { $ifNull: ['$rewards.limos', 0] } }, // Handle missing rewards
+            totalDistance: { $sum: { $ifNull: ['$activities.distance', 0] } }, // Handle missing activities
+            totalPoints: { $sum: { $ifNull: ['$activities.point', 0] } } // Handle missing activities
           }
-        }
+        },
+        { $skip: skipLimit },
+        { $limit: limit }
       ])
-        .skip(skipLimit)
-        .limit(limit)
     } catch (error) {
       throw error
     }
