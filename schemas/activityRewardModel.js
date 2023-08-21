@@ -87,7 +87,8 @@ ActivityRewardSchema.index(
     nft: 1,
     date: 1
   },
-  { nft: 1 }
+  { nft: 1 },
+  { limos: 1 }
 )
 
 module.exports = mongoose.model('ActivityReward', ActivityRewardSchema)

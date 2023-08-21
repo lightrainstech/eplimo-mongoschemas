@@ -1084,7 +1084,9 @@ ActivitySchema.index(
     activityType: 1,
     corpId: 1
   },
-  { user: 1 }
+  { user: 1 },
+  { distance: 1 },
+  { point: 1 }
 )
 
 // ActivitySchema.index(
