@@ -539,8 +539,8 @@ UserSchema.methods = {
   updateReferalCode: async function (userId, referalCode) {
     const User = mongoose.model('User'),
       result = await User.findOneAndUpdate(
-        { _id: ObjectId(userId) },
-        { referalCode },
+        { _id: ObjectId(userId), referalCode: { $exists: false } },
+        { $set: { referalCode: referalCode } },
         { new: true }
       )
     return result
