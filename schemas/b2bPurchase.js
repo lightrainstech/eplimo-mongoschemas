@@ -34,7 +34,7 @@ B2BPurchaseSchema.methods = {
       return await B2BPurchase.find({ referralCode: referralCode })
         .populate({
           path: 'user',
-          select: 'email referalCode'
+          select: 'email referalCode name userName'
         })
         .populate({
           path: 'nft',

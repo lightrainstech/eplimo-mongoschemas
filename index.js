@@ -50,6 +50,7 @@ const Testimonial = require('./schemas/partnerverse/testimonialModel')
 const B2B = require('./schemas/b2bUsers')
 const B2BPurchase = require('./schemas/b2bPurchase')
 const RelationshipSchema = require('./schemas/relationshipSchema')
+const NftPurchase = require('./schemas/nftPurchase')
 
 module.exports = {
   Admin,
@@ -91,5 +92,6 @@ module.exports = {
   Testimonial,
   B2B,
   B2BPurchase,
-  RelationshipSchema
+  RelationshipSchema,
+  NftPurchase
 }
