@@ -821,6 +821,32 @@ UserSchema.methods = {
           }
         },
         {
+          $lookup: {
+            from: 'activities', // Assuming the collection name is 'activities'
+            localField: '_id',
+            foreignField: 'user',
+            as: 'activities'
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalDistance: { $sum: '$activities.distance' },
+            totalPoints: { $sum: '$activities.point' },
+            userDoc: { $first: '$$ROOT' } // Preserve the user document
+          }
+        },
+        {
+          $replaceRoot: {
+            newRoot: {
+              $mergeObjects: [
+                '$userDoc',
+                { totalDistance: '$totalDistance', totalPoints: '$totalPoints' }
+              ]
+            }
+          }
+        },
+        {
           $project: {
             email: 1,
             userName: 1,
