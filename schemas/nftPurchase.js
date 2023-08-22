@@ -16,7 +16,7 @@ const NftPurchaseSchema = new mongoose.Schema(
     txnHash: {
       type: String,
       unique: true,
-      required: true
+      required: false
     }
   },
   { timestamps: true }
