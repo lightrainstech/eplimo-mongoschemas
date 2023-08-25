@@ -1019,7 +1019,7 @@ UserSchema.methods = {
   },
   updateKycDocVerificationStatus: async function (id, kycStatus) {
     const User = mongoose.model('User')
-    return User.findByIdAndUpdate(
+    return await User.findByIdAndUpdate(
       id,
       {
         $set: {
