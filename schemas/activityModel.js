@@ -756,7 +756,7 @@ ActivitySchema.methods = {
         criteria.dateIndex = date
       } else {
         if (date !== null) {
-          criteria.createdAt = {
+          criteria.startTime = {
             $gt: date
           }
         }
