@@ -79,7 +79,7 @@ NftPurchaseSchema.methods = {
   }
 }
 
-NftPurchase.index(
+NftPurchaseSchema.index(
   {
     referralCode: 1
   },
