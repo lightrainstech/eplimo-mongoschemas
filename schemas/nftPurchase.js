@@ -29,6 +29,14 @@ NftPurchaseSchema.methods = {
       const NftPurchase = mongoose.model('NftPurchase')
       return NftPurchase.aggregate([
         {
+          $match: {
+            createdAt: {
+              $gte: new Date(startDate),
+              $lte: new Date(endDate)
+            }
+          }
+        },
+        {
           $lookup: {
             from: 'assets',
             localField: 'nft',
