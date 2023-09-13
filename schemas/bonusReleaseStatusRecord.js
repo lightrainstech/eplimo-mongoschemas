@@ -16,7 +16,7 @@ const BonusReleaseStatusRecordSchema = new mongoose.Schema(
     status: {
       type: String,
       require: true,
-      enum: ['pending', 'progress', 'completed']
+      enum: ['pending', 'inProgress', 'completed']
     },
     counter: {
       type: Number,
