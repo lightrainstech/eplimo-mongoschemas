@@ -51,6 +51,7 @@ const B2B = require('./schemas/b2bUsers')
 const B2BPurchase = require('./schemas/b2bPurchase')
 const RelationshipSchema = require('./schemas/relationshipSchema')
 const NftPurchase = require('./schemas/nftPurchase')
+const BonusReleaseStatusRecord = require('./schemas/bonusReleaseStatusRecord')
 
 module.exports = {
   Admin,
@@ -93,5 +94,6 @@ module.exports = {
   B2B,
   B2BPurchase,
   RelationshipSchema,
-  NftPurchase
+  NftPurchase,
+  BonusReleaseStatusRecord
 }
