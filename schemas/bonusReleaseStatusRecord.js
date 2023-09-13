@@ -21,6 +21,9 @@ const BonusReleaseStatusRecordSchema = new mongoose.Schema(
     counter: {
       type: Number,
       default: 0
+    },
+    wallet: {
+      type: String
     }
   },
   { timestamps: true }
