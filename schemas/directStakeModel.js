@@ -62,6 +62,7 @@ DirectStakeSchema.methods = {
         {
           $group: {
             _id: '$referralCode',
+            stakes: { $push: '$$ROOT' },
             total_stakes: { $sum: '$stake' },
             user_details: { $first: '$user_details' }
           }
@@ -71,6 +72,7 @@ DirectStakeSchema.methods = {
             _id: 0,
             referralCode: '$_id',
             total_stakes: 1,
+            stakes: 1,
             user_details: { email1: 1, _id: 1, custodyWallet: 1 }
           }
         }
