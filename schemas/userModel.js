@@ -1053,6 +1053,79 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getSalesByReferalCode: async function (userId, startDate, endDate) {
+    try {
+      const user = mongoose.model('User')
+      return await user.aggregate([
+        {
+          $match: {
+            _id: userId
+          }
+        },
+        {
+          $lookup: {
+            from: 'nftpurchases',
+            let: { referralCode: '$referalCode' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ['$referralCode', '$$referralCode']
+                  }
+                }
+              },
+              {
+                $lookup: {
+                  from: 'assets',
+                  localField: 'nft',
+                  foreignField: '_id',
+                  as: 'nftDetails'
+                }
+              },
+              {
+                $group: {
+                  _id: null,
+                  totalNFTPrice: {
+                    $sum: {
+                      $toDouble: { $arrayElemAt: ['$nftDetails.price', 0] }
+                    }
+                  }
+                }
+              }
+            ],
+            as: 'nftpurchases'
+          }
+        },
+        {
+          $lookup: {
+            from: 'directstakes',
+            let: { referralCode: '$referalCode' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ['$referralCode', '$$referralCode']
+                  }
+                }
+              }
+            ],
+            as: 'stakes'
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            totalStakes: { $sum: '$stakes.stake' },
+            totalNftSale: {
+              $arrayElemAt: ['$nftpurchases.totalNFTPrice', 0]
+            }
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
