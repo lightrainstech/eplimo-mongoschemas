@@ -1116,9 +1116,17 @@ UserSchema.methods = {
         {
           $project: {
             _id: 0,
-            totalStakes: { $sum: '$stakes.stake' },
+            totalStakes: {
+              $ifNull: [
+                { $sum: '$stakes.stake' },
+                0 // Default value if totalStakes is null
+              ]
+            },
             totalNftSale: {
-              $arrayElemAt: ['$nftpurchases.totalNFTPrice', 0]
+              $ifNull: [
+                { $arrayElemAt: ['$nftpurchases.totalNFTPrice', 0] },
+                0 // Default value if totalNftSale is null
+              ]
             }
           }
         }
