@@ -706,6 +706,33 @@ AssetSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  listGigNft: async function (wallet, corpId, page) {
+    try {
+      const AssetModel = mongoose.model('Asset')
+      page = page === 0 ? 0 : page - 1
+      let limit = 18,
+        skipLimit = limit * page
+
+      return await AssetModel.aggregate([
+        {
+          $match: {
+            owner: wallet,
+            corpId: corpId
+          }
+        },
+        {
+          $lookup: assetPopulateQueries.auction
+        },
+        {
+          $project: assetPopulateQueries.assetProject
+        }
+      ])
+        .skip(skipLimit)
+        .limit(limit)
+    } catch (error) {
+      throw error
+    }
   }
 }
 
