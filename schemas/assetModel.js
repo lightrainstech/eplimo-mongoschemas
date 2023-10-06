@@ -173,6 +173,14 @@ const AssetSchema = new mongoose.Schema(
     isWearable: {
       type: Boolean,
       default: false
+    },
+    isStaked: {
+      type: Boolean,
+      default: false
+    },
+    isUsedForHealtifi: {
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -730,6 +738,38 @@ AssetSchema.methods = {
       ])
         .skip(skipLimit)
         .limit(limit)
+    } catch (error) {
+      throw error
+    }
+  },
+  stakeNFT: async function (wallet, corpId, nftId) {
+    try {
+      const AssetModel = mongoose.model('Asset')
+      return await AssetModel.findOneAndUpdate(
+        { owner, corpId, tokenId: nftId },
+        {
+          $set: {
+            isStaked: true
+          }
+        },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  useNftForHealtifi: async function (wallet, corpId, nftId) {
+    try {
+      const AssetModel = mongoose.model('Asset')
+      return await AssetModel.findOneAndUpdate(
+        { owner: wallet, corpId, tokenId: nftId },
+        {
+          $set: {
+            isUseForHealtifi: true
+          }
+        },
+        { new: true }
+      )
     } catch (error) {
       throw error
     }
