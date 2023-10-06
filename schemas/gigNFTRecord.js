@@ -3,7 +3,6 @@ const Schema = mongoose.Schema
 
 const GigNftSchema = new mongoose.Schema(
   {
-    user: { type: Schema.ObjectId, ref: 'User', required: true },
     nft: {
       type: Schema.ObjectId,
       ref: 'Asset',
@@ -12,6 +11,9 @@ const GigNftSchema = new mongoose.Schema(
     avail: {
       type: String,
       enum: ['stake', 'healtifi']
+    },
+    txnHash: {
+      type: String
     }
   },
   { timestamps: true }
