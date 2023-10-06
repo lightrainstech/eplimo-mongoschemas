@@ -53,6 +53,7 @@ const RelationshipSchema = require('./schemas/relationshipSchema')
 const NftPurchase = require('./schemas/nftPurchase')
 const BonusReleaseStatusRecord = require('./schemas/bonusReleaseStatusRecord')
 const MultiLevelIncomeRecord = require('./schemas/multiLevelIncomeRecord')
+const GigNftRecord = require('./schemas/gigNFTRecord')
 
 module.exports = {
   Admin,
@@ -97,5 +98,6 @@ module.exports = {
   RelationshipSchema,
   NftPurchase,
   BonusReleaseStatusRecord,
-  MultiLevelIncomeRecord
+  MultiLevelIncomeRecord,
+  GigNftRecord
 }
