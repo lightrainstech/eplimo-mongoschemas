@@ -52,17 +52,17 @@ ActivityRewardSchema.methods = {
       }
       return await ActivityReward.aggregate([
         {
-          $match: criteria
+          $match: criteria // Add your date range criteria here
         },
         {
-          $sort: {
-            date: 1
+          $group: {
+            _id: { date: '$date', nft: '$nft' }, // Group by both date and nft
+            dailyRewards: { $first: '$limos' }
           }
         },
-        { $group: { _id: '$date', dailyRewards: { $sum: '$limos' } } },
         {
           $sort: {
-            _id: 1
+            '_id.date': 1
           }
         },
         {
@@ -71,7 +71,7 @@ ActivityRewardSchema.methods = {
             totalRewards: {
               $sum: '$dailyRewards'
             },
-            data: { $push: '$_id' }
+            data: { $push: '$_id.date' } // Push dates in sorted order
           }
         }
       ])
