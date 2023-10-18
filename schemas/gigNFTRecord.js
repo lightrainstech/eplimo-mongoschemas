@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 const Schema = mongoose.Schema
 
@@ -6,7 +7,8 @@ const GigNftSchema = new mongoose.Schema(
     nft: {
       type: Schema.ObjectId,
       ref: 'Asset',
-      required: true
+      required: true,
+      unique: trues
     },
     avail: {
       type: String,
