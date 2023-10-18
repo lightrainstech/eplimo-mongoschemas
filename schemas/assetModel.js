@@ -746,7 +746,7 @@ AssetSchema.methods = {
     try {
       const AssetModel = mongoose.model('Asset')
       return await AssetModel.findOneAndUpdate(
-        { owner, corpId, _id: nftId },
+        { owner: wallet, corpId, _id: nftId, isUsedForHealtifi: false },
         {
           $set: {
             isStaked: true
@@ -762,10 +762,10 @@ AssetSchema.methods = {
     try {
       const AssetModel = mongoose.model('Asset')
       return await AssetModel.findOneAndUpdate(
-        { owner: wallet, corpId, _id: nftId },
+        { owner: wallet, corpId, _id: nftId, isStaked: false },
         {
           $set: {
-            isUseForHealtifi: true
+            isUsedForHealtifi: true
           }
         },
         { new: true }
