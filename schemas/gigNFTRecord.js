@@ -8,7 +8,7 @@ const GigNftSchema = new mongoose.Schema(
       type: Schema.ObjectId,
       ref: 'Asset',
       required: true,
-      unique: trues
+      unique: true
     },
     avail: {
       type: String,
