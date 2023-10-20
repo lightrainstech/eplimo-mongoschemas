@@ -12,6 +12,11 @@ const BonusReleaseConsentSchema = new mongoose.Schema(
     isAgree: {
       type: Boolean,
       default: false
+    },
+    status: {
+      type: String,
+      default: 'pending',
+      enum: ['pending', 'in progress', 'completed']
     }
   },
   { timestamps: true }
