@@ -428,6 +428,18 @@ UserSchema.methods = {
       }
     return await User.load(options)
   },
+  checkForWallet: async function (wallet) {
+    const User = mongoose.model('User'),
+      options = {
+        criteria: {
+          isDeleted: false,
+          nonCustodyWallet: {
+            $elemMatch: { wallet: wallet }
+          }
+        }
+      }
+    return await User.load(options)
+  },
   updateWallet: async function (wallet, userId) {
     const User = mongoose.model('User'),
       nonCustodyWallet = { wallet, isVerified: true },
