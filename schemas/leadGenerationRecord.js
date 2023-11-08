@@ -20,7 +20,7 @@ const LeadGenerationSchema = new mongoose.Schema(
   { timestamps: true }
 )
 LeadGenerationSchema.methods = {
-  getSubmission: async function (page) {
+  getSubmissions: async function (page) {
     try {
       const Leads = mongoose.model('LeadGeneration')
       let limit = 18
@@ -31,7 +31,19 @@ LeadGenerationSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getSubmission: async function (email) {
+    try {
+      const Leads = mongoose.model('LeadGeneration')
+      return await Leads.findOne({ email })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
+
+LeadGenerationSchema.index({
+  email: 1
+})
 
 module.exports = mongoose.model('LeadGeneration', LeadGenerationSchema)
