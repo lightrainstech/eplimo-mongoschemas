@@ -12,6 +12,10 @@ const LeadGenerationSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    countryCode: {
+      type: String,
+      required: true
+    },
     phone: {
       type: String,
       required: true
