@@ -19,6 +19,11 @@ const LeadGenerationSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: true
+    },
+    requestType: {
+      type: String,
+      default: 'lead',
+      enum: ['lead', 'support']
     }
   },
   { timestamps: true }
