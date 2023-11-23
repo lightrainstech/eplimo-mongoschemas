@@ -78,7 +78,6 @@ TokenPurchaseSchema.methods = {
       tokenPurchaseModel.stakePeriod = stakePeriod
       tokenPurchaseModel.limoInUSD = limoInUsd
       tokenPurchaseModel.tokenAmount = tokenAmount
-      tokenPurchaseModel.txnHash = data.transaction
       tokenPurchaseModel.isWalletConnected = isWalletConnected
       return await tokenPurchaseModel.save()
     } catch (error) {
