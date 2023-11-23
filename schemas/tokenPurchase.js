@@ -48,6 +48,11 @@ const TokenPurchaseSchema = new mongoose.Schema(
     stakePeriod: {
       type: Number,
       enum: [1, 2, 3]
+    },
+    stakeHash: {
+      type: String,
+      unique: true,
+      sparse: true
     }
   },
   { timestamps: true }
@@ -61,7 +66,6 @@ TokenPurchaseSchema.methods = {
         amount,
         stakePeriod,
         email,
-        data,
         limoInUsd,
         tokenAmount,
         isWalletConnected
@@ -71,13 +75,50 @@ TokenPurchaseSchema.methods = {
       tokenPurchaseModel.email = email
       tokenPurchaseModel.wallet = stakeWallet
       tokenPurchaseModel.amount = amount
-      tokenPurchaseModel.paymentDetails = data
       tokenPurchaseModel.stakePeriod = stakePeriod
       tokenPurchaseModel.limoInUSD = limoInUsd
       tokenPurchaseModel.tokenAmount = tokenAmount
       tokenPurchaseModel.txnHash = data.transaction
       tokenPurchaseModel.isWalletConnected = isWalletConnected
       return await tokenPurchaseModel.save()
+    } catch (error) {
+      throw error
+    }
+  },
+  updatePaymentHash: async function (args) {
+    try {
+      let { recordId, txnHash, data } = args
+      const tokenPurchase = mongoose.model('TokenPurchase')
+      return await tokenPurchase.findOneAndUpdate(
+        { _id: recordId },
+        {
+          $set: {
+            txnHash: txnHash,
+            paymentStatus: 'completed',
+            paymentDetails: data
+          }
+        },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+
+  updateStakeDetails: async function (args) {
+    try {
+      let { recordId, txnhash } = args
+      const tokenPurchase = mongoose.model('TokenPurchase')
+      return await tokenPurchase.findOneAndUpdate(
+        { _id: recordId },
+        {
+          $set: {
+            stakeHash: txnhash,
+            isStaked: true
+          }
+        },
+        { new: true }
+      )
     } catch (error) {
       throw error
     }
