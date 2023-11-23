@@ -15,7 +15,8 @@ const TokenPurchaseSchema = new mongoose.Schema(
     txnHash: {
       type: String,
       required: false,
-      unique: true
+      unique: true,
+      sparse: true
     },
     amount: { type: String, required: true },
     paymentStatus: {
