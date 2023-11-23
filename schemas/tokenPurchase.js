@@ -44,9 +44,43 @@ const TokenPurchaseSchema = new mongoose.Schema(
     },
     limoInUSD: {
       type: String
+    },
+    stakePeriod: {
+      type: Number,
+      enum: [1, 2, 3]
     }
   },
   { timestamps: true }
 )
 
+TokenPurchaseSchema.methods = {
+  addPurchase: async function (args) {
+    try {
+      let {
+        stakeWallet,
+        amount,
+        stakePeriod,
+        email,
+        data,
+        limoInUsd,
+        tokenAmount,
+        isWalletConnected
+      } = args
+      const tokenPurchase = mongoose.model('TokenPurchase')
+      tokenPurchaseModel = new tokenPurchase()
+      tokenPurchaseModel.email = email
+      tokenPurchaseModel.wallet = stakeWallet
+      tokenPurchaseModel.amount = amount
+      tokenPurchaseModel.paymentDetails = data
+      tokenPurchaseModel.stakePeriod = stakePeriod
+      tokenPurchaseModel.limoInUSD = limoInUsd
+      tokenPurchaseModel.tokenAmount = tokenAmount
+      tokenPurchaseModel.txnHash = data.transaction
+      tokenPurchaseModel.isWalletConnected = isWalletConnected
+      return await tokenPurchaseModel.save()
+    } catch (error) {
+      throw error
+    }
+  }
+}
 module.exports = mongoose.model('TokenPurchase', TokenPurchaseSchema)
