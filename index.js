@@ -55,6 +55,7 @@ const BonusReleaseStatusRecord = require('./schemas/bonusReleaseStatusRecord')
 const MultiLevelIncomeRecord = require('./schemas/multiLevelIncomeRecord')
 const GigNftRecord = require('./schemas/gigNFTRecord')
 const LeadsRecord = require('./schemas/leadGenerationRecord')
+const TokenPurchase = require('./schemas/tokenPurchase')
 
 module.exports = {
   Admin,
@@ -101,5 +102,6 @@ module.exports = {
   BonusReleaseStatusRecord,
   MultiLevelIncomeRecord,
   GigNftRecord,
-  LeadsRecord
+  LeadsRecord,
+  TokenPurchase
 }
