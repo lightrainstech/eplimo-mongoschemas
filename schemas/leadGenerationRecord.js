@@ -41,10 +41,11 @@ LeadGenerationSchema.methods = {
       throw error
     }
   },
-  getSubmission: async function (email) {
+  getSubmission: async function (args) {
     try {
+      const { email, requestType } = args
       const Leads = mongoose.model('LeadGeneration')
-      return await Leads.findOne({ email })
+      return await Leads.findOne({ email, requestType })
     } catch (error) {
       console.log(error)
     }
@@ -52,7 +53,8 @@ LeadGenerationSchema.methods = {
 }
 
 LeadGenerationSchema.index({
-  email: 1
+  email: 1,
+  requestType: 1
 })
 
 module.exports = mongoose.model('LeadGeneration', LeadGenerationSchema)
