@@ -34,7 +34,7 @@ const TokenPurchaseSchema = new mongoose.Schema(
       default: 'LIMO'
     },
     tokenAmount: {
-      type: String
+      type: Number
     },
     isStaked: {
       type: Boolean,
@@ -125,6 +125,32 @@ TokenPurchaseSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getStakesByWallet: async function (wallet) {
+    try {
+      const tokenPurchase = mongoose.model('TokenPurchase')
+      return await tokenPurchase.aggregate([
+        {
+          $match: {
+            stakeWallet: wallet
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalStakes: { $sum: '$tokenAmount' },
+            firstEntry: { $first: '$$ROOT' }
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
+
+TokenPurchaseSchema.index({
+  stakeWallet: 1
+})
+
 module.exports = mongoose.model('TokenPurchase', TokenPurchaseSchema)
