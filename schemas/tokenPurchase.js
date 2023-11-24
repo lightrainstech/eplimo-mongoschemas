@@ -148,11 +148,31 @@ TokenPurchaseSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  checkStakeAgainstPayment: async function (args) {
+    try {
+      const tokenPurchase = mongoose.model('TokenPurchase')
+      let { paymentHash } = args
+      return await tokenPurchase.findOne({
+        txnHash: paymentHash,
+        isStaked: true,
+        stakeHash: { $ne: null }
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
-TokenPurchaseSchema.index({
-  stakeWallet: 1
-})
+TokenPurchaseSchema.index(
+  {
+    stakeWallet: 1
+  },
+  {
+    txnHash: 1,
+    isStaked: 1,
+    stakeHash: 1
+  }
+)
 
 module.exports = mongoose.model('TokenPurchase', TokenPurchaseSchema)
