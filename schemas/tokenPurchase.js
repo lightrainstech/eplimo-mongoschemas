@@ -94,7 +94,7 @@ TokenPurchaseSchema.methods = {
       let { recordId, txnHash, data } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
       return await tokenPurchase.findOneAndUpdate(
-        { _id: recordId },
+        { _id: recordId, paymentStatus: 'added' },
         {
           $set: {
             txnHash: txnHash,
@@ -165,6 +165,7 @@ TokenPurchaseSchema.methods = {
 }
 
 TokenPurchaseSchema.index(
+  { _id: 1, paymentStatus: 1 },
   {
     stakeWallet: 1
   },
