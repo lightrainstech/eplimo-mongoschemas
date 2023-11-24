@@ -72,7 +72,8 @@ TokenPurchaseSchema.methods = {
         email,
         limoInUsd,
         tokenAmount,
-        isWalletConnected
+        isWalletConnected,
+        stakeWallet
       } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
       tokenPurchaseModel = new tokenPurchase()
@@ -83,6 +84,7 @@ TokenPurchaseSchema.methods = {
       tokenPurchaseModel.limoInUSD = limoInUsd
       tokenPurchaseModel.tokenAmount = tokenAmount
       tokenPurchaseModel.isWalletConnected = isWalletConnected
+      tokenPurchaseModel.stakeWallet = stakeWallet
       return await tokenPurchaseModel.save()
     } catch (error) {
       throw error
@@ -110,14 +112,15 @@ TokenPurchaseSchema.methods = {
 
   updateStakeDetails: async function (args) {
     try {
-      let { recordId, txnhash } = args
+      let { recordId, txnhash, stakeWallet } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
       return await tokenPurchase.findOneAndUpdate(
         { _id: recordId },
         {
           $set: {
             stakeHash: txnhash,
-            isStaked: true
+            isStaked: true,
+            stakeWallet: stakeWallet
           }
         },
         { new: true }
