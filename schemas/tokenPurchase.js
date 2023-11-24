@@ -72,8 +72,7 @@ TokenPurchaseSchema.methods = {
         email,
         limoInUsd,
         tokenAmount,
-        isWalletConnected,
-        stakeWallet
+        isWalletConnected
       } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
       tokenPurchaseModel = new tokenPurchase()
