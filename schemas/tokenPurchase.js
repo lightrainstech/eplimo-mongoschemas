@@ -134,7 +134,8 @@ TokenPurchaseSchema.methods = {
       return await tokenPurchase.aggregate([
         {
           $match: {
-            stakeWallet: wallet
+            stakeWallet: wallet,
+            isStaked: true
           }
         },
         {
