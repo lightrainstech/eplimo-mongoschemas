@@ -163,7 +163,7 @@ TokenPurchaseSchema.methods = {
       throw error
     }
   },
-  isWalletConnected: async function (args) {
+  checkWalletConnection: async function (args) {
     try {
       const { recordId } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
