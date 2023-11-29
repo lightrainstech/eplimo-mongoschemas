@@ -181,7 +181,8 @@ TokenPurchaseSchema.methods = {
       const tokenPurchase = mongoose.model('TokenPurchase')
       return await tokenPurchase.findOneAndUpdate(
         {
-          _id: ObjectId(recordId)
+          _id: ObjectId(recordId),
+          isWalletConnected: false
         },
         {
           $set: {
