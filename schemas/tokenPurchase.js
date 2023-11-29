@@ -162,6 +162,18 @@ TokenPurchaseSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  isWalletConnected: async function (args) {
+    try {
+      const { recordId } = args
+      const tokenPurchase = mongoose.model('TokenPurchase')
+      return await tokenPurchase.findOne({
+        _id: ObjectId(recordId),
+        isWalletConnected: false
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -174,7 +186,8 @@ TokenPurchaseSchema.index(
     txnHash: 1,
     isStaked: 1,
     stakeHash: 1
-  }
+  },
+  { _id: 1, isWalletConnected: 1 }
 )
 
 module.exports = mongoose.model('TokenPurchase', TokenPurchaseSchema)
