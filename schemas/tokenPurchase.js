@@ -180,18 +180,38 @@ TokenPurchaseSchema.methods = {
   },
   connectWallet: async function (args) {
     try {
-      const { recordId, wallet } = args
+      const { recordId, wallet, otp } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
       return await tokenPurchase.findOneAndUpdate(
         {
           _id: ObjectId(recordId),
-          isWalletConnected: false
+          isWalletConnected: false,
+          otp: otp
         },
         {
           $set: {
             isWalletConnected: true,
             wallet: wallet,
             stakeWallet: wallet
+          }
+        },
+        { $new: true }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  generateOtp: async function (args) {
+    try {
+      const { recordId } = args
+      const tokenPurchase = mongoose.model('TokenPurchase')
+      return await tokenPurchase.findOneAndUpdate(
+        {
+          _id: ObjectId(recordId)
+        },
+        {
+          $set: {
+            otp: otp
           }
         },
         { $new: true }
