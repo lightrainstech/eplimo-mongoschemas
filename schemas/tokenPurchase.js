@@ -203,7 +203,7 @@ TokenPurchaseSchema.methods = {
   },
   generateOtp: async function (args) {
     try {
-      const { recordId } = args
+      const { recordId, otp } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
       return await tokenPurchase.findOneAndUpdate(
         {
