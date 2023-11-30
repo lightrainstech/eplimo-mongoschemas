@@ -195,7 +195,7 @@ TokenPurchaseSchema.methods = {
             stakeWallet: wallet
           }
         },
-        { $new: true }
+        { new: true }
       )
     } catch (error) {
       throw error
