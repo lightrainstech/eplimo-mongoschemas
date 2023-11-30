@@ -214,7 +214,7 @@ TokenPurchaseSchema.methods = {
             otp: otp
           }
         },
-        { $returnNewDocument: true }
+        { new: true }
       )
     } catch (error) {
       throw error
