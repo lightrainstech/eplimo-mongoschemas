@@ -57,6 +57,9 @@ const TokenPurchaseSchema = new mongoose.Schema(
     },
     stakeWallet: {
       type: String
+    },
+    otp: {
+      type: Number
     }
   },
   { timestamps: true }
