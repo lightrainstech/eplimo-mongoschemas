@@ -171,8 +171,7 @@ TokenPurchaseSchema.methods = {
       const { recordId } = args
       const tokenPurchase = mongoose.model('TokenPurchase')
       return await tokenPurchase.findOne({
-        _id: ObjectId(recordId),
-        isWalletConnected: false
+        _id: ObjectId(recordId)
       })
     } catch (error) {
       throw error
