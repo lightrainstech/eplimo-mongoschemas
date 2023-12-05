@@ -1146,6 +1146,15 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  b2bReferrals: async function (args) {
+    try {
+      let { affiliateCode, corpId } = args
+      const user = mongoose.model('User')
+      return await user.find({ affiliateCode: affiliateCode, corpId: corpId })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -1224,7 +1233,8 @@ UserSchema.index(
   { location: 'text' },
   { userName: 'text' },
   { email: 'text', name: 'text' },
-  { corpId: 1, email: 1, name: 1 }
+  { corpId: 1, email: 1, name: 1 },
+  { affiliateCode: 1, corpId: 1 }
 )
 
 module.exports = mongoose.model('User', UserSchema)
