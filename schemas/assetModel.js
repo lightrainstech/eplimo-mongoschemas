@@ -142,7 +142,7 @@ const AssetSchema = new mongoose.Schema(
     attributes: [],
     category: {
       type: String,
-      enum: ['Basic', 'Standard', 'Pro', 'Ultra', 'Trial'],
+      enum: ['Basic', 'Standard', 'Pro', 'Ultra', 'Trial', 'Featured'],
       required: true
     },
     tags: [
@@ -243,7 +243,9 @@ AssetSchema.methods = {
     if (category !== undefined) {
       criteria.category = category
     } else {
-      criteria.category = { $in: ['Basic', 'Standard', 'Pro', 'Ultra'] }
+      criteria.category = {
+        $in: ['Basic', 'Standard', 'Pro', 'Ultra', 'Featured']
+      }
       criteria.efficiencyIndex = { $in: [20, 25, 30, 35, 40, 45, 50, 55, 60] }
     }
 
