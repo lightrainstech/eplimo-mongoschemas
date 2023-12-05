@@ -264,6 +264,9 @@ const UserSchema = new mongoose.Schema(
       type: ObjectId,
       ref: 'User',
       default: null
+    },
+    stakeClub: {
+      type: String
     }
   },
   { timestamps: true }
