@@ -1151,7 +1151,10 @@ UserSchema.methods = {
     try {
       let { affiliateCode, corpId } = args
       const user = mongoose.model('User')
-      return await user.find({ affiliateCode: affiliateCode, corpId: corpId })
+      return await user.find(
+        { affiliateCode: affiliateCode, corpId: corpId },
+        { email: 1, name: 1 }
+      )
     } catch (error) {
       throw error
     }
