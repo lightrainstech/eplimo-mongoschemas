@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Types
 const Schema = mongoose.Schema
 
 const B2BPurchaseSchema = new mongoose.Schema(
@@ -43,7 +43,51 @@ B2BPurchaseSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getTotalSale: async corpId => {
+    try {
+      const B2BPurchase = mongoose.model('B2BPurchase')
+      return await B2BPurchase.aggregate([
+        {
+          $match: {
+            b2b: ObjectId(corpId)
+          }
+        },
+        {
+          $lookup: {
+            from: 'assets', // Name of the referenced collection
+            localField: 'nft',
+            foreignField: '_id',
+            as: 'assetDetails'
+          }
+        },
+        {
+          $unwind: '$assetDetails'
+        },
+        {
+          $addFields: {
+            priceAsDouble: { $toDouble: '$assetDetails.price' }
+          }
+        },
+        {
+          $group: {
+            _id: '$_id',
+            totalPurchase: { $sum: '$priceAsDouble' }
+          }
+        },
+        {
+          $project: {
+            _id: 0, // Exclude _id field from the result
+            totalPurchase: 1
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
+
+B2BPurchaseSchema.index({ b2b: 1 })
 
 module.exports = mongoose.model('B2BPurchase', B2BPurchaseSchema)
