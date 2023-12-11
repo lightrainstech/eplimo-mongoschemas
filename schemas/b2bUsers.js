@@ -18,13 +18,31 @@ B2BSchema.methods = {
   getUsersByB2B: async b2bId => {
     try {
       const B2BUsers = mongoose.model('B2B')
-      return await B2BUsers.find({ b2b: ObjectId(b2bId) }).populate({
-        path: 'user',
-        select: 'name email username referalCode',
-        match: {
-          referalCode: ''
+      return await B2BUsers.aggregate([
+        {
+          $lookup: {
+            from: 'users', // The name of the referenced collection ('users' in this case)
+            localField: 'user',
+            foreignField: '_id',
+            as: 'userInfo'
+          }
+        },
+        {
+          $match: {
+            $expr: {
+              $eq: [{ $arrayElemAt: ['$userInfo.referalCode', 0] }, '']
+            }
+          }
+        },
+        { $unwind: '$userInfo' },
+        {
+          $project: {
+            name: `$userInfo.name`,
+            userName: `$userInfo.userName`,
+            email: `$userInfo.email`
+          }
         }
-      })
+      ])
     } catch (error) {
       throw error
     }
@@ -32,13 +50,32 @@ B2BSchema.methods = {
   getInfluencersByB2B: async b2bId => {
     try {
       const B2BUsers = mongoose.model('B2B')
-      return await B2BUsers.find({ b2b: ObjectId(b2bId) }).populate({
-        path: 'user',
-        select: 'name email username referalCode',
-        match: {
-          referalCode: { $ne: '' }
+      return await B2BUsers.aggregate([
+        {
+          $lookup: {
+            from: 'users', // The name of the referenced collection ('users' in this case)
+            localField: 'user',
+            foreignField: '_id',
+            as: 'userInfo'
+          }
+        },
+        {
+          $match: {
+            $expr: {
+              $ne: [{ $arrayElemAt: ['$userInfo.referalCode', 0] }, '']
+            }
+          }
+        },
+        { $unwind: '$userInfo' },
+        {
+          $project: {
+            name: `$userInfo.name`,
+            userName: `$userInfo.userName`,
+            email: `$userInfo.email`,
+            referralCode: `$userInfo.referalCode`
+          }
         }
-      })
+      ])
     } catch (error) {
       throw error
     }
