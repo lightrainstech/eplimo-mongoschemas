@@ -39,7 +39,8 @@ B2BSchema.methods = {
           $project: {
             name: `$userInfo.name`,
             userName: `$userInfo.userName`,
-            email: `$userInfo.email`
+            email: `$userInfo.email`,
+            _id: `$userInfo._id`
           }
         }
       ])
@@ -72,7 +73,8 @@ B2BSchema.methods = {
             name: `$userInfo.name`,
             userName: `$userInfo.userName`,
             email: `$userInfo.email`,
-            referralCode: `$userInfo.referalCode`
+            referralCode: `$userInfo.referalCode`,
+            _id: `$userInfo._id`
           }
         }
       ])
