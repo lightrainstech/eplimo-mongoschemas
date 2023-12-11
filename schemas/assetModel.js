@@ -244,7 +244,7 @@ AssetSchema.methods = {
       criteria.category = category
     } else {
       criteria.category = {
-        $in: ['Basic', 'Standard', 'Pro', 'Ultra', 'Featured']
+        $in: ['Basic', 'Standard', 'Pro', 'Ultra', 'Ultra-LE']
       }
       criteria.efficiencyIndex = { $in: [20, 25, 30, 35, 40, 45, 50, 55, 60] }
     }
