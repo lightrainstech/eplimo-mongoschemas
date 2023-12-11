@@ -20,7 +20,24 @@ B2BSchema.methods = {
       const B2BUsers = mongoose.model('B2B')
       return await B2BUsers.find({ b2b: ObjectId(b2bId) }).populate({
         path: 'user',
-        select: 'name email username referalCode'
+        select: 'name email username referalCode',
+        match: {
+          referalCode: ''
+        }
+      })
+    } catch (error) {
+      throw error
+    }
+  },
+  getInfluencersByB2B: async b2bId => {
+    try {
+      const B2BUsers = mongoose.model('B2B')
+      return await B2BUsers.find({ b2b: ObjectId(b2bId) }).populate({
+        path: 'user',
+        select: 'name email username referalCode',
+        match: {
+          referalCode: { $ne: '' }
+        }
       })
     } catch (error) {
       throw error
