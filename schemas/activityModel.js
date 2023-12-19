@@ -48,9 +48,9 @@ const ActivitySchema = new mongoose.Schema(
       type: Object,
       default: {}
     },
-    transactionId: {
-      type: String,
-      default: ''
+    earnedPoint: {
+      type: Number,
+      default: 0
     },
     dateIndex: {
       type: String
@@ -137,6 +137,27 @@ ActivitySchema.methods = {
           point,
           activityType,
           stakedLimo
+        },
+        { new: true }
+      )
+        .populate('nft')
+        .lean()
+        .exec()
+    result['remainingKm'] = result.nft.sneakerLife
+    result['canProceed'] = false
+    return result
+  },
+  _endActivity_new: async function (args) {
+    let { activityId, point, activityType, stakedLimo, earnedPoint } = args
+    const Activity = mongoose.model('Activity'),
+      result = await Activity.findOneAndUpdate(
+        { _id: ObjectId(activityId) },
+        {
+          endTime: new Date(),
+          point,
+          activityType,
+          stakedLimo,
+          earnedPoint
         },
         { new: true }
       )
