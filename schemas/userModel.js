@@ -266,7 +266,8 @@ const UserSchema = new mongoose.Schema(
       default: null
     },
     stakeClub: {
-      type: String
+      type: String,
+      default: null
     }
   },
   { timestamps: true }
@@ -1157,6 +1158,19 @@ UserSchema.methods = {
       return await user.find(
         { affiliateCode: affiliateCode, corpId: corpId },
         { email: 1, name: 1 }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  updateStakeClub: async function (args) {
+    try {
+      let { email, stakeClub } = args
+      const user = mongoose.model('User')
+      return await user.findOneAndUpdate(
+        { email: email },
+        { $set: { stakeClub: stakeClub } },
+        { new: true }
       )
     } catch (error) {
       throw error
