@@ -584,8 +584,8 @@ UserSchema.methods = {
     let criteria = {
         isPractitioner: true,
         isDeleted: { $ne: true },
-        isActive: true,
-        isKycVerified: true
+        isActive: true
+        //isKycVerified: true
       },
       limit = 18
     page = Number(page)
@@ -596,31 +596,36 @@ UserSchema.methods = {
     if (featured !== 'all') {
       criteria.isMetaverse = featured
     }
-    return await User.aggregate([
-      {
-        $search: {
-          index: 'pvSearch',
-          wildcard: {
-            query: searchTerm,
-            path: 'name',
-            allowAnalyzedField: true
+
+    if (searchTerm === '**') {
+      return await User.find(criteria).sort({ updatedAt: -1 }).limit(limit)
+    } else {
+      return await User.aggregate([
+        {
+          $search: {
+            index: 'pvSearch',
+            wildcard: {
+              query: searchTerm,
+              path: 'name',
+              allowAnalyzedField: true
+            }
           }
-        }
-      },
-      {
-        $match: criteria
-      },
-      { $sort: { updatedAt: -1 } }
-    ])
-      .skip((page - 1) * limit)
-      .limit(limit)
+        },
+        {
+          $match: criteria
+        },
+        { $sort: { updatedAt: -1 } }
+      ])
+        .skip((page - 1) * limit)
+        .limit(limit)
+    }
   },
   getAllInstitutions: async function (category, featured, page, searchTerm) {
     let criteria = {
         isInstitution: true,
         isDeleted: false,
-        isActive: true,
-        isKycVerified: true
+        isActive: true
+        //isKycVerified: true
       },
       limit = 18
     page = Number(page)
