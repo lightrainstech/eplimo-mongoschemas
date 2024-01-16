@@ -584,8 +584,8 @@ UserSchema.methods = {
     let criteria = {
         isPractitioner: true,
         isDeleted: { $ne: true },
-        isActive: true
-        //isKycVerified: true
+        isActive: true,
+        isKycVerified: { $ne: false }
       },
       limit = 18
     page = Number(page)
@@ -598,7 +598,10 @@ UserSchema.methods = {
     }
 
     if (searchTerm === '**') {
-      return await User.find(criteria).sort({ updatedAt: -1 }).limit(limit)
+      return await User.find(criteria)
+        .sort({ updatedAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
     } else {
       return await User.aggregate([
         {
@@ -624,8 +627,8 @@ UserSchema.methods = {
     let criteria = {
         isInstitution: true,
         isDeleted: false,
-        isActive: true
-        //isKycVerified: true
+        isActive: true,
+        isKycVerified: { $ne: false }
       },
       limit = 18
     page = Number(page)
