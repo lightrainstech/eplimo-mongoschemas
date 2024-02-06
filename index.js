@@ -56,6 +56,12 @@ const MultiLevelIncomeRecord = require('./schemas/multiLevelIncomeRecord')
 const GigNftRecord = require('./schemas/gigNFTRecord')
 const LeadsRecord = require('./schemas/leadGenerationRecord')
 const TokenPurchase = require('./schemas/tokenPurchase')
+const CourseEnrollment = require('./schemas/courseEnrollmentModel')
+const Course = require('./schemas/courseModel')
+const CoursePayment = require('./schemas/coursePaymentModel')
+const SubscriptionPlan = require('./schemas/subscriptionPlanModel')
+const CourseRating = require('./schemas/courseRatingModel')
+const Subscription = require('./schemas/subscriptionModel')
 
 module.exports = {
   Admin,
@@ -103,5 +109,12 @@ module.exports = {
   MultiLevelIncomeRecord,
   GigNftRecord,
   LeadsRecord,
-  TokenPurchase
+  TokenPurchase,
+  CourseEnrollment,
+  Course,
+  CoursePayment,
+  CoursePlan,
+  CourseRating,
+  SubscriptionPlan,
+  Subscription
 }
