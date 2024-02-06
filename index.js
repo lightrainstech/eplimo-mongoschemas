@@ -113,7 +113,6 @@ module.exports = {
   CourseEnrollment,
   Course,
   CoursePayment,
-  CoursePlan,
   CourseRating,
   SubscriptionPlan,
   Subscription
