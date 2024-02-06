@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ['lpo', 'user'],
+      enum: ['lpo', 'user', 'instructor'],
       default: 'user'
     },
     userName: {
@@ -1180,6 +1180,18 @@ UserSchema.methods = {
         { $set: { stakeClub: stakeClub } },
         { new: true }
       )
+    } catch (error) {
+      throw error
+    }
+  },
+  addInstructor: async function (email, userName) {
+    try {
+      const User = mongoose.model('User'),
+        userModel = User()
+      userModel.email = email
+      userModel.role = 'instructor'
+      userModel.userName = userName
+      return userModel.save()
     } catch (error) {
       throw error
     }
