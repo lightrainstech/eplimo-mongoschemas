@@ -34,9 +34,9 @@ const subscriptionSchema = new mongoose.Schema(
 )
 
 subscriptionSchema.methods = {
-  getUserSubscription: async function (userId) {
+  getUserSubscription: async function (userId, status) {
     const Subscription = mongoose.model('Subscription')
-    let query = { user: userId }
+    let query = { user: userId, status }
     const options = {
       criteria: query,
       populate: {
@@ -66,7 +66,7 @@ subscriptionSchema.methods = {
   ) {
     const Subscription = mongoose.model('Subscription')
     return Subscription.findOneAndUpdate(
-      { _id, subscriptionId, user: userId },
+      { _id: subscriptionId, user: userId },
       {
         $set: {
           status: status,
