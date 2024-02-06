@@ -89,6 +89,11 @@ const courseSchema = new mongoose.Schema(
         type: String,
         enum: ['youtube', 'vimeo']
       }
+    },
+    courseId: {
+      type: String,
+      sparse: true,
+      unique: true
     }
   },
   {
@@ -145,7 +150,21 @@ const limit = 20
 courseSchema.methods = {
   getCourseById: async function (courseId) {
     const Course = mongoose.model('Course')
-    let query = { _id: new ObjectId(courseId) }
+    let query = {
+      $or: [{ _id: new ObjectId(courseId) }, { courseId: courseId }]
+    }
+    const options = {
+      criteria: query,
+      populate: 'instructor',
+      selectPopulate: 'name email role'
+    }
+    return Course.load(options)
+  },
+  getCourseDetails: async function (courseId) {
+    const Course = mongoose.model('Course')
+    let query = {
+      courseId: courseId
+    }
     const options = {
       criteria: query,
       populate: 'instructor',
