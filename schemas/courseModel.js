@@ -51,6 +51,27 @@ const sectionSchema = new mongoose.Schema({
   videos: [videoSchema]
 })
 
+//schema for user reviews
+
+const reviewSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  rating: {
+    type: Number,
+    required: true
+  },
+  comment: {
+    type: String
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+})
+
 // Schema for course
 const courseSchema = new mongoose.Schema(
   {
@@ -94,7 +115,8 @@ const courseSchema = new mongoose.Schema(
       type: String,
       sparse: true,
       unique: true
-    }
+    },
+    reviews: [reviewSchema]
   },
   {
     timestamps: true
