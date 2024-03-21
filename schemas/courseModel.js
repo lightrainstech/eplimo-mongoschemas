@@ -61,7 +61,7 @@ const reviewSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    required: true
+    default: 1
   },
   comment: {
     type: String
@@ -424,6 +424,24 @@ courseSchema.methods = {
       }
     ]
     return Course.aggregate(pipeline)
+  },
+  addReview: async function (args) {
+    try {
+      const Course = mongoose.model('Course')
+      const { userId, courseId, comment, rating } = args
+      let review = {
+        user: userId,
+        rating: rating,
+        comment: comment
+      }
+      return await Course.findOneAndUpdate(
+        { courseId },
+        { $push: { reviews: review } },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
