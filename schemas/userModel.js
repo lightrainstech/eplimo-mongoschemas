@@ -6,6 +6,23 @@ const { v5 } = require('uuid')
 const socialSchema = {
   url: String
 }
+const DisplayPic = {
+  path: {
+    type: String
+  },
+  mimeType: {
+    type: String
+  }
+}
+
+const coverPic = {
+  path: {
+    type: String
+  },
+  mimeType: {
+    type: String
+  }
+}
 
 const nonCustodyWalletSchema = {
   _id: false,
@@ -30,6 +47,8 @@ const custodyWalletSchema = {
 
 const UserSchema = new mongoose.Schema(
   {
+    DisplayPicture: DisplayPic,
+    coverPicture: coverPic,
     role: {
       type: String,
       required: true,
@@ -174,29 +193,25 @@ const UserSchema = new mongoose.Schema(
       default: false
     },
     practitionerCategory: {
-      type: String,
+      type: [String],
       enum: [
         'All',
-        'Yoga',
-        'Meditation',
-        'Diet/Nutrition',
-        'Fitness',
-        'Zumba',
-        'Naturopathy',
-        'Chinese medicine',
-        'Allopathy',
-        'Ayurveda',
-        'Homeopathy',
-        'Psychology',
-        'Physiotherapy',
-        'Life coaching',
-        'Aesthetics',
+        'Fitness Training',
+        'Yoga Learning',
+        'Eating Well',
+        'Manage Stress',
+        'Meditation Classes',
+        'Sleep Well',
+        'Reverse Ageing',
         'Alternate Healing',
-        'Energy Healing',
-        'Mind Coach',
+        'Looking Good',
         'NA'
       ],
-      default: 'NA'
+      default: ['NA']
+    },
+    subCategory: {
+      type: [String],
+      default: []
     },
     isKycVerified: {
       type: Boolean,
@@ -1192,6 +1207,25 @@ UserSchema.methods = {
       userModel.role = 'instructor'
       userModel.userName = userName
       return userModel.save()
+    } catch (error) {
+      throw error
+    }
+  },
+  upgradeAccount: async function (args) {
+    try {
+      const User = mongoose.model('User'),
+        { userId, category, subCategory } = args
+      return await User.findOneAndUpdate(
+        { _id: userId, isPractitioner: false },
+        {
+          $set: {
+            isPractitioner: true,
+            practitionerCategory: category,
+            subCategory: subCategory
+          }
+        },
+        { new: true }
+      )
     } catch (error) {
       throw error
     }
