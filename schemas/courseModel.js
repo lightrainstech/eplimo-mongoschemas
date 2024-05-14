@@ -14,6 +14,16 @@ const videoSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  image: {
+    path: {
+      type: String,
+      default: ''
+    },
+    mimeType: {
+      type: String,
+      default: 'image/jpeg'
+    }
+  },
   url: {
     type: String,
     required: true
@@ -21,6 +31,10 @@ const videoSchema = new mongoose.Schema({
   platform: {
     type: String,
     enum: ['youtube', 'vimeo']
+  },
+  duration: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -83,6 +97,16 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    image: {
+      path: {
+        type: String,
+        default: ''
+      },
+      mimeType: {
+        type: String,
+        default: 'image/jpeg'
+      }
+    },
     sections: [sectionSchema],
     instructor: {
       type: mongoose.Schema.Types.ObjectId,
@@ -92,6 +116,11 @@ const courseSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true
+    },
+    offerPrice: {
+      type: Number,
+      required: true,
+      default: 0
     },
     status: {
       type: String,
@@ -172,13 +201,15 @@ const limit = 20
 courseSchema.methods = {
   getCourseById: async function (courseId) {
     const Course = mongoose.model('Course')
+    console.log('courseId', courseId)
     let query = {
       $or: [{ _id: new ObjectId(courseId) }, { courseId: courseId }]
     }
     const options = {
       criteria: query,
       populate: 'instructor',
-      selectPopulate: 'name email role'
+      selectPopulate:
+        'name email role userName avatar coverPicture location isKycVerified'
     }
     return Course.load(options)
   },
@@ -190,9 +221,32 @@ courseSchema.methods = {
     const options = {
       criteria: query,
       populate: 'instructor',
-      selectPopulate: 'name email role'
+      selectPopulate:
+        'name email role userName avatar coverPicture location isKycVerified'
     }
     return Course.load(options)
+  },
+  getCourseByInstructor: async function (page, instructor) {
+    try {
+      const Course = mongoose.model('Course')
+      const skipDocuments = (page - 1) * limit
+      return Course.aggregate([
+        {
+          $match: {
+            instructor: instructor,
+            status: 'published'
+          }
+        },
+        {
+          $skip: skipDocuments
+        },
+        {
+          $limit: limit
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   },
   listAllCourses: async function (
     status,
@@ -442,6 +496,33 @@ courseSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  fetchCourseByGroup: async function (args) {
+    try {
+      const { category } = args
+      const Course = mongoose.model('Course')
+      return await Course.find({
+        category: { $in: category },
+        status: 'published'
+      })
+    } catch (error) {
+      throw error
+    }
+  },
+  getInsrtuctorCourses: async function (instructor) {
+    try {
+      console.log(instructor)
+      const Course = mongoose.model('Course')
+      return await Course.find({
+        instructor: ObjectId(instructor),
+        status: 'published'
+      }).populate({
+        path: 'instructor',
+        select: 'name userName email avatar coverPicture'
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -454,6 +535,7 @@ courseSchema.statics = {
     return this.findOne(options.criteria)
       .select(options.select)
       .populate(options.populate, options.selectPopulate)
+      .lean()
       .exec(cb)
   }
 }

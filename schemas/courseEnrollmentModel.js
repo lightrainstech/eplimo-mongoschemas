@@ -110,7 +110,11 @@ enrollmentSchema.methods = {
       limit: 12,
       populate: {
         path: 'enrolledCourse.courseId',
-        select: '_id title description'
+        select: '_id title description instructor image',
+        populate: {
+          path: 'instructor',
+          select: 'name email userName'
+        }
       }
     }
     return Enrollment.list(options)
