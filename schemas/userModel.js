@@ -6,15 +6,6 @@ const { v5 } = require('uuid')
 const socialSchema = {
   url: String
 }
-const DisplayPic = {
-  path: {
-    type: String
-  },
-  mimeType: {
-    type: String
-  }
-}
-
 const coverPic = {
   path: {
     type: String
@@ -47,7 +38,6 @@ const custodyWalletSchema = {
 
 const UserSchema = new mongoose.Schema(
   {
-    DisplayPicture: DisplayPic,
     coverPicture: coverPic,
     role: {
       type: String,
@@ -193,6 +183,23 @@ const UserSchema = new mongoose.Schema(
       default: false
     },
     practitionerCategory: {
+      type: [String],
+      enum: [
+        'All',
+        'Fitness Training',
+        'Yoga Learning',
+        'Eating Well',
+        'Manage Stress',
+        'Meditation Classes',
+        'Sleep Well',
+        'Reverse Ageing',
+        'Alternate Healing',
+        'Looking Good',
+        'NA'
+      ],
+      default: ['NA']
+    },
+    category: {
       type: [String],
       enum: [
         'All',
