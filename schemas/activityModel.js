@@ -987,6 +987,43 @@ ActivitySchema.methods = {
         }
       }
     ])
+  },
+  getActivityStatus: async function (args) {
+    try {
+      const { userId, page } = args
+      const Activity = mongoose.model('Activity')
+      return await Activity.aggregate([
+        {
+          $match: {
+            activityType: 'workout',
+            user: ObjectId(userId),
+            endTime: {
+              $exists: true
+            }
+          }
+        },
+        {
+          $project: {
+            dateIndex: 1,
+            burnedCalories: 1,
+            startTime: 1
+          }
+        },
+        {
+          $sort: {
+            startTime: -1
+          }
+        },
+        {
+          $group: {
+            _id: '$dateIndex',
+            burnedCalories: { $sum: '$burnedCalories' }
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
