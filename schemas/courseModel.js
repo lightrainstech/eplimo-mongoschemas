@@ -233,7 +233,7 @@ courseSchema.methods = {
       return Course.aggregate([
         {
           $match: {
-            instructor: instructor,
+            instructor: ObjectId(instructor),
             status: 'published'
           }
         },
