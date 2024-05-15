@@ -125,7 +125,7 @@ const courseSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ['draft', 'published', 'unpublished'],
-      default: 'draft'
+      default: 'published'
     },
     category: {
       type: Array,
