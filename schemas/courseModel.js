@@ -125,7 +125,7 @@ const courseSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ['draft', 'published', 'unpublished'],
-      default: 'draft'
+      default: 'published'
     },
     category: {
       type: Array,
@@ -145,7 +145,11 @@ const courseSchema = new mongoose.Schema(
       sparse: true,
       unique: true
     },
-    reviews: [reviewSchema]
+    reviews: [reviewSchema],
+    featured: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true
@@ -254,7 +258,8 @@ courseSchema.methods = {
     sortOrder,
     page,
     instructor,
-    category
+    category,
+    featured
   ) {
     const Course = mongoose.model('Course')
     const skipDocuments = (page - 1) * limit
@@ -275,7 +280,9 @@ courseSchema.methods = {
     if (category && category.length > 0) {
       match['category'] = { $in: category }
     }
-
+    if (featured != null) {
+      match['featured'] = featured
+    }
     const pipeline = [
       {
         $match: match

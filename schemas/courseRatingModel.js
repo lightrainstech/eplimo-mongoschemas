@@ -15,7 +15,9 @@ const courseRatingSchema = new mongoose.Schema(
     rating: {
       type: Number,
       min: 1,
-      max: 5
+      max: 5,
+      required: true,
+      default: 1
     },
     review: {
       type: String
@@ -38,109 +40,97 @@ const courseRatingSchema = new mongoose.Schema(
 courseRatingSchema.methods = {
   getCourseRatings: async function (courseId) {
     const Rating = mongoose.model('Rating')
-    return Rating.aggregate([
+    return await Rating.aggregate([
       {
-        $match: {
-          course: new ObjectId(courseId)
-        }
+        $match: { course: ObjectId(courseId) }
       },
       {
-        $lookup: {
-          from: 'users',
-          localField: 'submittedUser',
-          foreignField: '_id',
-          as: 'submittedUserDetails'
-        }
-      },
-      {
-        $unwind: {
-          path: '$submittedUserDetails',
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $group: {
-          _id: '$course',
-          totalReviews: { $sum: 1 },
-          averageRating: { $avg: '$rating' },
-          ratings: { $push: '$$ROOT' }
-        }
-      },
-      {
-        $unwind: {
-          path: '$ratings',
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $sort: {
-          'ratings.createdAt': -1
-        }
-      },
-      {
-        $group: {
-          _id: '$_id',
-          totalReviews: { $first: '$totalReviews' },
-          averageRating: { $first: '$averageRating' },
-          ratings: { $push: '$ratings' }
+        $facet: {
+          ratings: [
+            {
+              $group: {
+                _id: '$rating',
+                count: { $sum: 1 }
+              }
+            },
+            {
+              $sort: { _id: 1 }
+            }
+          ],
+          stats: [
+            {
+              $group: {
+                _id: null,
+                averageRating: { $avg: { $ifNull: ['$rating', 0] } },
+                totalDocs: { $sum: 1 }
+              }
+            }
+          ],
+          documents: [
+            {
+              $match: { course: ObjectId(courseId) }
+            },
+            {
+              $lookup: {
+                from: 'users',
+                localField: 'submittedUser',
+                foreignField: '_id',
+                as: 'submittedUser'
+              }
+            },
+            {
+              $unwind: '$submittedUser'
+            },
+            {
+              $project: {
+                _id: 1,
+                course: 1,
+                rating: 1,
+                review: 1,
+                submittedUser: '$submittedUser.email',
+                isFavourite: 1,
+                createdAt: 1,
+                updatedAt: 1
+              }
+            }
+          ]
         }
       },
       {
         $project: {
-          _id: 1,
-          totalReviews: 1,
-          averageRating: 1,
-          'ratings._id': 1,
-          'ratings.rating': 1,
-          'ratings.review': 1,
-          'ratings.createdAt': 1,
-          'ratings.updatedAt': 1,
-          'ratings.submittedUserDetails._id': 1,
-          'ratings.submittedUserDetails.name': 1,
-          'ratings.submittedUserDetails.email': 1
-        }
-      },
-      {
-        $unwind: {
-          path: '$ratings',
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $group: {
-          _id: '$ratings.rating', // Group by rating value
-          count: { $sum: 1 }, // Count the occurrences of each rating value
-          data: { $push: '$$ROOT' } // Preserve all data for each rating value
-        }
-      },
-      {
-        $sort: {
-          _id: 1 // Sort by rating value in ascending order
-        }
-      },
-      {
-        $group: {
-          _id: null,
-          ratingsCount: {
-            $push: {
-              key: { $toString: '$_id' },
-              value: '$count'
+          ratings: {
+            $map: {
+              input: [1, 2, 3, 4, 5],
+              as: 'rating',
+              in: {
+                rating: '$$rating',
+                count: {
+                  $let: {
+                    vars: {
+                      ratingObj: {
+                        $arrayElemAt: [
+                          {
+                            $filter: {
+                              input: '$ratings',
+                              as: 'ratingObj',
+                              cond: { $eq: ['$$ratingObj._id', '$$rating'] }
+                            }
+                          },
+                          0
+                        ]
+                      }
+                    },
+                    in: { $ifNull: ['$$ratingObj.count', 0] }
+                  }
+                }
+              }
             }
           },
-          data: { $push: '$data' }
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          ratingsCount: 1,
-          data: {
-            $reduce: {
-              input: '$data',
-              initialValue: [],
-              in: { $concatArrays: ['$$value', '$$this'] }
-            }
-          } // Flatten the data array
+          averageRating: {
+            $arrayElemAt: [{ $ifNull: ['$stats.averageRating', 0] }, 0]
+          },
+          totalDocs: { $arrayElemAt: ['$stats.totalDocs', 0] },
+          documents: '$documents'
         }
       }
     ])
