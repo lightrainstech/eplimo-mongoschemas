@@ -63,6 +63,7 @@ const SubscriptionPlan = require('./schemas/subscriptionPlanModel')
 const CourseRating = require('./schemas/courseRatingModel')
 const Subscription = require('./schemas/subscriptionModel')
 const InviteBonus = require('./schemas/inviteBonusModel')
+const HealthInfo = require('./schemas/healthInfoModel')
 
 module.exports = {
   Admin,
@@ -117,5 +118,6 @@ module.exports = {
   CourseRating,
   SubscriptionPlan,
   Subscription,
-  InviteBonus
+  InviteBonus,
+  HealthInfo
 }
