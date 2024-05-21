@@ -86,6 +86,18 @@ subscriptionSchema.methods = {
         }
       }
     )
+  },
+  getSubscriptionDataOfUser: async function (userId) {
+    const Subscription = mongoose.model('Subscription')
+    let query = { user: userId }
+    const options = {
+      criteria: query,
+      populate: {
+        path: 'plan',
+        select: 'name price durationInDays'
+      }
+    }
+    return Subscription.load(options)
   }
 }
 
