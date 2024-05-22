@@ -530,6 +530,131 @@ courseSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getCourseAllDetails: async function (courseId) {
+    try {
+      console.log(courseId)
+      const Course = mongoose.model('Course')
+      return await Course.aggregate([
+        {
+          $match: { _id: ObjectId(courseId) }
+        },
+        {
+          $project: {
+            sections: 1,
+            instructor: 1,
+            image: 1,
+            overview: 1,
+            offerPrice: 1,
+            status: 1,
+            category: 1,
+            reviews: 1,
+            title: 1,
+            description: 1,
+            price: 1,
+            createdAt: 1,
+            updatedAt: 1
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            let: { instructorId: '$instructor' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$_id', '$$instructorId'] }
+                }
+              },
+              {
+                $project: {
+                  name: 1,
+                  email: 1,
+                  role: 1,
+                  userName: 1,
+                  avatar: 1,
+                  coverPicture: 1,
+                  location: 1,
+                  isKycVerified: 1
+                }
+              }
+            ],
+            as: 'instructor'
+          }
+        },
+        {
+          $unwind: {
+            path: '$instructor',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: 'ratings', // Join with the rating collection
+            localField: '_id',
+            foreignField: 'course',
+            as: 'ratings'
+          }
+        },
+        {
+          $lookup: {
+            from: 'enrollments',
+            localField: '_id',
+            foreignField: 'enrolledCourse.courseId',
+            as: 'enrollments'
+          }
+        },
+        {
+          $addFields: {
+            courseRating: {
+              $ifNull: [{ $avg: '$ratings.rating' }, 0]
+            },
+            enrolledUsers: { $size: '$enrollments' },
+            inMinutes: {
+              $sum: {
+                $map: {
+                  input: { $ifNull: ['$sections', []] },
+                  as: 'section',
+                  in: {
+                    $sum: {
+                      $map: {
+                        input: { $ifNull: ['$$section.videos', []] },
+                        as: 'video',
+                        in: '$$video.duration'
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            totalDuration: 1,
+            sections: 1,
+            instructor: 1,
+            image: 1,
+            overview: 1,
+            offerPrice: 1,
+            status: 1,
+            category: 1,
+            reviews: 1,
+            title: 1,
+            description: 1,
+            price: 1,
+            createdAt: 1,
+            updatedAt: 1,
+            courseRating: 1,
+            inMinutes: 1,
+            enrolledUsers: 1
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 

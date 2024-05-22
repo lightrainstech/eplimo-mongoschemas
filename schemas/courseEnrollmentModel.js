@@ -118,6 +118,16 @@ enrollmentSchema.methods = {
       }
     }
     return Enrollment.list(options)
+  },
+  getEnrollmentCount: async function (courseId) {
+    try {
+      const Enrollment = mongoose.model('Enrollment')
+      return await Enrollment.find({
+        'enrolledCourse.courseId': ObjectId(courseId)
+      }).countDocuments()
+    } catch (error) {
+      throw error
+    }
   }
 }
 
