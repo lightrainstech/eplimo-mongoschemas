@@ -290,6 +290,10 @@ const UserSchema = new mongoose.Schema(
     stakeClub: {
       type: String,
       default: null
+    },
+    trainerizeId: {
+      type: String,
+      default: null
     }
   },
   { timestamps: true }
@@ -386,7 +390,7 @@ UserSchema.methods = {
     const User = mongoose.model('User'),
       options = {
         criteria: { email: email },
-        select: 'email, custodyWallet,isPractitioner'
+        select: 'email, custodyWallet, isPractitioner'
       }
     return await User.load(options)
   },
