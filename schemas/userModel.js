@@ -294,6 +294,10 @@ const UserSchema = new mongoose.Schema(
     trainerizeId: {
       type: String,
       default: null
+    },
+    languages: {
+      type: [String],
+      default: []
     }
   },
   { timestamps: true }
@@ -1237,6 +1241,26 @@ UserSchema.methods = {
         },
         { new: true }
       )
+    } catch (error) {
+      throw error
+    }
+  },
+  getCoaches: async function (page) {
+    try {
+      const User = mongoose.model('User')
+      let option = {
+        criteria: {
+          isPractitioner: true,
+          role: 'instructor',
+          trainerizeId: { $ne: null },
+          isDeleted: false,
+          isActive: true,
+          isKycVerified: true
+        },
+        page: page,
+        select: 'name userName email country coverPicture avatar role'
+      }
+      return await User.listForPagination(options)
     } catch (error) {
       throw error
     }
