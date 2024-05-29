@@ -205,7 +205,6 @@ const limit = 20
 courseSchema.methods = {
   getCourseById: async function (courseId) {
     const Course = mongoose.model('Course')
-    console.log('courseId', courseId)
     let query = {
       $or: [{ _id: new ObjectId(courseId) }, { courseId: courseId }]
     }
@@ -518,7 +517,6 @@ courseSchema.methods = {
   },
   getInsrtuctorCourses: async function (instructor) {
     try {
-      console.log(instructor)
       const Course = mongoose.model('Course')
       return await Course.find({
         instructor: ObjectId(instructor),
@@ -533,7 +531,6 @@ courseSchema.methods = {
   },
   getCourseAllDetails: async function (courseId) {
     try {
-      console.log(courseId)
       const Course = mongoose.model('Course')
       return await Course.aggregate([
         {
@@ -649,6 +646,98 @@ courseSchema.methods = {
             courseRating: 1,
             inMinutes: 1,
             enrolledUsers: 1
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
+  },
+  getEnrollementsOfInstructor: async function (instructorId, date) {
+    try {
+      const Course = mongoose.model('Course')
+      return await Course.aggregate([
+        {
+          $match: { instructor: ObjectId(instructorId) }
+        },
+        {
+          $lookup: {
+            from: 'enrollments',
+            let: { courseId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$enrolledCourse.courseId', '$$courseId'] },
+                      {
+                        $gte: ['$createdAt', date]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                $count: 'enrolledCount'
+              }
+            ],
+            as: 'enrollments'
+          }
+        },
+        {
+          $unwind: {
+            path: '$enrollments',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $group: {
+            _id: '$instructor',
+            totalEnrolledUsers: { $sum: '$enrollments.enrolledCount' },
+            courses: { $addToSet: '$$ROOT' }
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            let: { instructorId: ObjectId(instructorId) },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$_id', '$$instructorId'] }
+                }
+              },
+              {
+                $project: {
+                  name: { $ifNull: ['$name', null] },
+                  email: { $ifNull: ['$email', null] },
+                  role: { $ifNull: ['$role', null] },
+                  userName: { $ifNull: ['$userName', null] },
+                  avatar: { $ifNull: ['$avatar', {}] },
+                  coverPicture: { $ifNull: ['$coverPicture', {}] },
+                  location: { $ifNull: ['$location', null] },
+                  isKycVerified: { $ifNull: ['$isKycVerified', false] },
+                  category: { $ifNull: ['$category', []] },
+                  subCategory: { $ifNull: ['$subCategory', []] },
+                  languages: { $ifNull: ['$languages', []] }
+                }
+              }
+            ],
+            as: 'instructor'
+          }
+        },
+        {
+          $unwind: {
+            path: '$instructor',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            totalEnrolledUsers: 1,
+            instructor: 1,
+            courses: 1
           }
         }
       ])
