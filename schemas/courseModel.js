@@ -301,6 +301,27 @@ courseSchema.methods = {
         }
       },
       {
+        $addFields: {
+          inMinutes: {
+            $sum: {
+              $map: {
+                input: { $ifNull: ['$sections', []] },
+                as: 'section',
+                in: {
+                  $sum: {
+                    $map: {
+                      input: { $ifNull: ['$$section.videos', []] },
+                      as: 'video',
+                      in: '$$video.duration'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
         $project: {
           _id: 1,
           title: 1,
@@ -317,7 +338,8 @@ courseSchema.methods = {
             name: '$instructor.name',
             email: '$instructor.email',
             role: '$instructor.role'
-          }
+          },
+          inMinutes: 1
         }
       },
       {
