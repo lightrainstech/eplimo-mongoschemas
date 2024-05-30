@@ -61,7 +61,6 @@ HealthInfoSchema.methods = {
   },
   getHealthInfo: async function (userId, date) {
     try {
-      console.log(userId, date)
       const HealthInfo = mongoose.model('HealthInfo')
       return await HealthInfo.aggregate([
         {

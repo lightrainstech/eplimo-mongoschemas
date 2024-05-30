@@ -1264,6 +1264,21 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  addTrainerizeId: async function (args) {
+    try {
+      const User = mongoose.model('User')
+      const { userId, trainerizeId } = args
+      return await User.findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { $set: { trainerizeId: trainerizeId } },
+        {
+          new: true
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
