@@ -41,6 +41,20 @@ HealthGoalsSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getLatestNutritionGoals: async function (userId) {
+    try {
+      const HealthGoalsModel = mongoose.model('HealthGoals')
+      return await HealthGoalsModel.find(
+        { userId, eventType: 'goal.dailyNutrition.updated' },
+        {
+          data: 1,
+          date: 1
+        }
+      ).sort({ date: -1 })
+    } catch (error) {
+      throw error
+    }
   }
 }
 module.exports = mongoose.model('HealthGoals', HealthGoalsSchema)
