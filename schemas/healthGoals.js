@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 
-const HealthGoals = new mongoose.Schema(
+const HealthGoalsSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
