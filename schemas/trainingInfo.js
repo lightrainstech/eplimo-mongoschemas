@@ -16,6 +16,10 @@ const TrainingInfoSchema = new mongoose.Schema(
     },
     data: {
       type: Object
+    },
+    date: {
+      type: Date,
+      default: Date.now
     }
   },
   { timestamps: true }
@@ -25,12 +29,13 @@ TrainingInfoSchema.methods = {
   saveRecord: async function (args) {
     try {
       const TrainingInfoModel = mongoose.model('TrainingInfo')
-      const { userId, eventType, dailyWorkoutId, data } = args
+      const { userId, eventType, dailyWorkoutId, data, date } = args
       return await TrainingInfoModel.findOneAndUpdate(
         { dailyWorkoutId, eventType, userId },
         {
           $set: {
-            data: data
+            data: data,
+            date: date
           }
         },
         { new: true, upsert: true }
