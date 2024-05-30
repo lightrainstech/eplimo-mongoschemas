@@ -14,16 +14,30 @@ const TrainingInfoSchema = new mongoose.Schema(
       type: String,
       default: null
     },
-    startTime: {
-      type: Date
-    },
-    endTime: {
-      type: Date
-    },
     data: {
       type: Object
     }
   },
   { timestamps: true }
 )
+
+TrainingInfoSchema.methods = {
+  saveRecord: async function (args) {
+    try {
+      const TrainingInfoModel = mongoose.model('TrainingInfo')
+      const { userId, eventType, dailyWorkoutId, data } = args
+      return await TrainingInfoModel.findOneAndUpdate(
+        { dailyWorkoutId, eventType, userId },
+        {
+          $set: {
+            data: data
+          }
+        },
+        { new: true, upsert: true }
+      )
+    } catch (error) {
+      throw error
+    }
+  }
+}
 module.exports = mongoose.model('TrainingInfo', TrainingInfoSchema)
