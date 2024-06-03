@@ -66,6 +66,7 @@ const InviteBonus = require('./schemas/inviteBonusModel')
 const HealthInfo = require('./schemas/healthInfoModel')
 const TrainingInfo = require('./schemas/trainingInfo')
 const HealthGoals = require('./schemas/healthGoals')
+const WearableAuthToken = require('./schemas/werableAuthTokenModel')
 
 module.exports = {
   Admin,
@@ -123,5 +124,6 @@ module.exports = {
   InviteBonus,
   HealthInfo,
   TrainingInfo,
-  HealthGoals
+  HealthGoals,
+  WearableAuthToken
 }
