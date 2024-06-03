@@ -1236,7 +1236,8 @@ UserSchema.methods = {
           $set: {
             isPractitioner: true,
             practitionerCategory: category,
-            subCategory: subCategory
+            subCategory: subCategory,
+            role: 'instructor'
           }
         },
         { new: true }
@@ -1245,10 +1246,10 @@ UserSchema.methods = {
       throw error
     }
   },
-  getCoaches: async function (page) {
+  getCoaches: async function (page, category) {
     try {
       const User = mongoose.model('User')
-      let option = {
+      let options = {
         criteria: {
           isPractitioner: true,
           role: 'instructor',
@@ -1259,6 +1260,10 @@ UserSchema.methods = {
         },
         page: page,
         select: 'name userName email country coverPicture avatar role'
+      }
+
+      if (category !== 'All') {
+        options.criteria.category = category
       }
       return await User.listForPagination(options)
     } catch (error) {
