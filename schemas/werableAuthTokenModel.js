@@ -16,8 +16,8 @@ const WearableAuthTokenSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    status: {
-      type: String
+    isActive: {
+      type: Boolean
     }
   },
   { timestamps: true }
@@ -32,7 +32,7 @@ WearableAuthTokenSchema.methods = {
       wearableModel.user = user
       wearableModel.provider = provider
       wearableModel.providerUserId = providerUserId
-      wearableModel.status = status
+      wearableModel.isActive = status
       return await status.save()
     } catch (error) {
       throw error
