@@ -352,19 +352,19 @@ courseSchema.methods = {
         $limit: limit
       }
     ]
-    if (!instructor && instructor === null && category && category.length > 0) {
-      pipeline.push(
-        {
-          $unwind: '$category'
-        },
-        {
-          $group: {
-            _id: '$category',
-            courses: { $push: '$$ROOT' }
-          }
-        }
-      )
-    }
+    // if (!instructor && instructor === null && category && category.length > 0) {
+    //   pipeline.push(
+    //     {
+    //       $unwind: '$category'
+    //     },
+    //     {
+    //       $group: {
+    //         _id: '$category',
+    //         courses: { $push: '$$ROOT' }
+    //       }
+    //     }
+    //   )
+    // }
     return Course.aggregate(pipeline)
   },
   updateCourseStatus: async function (courseId, status) {

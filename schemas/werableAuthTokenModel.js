@@ -33,7 +33,7 @@ WearableAuthTokenSchema.methods = {
       wearableModel.provider = provider
       wearableModel.providerUserId = providerUserId
       wearableModel.isActive = status
-      return await status.save()
+      return await wearableModel.save()
     } catch (error) {
       throw error
     }
