@@ -1259,7 +1259,8 @@ UserSchema.methods = {
           isKycVerified: true
         },
         page: page,
-        select: 'name userName email country coverPicture avatar role'
+        select:
+          'name userName email country coverPicture avatar role isKycVerified'
       }
 
       if (category !== 'All') {
