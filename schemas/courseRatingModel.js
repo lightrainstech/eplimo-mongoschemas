@@ -213,7 +213,13 @@ courseRatingSchema.methods = {
       return await Rating.find({
         submittedUser: userId,
         isFavourite: true
-      }).populate({ path: 'course' })
+      }).populate({
+        path: 'course',
+        populate: {
+          path: 'instructor',
+          select: 'name email'
+        }
+      })
     } catch (error) {
       throw error
     }
