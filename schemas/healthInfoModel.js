@@ -99,4 +99,16 @@ HealthInfoSchema.methods = {
   }
 }
 
+HealthInfoSchema.index(
+  {
+    user: 1,
+    startTime: 1
+  },
+  {
+    user: 1,
+    dataType: 1,
+    startTime: 1,
+    endTime: 1
+  }
+)
 module.exports = mongoose.model('HealthInfo', HealthInfoSchema)
