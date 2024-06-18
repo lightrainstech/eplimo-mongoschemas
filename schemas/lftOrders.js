@@ -17,9 +17,21 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
     status: {
       type: String,
       default: 'pending'
+    },
+    assetId: {
+      type: Number,
+      default: null
     }
   },
   { timestamps: true }
+)
+
+LftPurchaseOrder.index(
+  { assetId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { assetId: { $type: 'number' } }
+  }
 )
 
 module.exports = mongoose.model('LftPurchaseOrder', LftPurchaseOrderSchema)
