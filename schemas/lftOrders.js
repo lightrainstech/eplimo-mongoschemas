@@ -26,7 +26,7 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-LftPurchaseOrder.index(
+LftPurchaseOrderSchema.index(
   { assetId: 1 },
   {
     unique: true,
