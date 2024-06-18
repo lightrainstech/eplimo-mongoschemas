@@ -70,6 +70,27 @@ LftPurchaseOrderSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getAssetByWallet: async function (wallet) {
+    try {
+      const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
+      return await LftPurchaseOrderModel.find({
+        wallet,
+        paymentStatus: 'completed'
+      })
+    } catch (error) {
+      throw error
+    }
+  },
+  totalSoldAsset: async function () {
+    try {
+      const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
+      return await LftPurchaseOrderModel.find({
+        paymentStatus: 'completed'
+      }).countDocuments()
+    } catch (error) {
+      throw error
+    }
   }
 }
 
