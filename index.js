@@ -68,6 +68,7 @@ const TrainingInfo = require('./schemas/trainingInfo')
 const HealthGoals = require('./schemas/healthGoals')
 const WearableAuthToken = require('./schemas/werableAuthTokenModel')
 const LftPurchaseOrder = require('./schemas/lftOrders')
+const BinahVitals = require('./schemas/binahVitals')
 
 module.exports = {
   Admin,
@@ -127,5 +128,6 @@ module.exports = {
   TrainingInfo,
   HealthGoals,
   WearableAuthToken,
-  LftPurchaseOrder
+  LftPurchaseOrder,
+  BinahVitals
 }
