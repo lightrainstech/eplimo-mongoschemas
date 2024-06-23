@@ -47,7 +47,7 @@ LftPurchaseOrderSchema.methods = {
       const { orderId, hash, assetId } = args
       const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
       return await LftPurchaseOrderModel.findOneAndUpdate(
-        { orderId },
+        { orderId, paymentStatus: 'pending' },
         {
           $set: {
             paymentTxnHash: hash,
