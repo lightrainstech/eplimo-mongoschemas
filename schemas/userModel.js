@@ -1285,6 +1285,29 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getInstructorDetails: async function (userId) {
+    try {
+      const User = mongoose.model('User')
+      return await User.findOne(
+        { _id: ObjectId(userId) },
+        {
+          name: 1,
+          email: 1,
+          role: 1,
+          userName: 1,
+          avatar: 1,
+          coverPicture: 1,
+          location: 11,
+          isKycVerified: 1,
+          category: 1,
+          subCategory: 1,
+          languages: 1
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
