@@ -36,6 +36,10 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
     assetTxnHash: {
       type: String,
       default: null
+    },
+    referralCode: {
+      type: String,
+      default: null
     }
   },
   { timestamps: true }
