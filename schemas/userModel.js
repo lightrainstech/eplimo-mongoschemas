@@ -1253,14 +1253,13 @@ UserSchema.methods = {
         criteria: {
           isPractitioner: true,
           role: 'instructor',
-          trainerizeId: { $ne: null },
           isDeleted: false,
           isActive: true,
           isKycVerified: true
         },
         page: page,
         select:
-          'name userName email country coverPicture avatar role isKycVerified'
+          'name userName email country coverPicture avatar role isKycVerified trainerizeId'
       }
 
       if (category !== 'All') {
