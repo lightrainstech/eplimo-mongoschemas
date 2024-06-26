@@ -1259,7 +1259,7 @@ UserSchema.methods = {
         },
         page: page,
         select:
-          'name userName email country coverPicture avatar role isKycVerified trainerizeId'
+          'name userName email country coverPicture avatar role isKycVerified trainerizeId category subCategory'
       }
 
       if (category !== 'All') {
