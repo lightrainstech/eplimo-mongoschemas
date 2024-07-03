@@ -1307,6 +1307,34 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  search: async function (searchTerm) {
+    try {
+      const User = mongoose.model('User')
+      return User.aggregate([
+        {
+          $match: {
+            name: { $regex: 'searchTerm', $options: 'i' },
+            isPractitioner: true,
+            isKycVerified: true
+          }
+        },
+        {
+          $unionWith: {
+            coll: 'courses',
+            pipeline: [
+              {
+                $match: {
+                  title: { $regex: 'searchTerm', $options: 'i' }
+                }
+              }
+            ]
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
