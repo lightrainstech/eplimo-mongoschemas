@@ -1314,7 +1314,7 @@ UserSchema.methods = {
       return User.aggregate([
         {
           $match: {
-            name: { $regex: 'searchTerm', $options: 'i' },
+            name: { $regex: searchTerm, $options: 'i' },
             isPractitioner: true,
             isKycVerified: true
           }
@@ -1325,7 +1325,7 @@ UserSchema.methods = {
             pipeline: [
               {
                 $match: {
-                  title: { $regex: 'searchTerm', $options: 'i' }
+                  title: { $regex: searchTerm, $options: 'i' }
                 }
               }
             ]
