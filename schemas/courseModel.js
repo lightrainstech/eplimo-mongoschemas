@@ -125,7 +125,7 @@ const courseSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ['draft', 'published', 'unpublished'],
-      default: 'published'
+      default: 'draft'
     },
     category: {
       type: Array,
@@ -763,6 +763,33 @@ courseSchema.methods = {
           }
         }
       ])
+    } catch (error) {
+      throw error
+    }
+  },
+  listCourse: async function (searchTerm, page) {
+    try {
+      const Course = mongoose.model('Course')
+
+      if (searchTerm) {
+        return Course.find({
+          $or: [
+            {
+              title: { $regex: searchTerm, $options: 'i' }
+            },
+            {
+              category: { $regex: searchTerm, $options: 'i' }
+            }
+          ]
+        })
+      } else {
+        let limit = 18
+        page = page === 0 ? 0 : page - 1
+        return await Course.find({})
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .skip(limit * page)
+      }
     } catch (error) {
       throw error
     }
