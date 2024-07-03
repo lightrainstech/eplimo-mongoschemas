@@ -32,7 +32,7 @@ LeadGenerationSchema.methods = {
     try {
       const Leads = mongoose.model('LeadGeneration')
       let limit = 18
-      page = page === 0 ? 0 : options.page - 1
+      page = page === 0 ? 0 : page - 1
       return await Leads.find({})
         .limit(limit)
         .skip(limit * page)
