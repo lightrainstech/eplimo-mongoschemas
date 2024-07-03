@@ -19,6 +19,20 @@ const planSchema = new mongoose.Schema(
     durationInDays: {
       type: Number,
       default: 0
+    },
+    image: {
+      path: {
+        type: String,
+        default: ''
+      },
+      mimeType: {
+        type: String,
+        default: 'image/jpeg'
+      }
+    },
+    theme: {
+      type: Object,
+      default: {}
     }
   },
   {
