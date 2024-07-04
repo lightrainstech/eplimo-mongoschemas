@@ -13,6 +13,9 @@ const BinahVitalsSchema = new mongoose.Schema(
     },
     dataProviderId: {
       type: String
+    },
+    dataProvider: {
+      type: String
     }
   },
   { timestamps: true }
