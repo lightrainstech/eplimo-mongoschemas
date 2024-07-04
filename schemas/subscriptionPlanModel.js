@@ -10,9 +10,17 @@ const planSchema = new mongoose.Schema(
       required: true
     },
     description: {
+      type: Object,
+      default: {}
+    },
+    extraFeature: {
       type: String
     },
     price: {
+      type: Number,
+      default: 0
+    },
+    offerPrice: {
       type: Number,
       default: 0
     },
@@ -31,8 +39,8 @@ const planSchema = new mongoose.Schema(
       }
     },
     theme: {
-      type: Object,
-      default: {}
+      type: Array,
+      default: []
     }
   },
   {
