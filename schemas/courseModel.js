@@ -792,7 +792,7 @@ courseSchema.methods = {
   deleteCourse: async function (courseId) {
     try {
       const Course = mongoose.model('Course')
-      return await Course.deleteOne({ courseId })
+      return await Course.deleteOne({ _id: Object(courseId) })
     } catch (error) {
       throw error
     }
@@ -800,7 +800,7 @@ courseSchema.methods = {
   updateCourse: async function (courseId, update) {
     const Course = mongoose.model('Course'),
       data = await Course.findOneAndUpdate(
-        { courseId: courseId },
+        { _id: Object(courseId) },
         { $set: update },
         { new: true }
       )
