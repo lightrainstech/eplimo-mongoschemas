@@ -767,12 +767,12 @@ courseSchema.methods = {
       throw error
     }
   },
-  listCourse: async function (searchTerm, page) {
+  listCourse: async function (searchTerm) {
     try {
       const Course = mongoose.model('Course')
 
       if (searchTerm) {
-        return Course.find({
+        return await Course.find({
           $or: [
             {
               title: { $regex: searchTerm, $options: 'i' }
@@ -783,16 +783,28 @@ courseSchema.methods = {
           ]
         })
       } else {
-        let limit = 18
-        page = page === 0 ? 0 : page - 1
-        return await Course.find({})
-          .sort({ createdAt: -1 })
-          .limit(limit)
-          .skip(limit * page)
+        return await Course.find({}).sort({ createdAt: -1 })
       }
     } catch (error) {
       throw error
     }
+  },
+  deleteCourse: async function (courseId) {
+    try {
+      const Course = mongoose.model('Course')
+      return await Course.deleteOne({ courseId })
+    } catch (error) {
+      throw error
+    }
+  },
+  updateCourse: async function (courseId, update) {
+    const Course = mongoose.model('Course'),
+      data = await Course.findOneAndUpdate(
+        { courseId: courseId },
+        { $set: update },
+        { new: true }
+      )
+    return data
   }
 }
 
@@ -800,7 +812,7 @@ courseSchema.statics = {
   load: function (options, cb) {
     options.select =
       options.select ||
-      '_id title description sections instructor price status createdAt updatedAt category overview'
+      '_id title image description sections instructor price status createdAt updatedAt category overview'
     options.populate = options.populate || ''
     return this.findOne(options.criteria)
       .select(options.select)
