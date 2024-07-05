@@ -805,6 +805,37 @@ courseSchema.methods = {
         { new: true }
       )
     return data
+  },
+  popularCategory: async function () {
+    try {
+      const Course = mongoose.model('Course')
+      return await Course.aggregate([
+        {
+          $unwind: '$category'
+        },
+        {
+          $group: {
+            _id: '$category',
+            courseCount: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            category: '$_id',
+            courseCount: 1
+          }
+        },
+        {
+          $sort: { courseCount: -1 }
+        },
+        {
+          $limit: 5 // Change this number if you want to get more top categories
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
