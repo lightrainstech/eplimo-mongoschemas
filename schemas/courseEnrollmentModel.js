@@ -128,6 +128,41 @@ enrollmentSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getPopularCategory: async function () {
+    try {
+      const Enrollment = mongoose.model('Enrollment')
+      return await Enrollment.aggregate([
+        {
+          $lookup: {
+            from: 'courses',
+            localField: 'enrolledCourse.courseId',
+            foreignField: '_id',
+            as: 'courseDetails'
+          }
+        },
+        {
+          $unwind: '$courseDetails'
+        },
+        {
+          $unwind: '$courseDetails.category'
+        },
+        {
+          $group: {
+            _id: '$courseDetails.category',
+            enrollmentCount: { $sum: 1 }
+          }
+        },
+        {
+          $sort: { enrollmentCount: -1 }
+        },
+        {
+          $limit: 5 // Change this number if you want to get more top categories
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
