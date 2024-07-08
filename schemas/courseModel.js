@@ -816,21 +816,63 @@ courseSchema.methods = {
         {
           $group: {
             _id: '$category',
-            courseCount: { $sum: 1 }
+            courseCount: { $sum: 1 },
+            courseIds: { $push: '$_id' }
           }
         },
         {
           $project: {
             _id: 0,
             category: '$_id',
-            courseCount: 1
+            courseCount: 1,
+            courseIds: 1
           }
         },
         {
           $sort: { courseCount: -1 }
         },
+
         {
-          $limit: 5 // Change this number if you want to get more top categories
+          $lookup: {
+            from: 'enrollments',
+            let: { courseIds: '$courseIds' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $in: ['$enrolledCourse.courseId', '$$courseIds'] }
+                }
+              },
+              { $group: { _id: null, enrollmentCount: { $sum: 1 } } }
+            ],
+            as: 'enrollments'
+          }
+        },
+        {
+          $unwind: {
+            path: '$enrollments',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $group: {
+            _id: '$category',
+            courseCount: { $first: '$courseCount' },
+            enrollmentCount: { $sum: '$enrollments.enrollmentCount' }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            category: '$_id',
+            courseCount: 1,
+            enrollmentCount: { $ifNull: ['$enrollmentCount', 0] }
+          }
+        },
+        {
+          $sort: { courseCount: -1, enrollmentCount: -1 }
+        },
+        {
+          $limit: 5
         }
       ])
     } catch (error) {
