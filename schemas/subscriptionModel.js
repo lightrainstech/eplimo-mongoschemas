@@ -41,7 +41,8 @@ subscriptionSchema.methods = {
       criteria: query,
       populate: {
         path: 'plan',
-        select: 'name price durationInDays'
+        select:
+          'name description price durationInDays offerPrice image theme extraFeature'
       }
     }
     return Subscription.load(options)
@@ -53,7 +54,8 @@ subscriptionSchema.methods = {
       criteria: query,
       populate: {
         path: 'plan',
-        select: 'name price durationInDays'
+        select:
+          'name description price durationInDays offerPrice image theme extraFeature'
       }
     }
     return Subscription.load(options)
