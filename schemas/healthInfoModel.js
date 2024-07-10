@@ -65,8 +65,8 @@ HealthInfoSchema.methods = {
       return await HealthInfo.aggregate([
         {
           $match: {
-            user: ObjectId(userId),
-            startTime: { $gte: date }
+            user: ObjectId(userId)
+            //startTime: { $gte: date }
           }
         },
         {
