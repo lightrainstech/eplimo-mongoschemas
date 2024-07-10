@@ -21,6 +21,22 @@ const AiCoachingInfoSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-AiCoachingInfoSchema.methods = {}
+AiCoachingInfoSchema.methods = {
+  getTrainingHistory: async function (page, user) {
+    try {
+      const TraininigHistory = mongoose.model('AiCoachingInfo')
+      let limit = 18
+      page = page === 0 ? 0 : page - 1
+      return await TraininigHistory.find({
+        user
+      })
+        .sort({ createdAt: -1 })
+        .limit(limit)
+        .skip(limit * page)
+    } catch (error) {
+      throw error
+    }
+  }
+}
 
 module.exports = mongoose.model('AiCoachingInfo', AiCoachingInfoSchema)
