@@ -27,12 +27,35 @@ WearableAuthTokenSchema.methods = {
     try {
       const { user, provider, providerUserId, status } = args
       const WearableAuthTokenModel = mongoose.model('WearableAuthToken')
-      const wearableModel = new WearableAuthTokenModel()
-      wearableModel.user = user
-      wearableModel.provider = provider
-      wearableModel.providerUserId = providerUserId
-      wearableModel.isActive = status
-      return await wearableModel.save()
+      return await WearableAuthTokenModel.findOneAndUpdate(
+        {
+          user: ObjectId(user),
+          providerUserId: providerUserId,
+          provider: provider
+        },
+        {
+          $set: {
+            isActive: status
+          }
+        },
+        {
+          upsert: true,
+          new: true
+        }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  checkAuth: async function (args) {
+    try {
+      const { user, providerUserId } = args
+      const WearableAuthTokenModel = mongoose.model('WearableAuthToken')
+      return await WearableAuthTokenModel.findOne({
+        user: ObjectId(user),
+        providerUserId: providerUserId,
+        isActive: true
+      })
     } catch (error) {
       throw error
     }
