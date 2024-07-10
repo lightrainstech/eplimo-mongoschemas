@@ -95,7 +95,7 @@ planSchema.statics = {
   load: function (options, cb) {
     options.select =
       options.select ||
-      'name description price durationInDays createdAt updatedAt'
+      'name description price durationInDays offerPrice image theme extraFeature createdAt updatedAt'
     return this.findOne(options.criteria).select(options.select).exec(cb)
   },
   list: function (options) {
@@ -104,7 +104,7 @@ planSchema.statics = {
     const limit = parseInt(options.limit) || 12
     const select =
       options.select ||
-      'name description price durationInDays createdAt updatedAt'
+      'name description price durationInDays offerPrice image theme extraFeature createdAt updatedAt'
     return this.find(criteria)
       .select(select)
       .populate(options.populate)
