@@ -70,6 +70,7 @@ const WearableAuthToken = require('./schemas/werableAuthTokenModel')
 const LftPurchaseOrder = require('./schemas/lftOrders')
 const BinahVitals = require('./schemas/binahVitals')
 const AiCoachingInfo = require('./schemas/aiCoachingInfo')
+const SubscriptionPayment = require('./schemas/subscriptionPayment')
 
 module.exports = {
   Admin,
@@ -131,5 +132,6 @@ module.exports = {
   WearableAuthToken,
   LftPurchaseOrder,
   BinahVitals,
-  AiCoachingInfo
+  AiCoachingInfo,
+  SubscriptionPayment
 }
