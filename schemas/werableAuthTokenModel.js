@@ -5,8 +5,7 @@ const WearableAuthTokenSchema = new mongoose.Schema(
   {
     user: {
       type: ObjectId,
-      ref: 'User',
-      unique: true
+      ref: 'User'
     },
     providerUserId: {
       type: String,
@@ -40,4 +39,5 @@ WearableAuthTokenSchema.methods = {
   }
 }
 
+//WearableAuthToken.index({ user: 1, provider: 1 }, { unique: true })
 module.exports = mongoose.model('WearableAuthToken', WearableAuthTokenSchema)
