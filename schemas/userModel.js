@@ -298,6 +298,10 @@ const UserSchema = new mongoose.Schema(
     languages: {
       type: [String],
       default: []
+    },
+    notificationId: {
+      type: String,
+      default: null
     }
   },
   { timestamps: true }
@@ -1332,6 +1336,26 @@ UserSchema.methods = {
           }
         }
       ])
+    } catch (error) {
+      throw error
+    }
+  },
+  saveAuth: async function (user, playerId) {
+    try {
+      const userModel = mongoose.model('User')
+      return await userModel.findOneAndUpdate(
+        {
+          _id: ObjectId(user)
+        },
+        {
+          $set: {
+            notificationId: playerId
+          }
+        },
+        {
+          new: true
+        }
+      )
     } catch (error) {
       throw error
     }

@@ -71,7 +71,6 @@ const LftPurchaseOrder = require('./schemas/lftOrders')
 const BinahVitals = require('./schemas/binahVitals')
 const AiCoachingInfo = require('./schemas/aiCoachingInfo')
 const SubscriptionPayment = require('./schemas/subscriptionPayment')
-const NotificationAuth = require('./schemas/notificationAuth')
 
 module.exports = {
   Admin,
@@ -134,6 +133,5 @@ module.exports = {
   LftPurchaseOrder,
   BinahVitals,
   AiCoachingInfo,
-  SubscriptionPayment,
-  NotificationAuth
+  SubscriptionPayment
 }
