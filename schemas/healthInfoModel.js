@@ -62,17 +62,19 @@ HealthInfoSchema.methods = {
   getHealthInfo: async function (userId, startDate, endDate) {
     try {
       const HealthInfo = mongoose.model('HealthInfo')
+      const criteria = {
+        user: ObjectId(userId),
+        $and: [
+          { endTime: { $gte: startDate } },
+          {
+            endTime: { $lte: endDate }
+          }
+        ]
+      }
+      console.log(criteria)
       return await HealthInfo.aggregate([
         {
-          $match: {
-            user: ObjectId(userId),
-            $and: [
-              { endTime: { $gte: startDate } },
-              {
-                endTime: { $lte: endDate }
-              }
-            ]
-          }
+          $match: criteria
         },
         {
           $sort: { createdAt: -1 }
