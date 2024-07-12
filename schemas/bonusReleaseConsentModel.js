@@ -3,11 +3,11 @@ const { ObjectId } = mongoose.Types
 
 const BonusReleaseConsentSchema = new mongoose.Schema(
   {
-    user: { type: ObjectId, ref: 'User', required: true, unique: true },
+    user: { type: ObjectId, ref: 'User', required: true },
     mode: {
       type: String,
       require: true,
-      enum: ['linear-release', 'admin-stake']
+      enum: ['linear-release', 'admin-stake', 'LFT', 'claim-stake']
     },
     isAgree: {
       type: Boolean,
@@ -25,7 +25,21 @@ const BonusReleaseConsentSchema = new mongoose.Schema(
 BonusReleaseConsentSchema.methods = {
   checkForConsent: async user => {
     const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
-    return await BonusReleaseConsent.find({ user }).limit(1).lean()
+    return await BonusReleaseConsent.find({
+      user,
+      mode: { $in: ['linear-release', 'admin-stake'] }
+    })
+      .limit(1)
+      .lean()
+  },
+  checkForStakeReleaseConsent: async user => {
+    const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
+    return await BonusReleaseConsent.find({
+      user,
+      mode: { $in: ['LFT', 'claim-stake'] }
+    })
+      .limit(1)
+      .lean()
   },
   getLinearReleaseSubmission: async user => {
     const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
