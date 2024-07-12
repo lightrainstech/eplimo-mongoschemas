@@ -59,28 +59,34 @@ HealthInfoSchema.methods = {
       throw error
     }
   },
-  getHealthInfo: async function (userId, date) {
+  getHealthInfo: async function (userId, startDate, endDate) {
     try {
       const HealthInfo = mongoose.model('HealthInfo')
       return await HealthInfo.aggregate([
         {
           $match: {
-            user: ObjectId(userId)
-            //startTime: { $gte: date }
+            user: ObjectId(userId),
+            $and: [
+              { endTime: { $gte: startDate } },
+              {
+                endTime: { $lte: endDate }
+              }
+            ]
           }
         },
         {
-          $unwind: '$data'
+          $sort: { createdAt: -1 }
         },
         {
-          $sort: { 'data.endTime': -1 }
+          $unwind: '$data'
         },
         {
           $group: {
             _id: '$dataType',
             documents: { $first: '$data' },
             user: { $first: '$user' },
-            dataProviderId: { $first: '$dataProviderId' }
+            dataProviderId: { $first: '$dataProviderId' },
+            documentId: { $first: '$_id' }
           }
         },
         {
@@ -89,7 +95,8 @@ HealthInfoSchema.methods = {
             dataType: '$_id',
             documents: 1,
             user: 1,
-            dataProviderId: 1
+            dataProviderId: 1,
+            documentId: 1
           }
         }
       ])
