@@ -85,7 +85,8 @@ planSchema.methods = {
     const options = {
       criteria: {},
       page: 1,
-      limit: 12
+      limit: 12,
+      sort: { createdAt: 1 }
     }
     return Plan.list(options)
   }
