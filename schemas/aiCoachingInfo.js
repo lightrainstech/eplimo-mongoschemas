@@ -22,14 +22,26 @@ const AiCoachingInfoSchema = new mongoose.Schema(
 )
 
 AiCoachingInfoSchema.methods = {
-  getTrainingHistory: async function (page, user) {
+  getTrainingHistory: async function (args) {
     try {
+      let { page, user, startDate, endDate } = args
+      let criteria = {}
+
+      if (startDate && endDate) {
+        criteria = {
+          user: user,
+          $and: [
+            { createdAt: { $gte: new Date(startDate) } },
+            { createdAt: { $lte: new Date(endDate) } }
+          ]
+        }
+      } else {
+        criteria.user = user
+      }
       const TraininigHistory = mongoose.model('AiCoachingInfo')
       let limit = 18
       page = page === 0 ? 0 : page - 1
-      return await TraininigHistory.find({
-        user
-      })
+      return await TraininigHistory.find(criteria)
         .sort({ createdAt: -1 })
         .limit(limit)
         .skip(limit * page)
