@@ -63,15 +63,14 @@ HealthInfoSchema.methods = {
     try {
       const HealthInfo = mongoose.model('HealthInfo')
       const criteria = {
-        user: ObjectId(userId)
-        // $and: [
-        //   { endTime: { $gte: startDate } },
-        //   {
-        //     endTime: { $lte: endDate }
-        //   }
-        // ]
+        user: ObjectId(userId),
+        $and: [
+          { startTime: { $gte: new Date(startDate) } },
+          {
+            endTime: { $lte: new Date(endDate) }
+          }
+        ]
       }
-      console.log(criteria)
       return await HealthInfo.aggregate([
         {
           $match: criteria
@@ -100,6 +99,64 @@ HealthInfoSchema.methods = {
             dataProviderId: 1,
             documentId: 1
           }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
+  },
+  getHealthInfoByRange: async function (userId, startDate, endDate) {
+    try {
+      console.log(userId, startDate, endDate)
+      const HealthInfo = mongoose.model('HealthInfo')
+      const criteria = {
+        user: ObjectId(userId),
+        $and: [
+          { startTime: { $gte: new Date(startDate) } },
+          {
+            endTime: { $lte: new Date(endDate) }
+          }
+        ]
+      }
+      console.log(criteria.$and)
+      return await HealthInfo.aggregate([
+        {
+          $match: criteria
+        },
+        {
+          $sort: { startTime: -1 }
+        },
+        {
+          $unwind: '$data'
+        },
+        {
+          $group: {
+            _id: {
+              date: {
+                $dateToString: { format: '%Y-%m-%d', date: '$createdAt' }
+              }
+              //dataType: '$dataType'
+            },
+            documents: { $push: '$data' },
+            user: { $first: '$user' },
+            dataProviderId: { $first: '$dataProviderId' },
+            documentId: { $first: '$_id' },
+            dataType: { $first: '$dataType' }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            date: '$_id.date',
+            dataType: '$_id.dataType',
+            documents: 1,
+            user: 1,
+            dataProviderId: 1,
+            documentId: 1
+          }
+        },
+        {
+          $sort: { date: -1 }
         }
       ])
     } catch (error) {
