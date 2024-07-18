@@ -12,7 +12,7 @@ const ServicePaymentSchema = new mongoose.Schema(
     },
     paymentType: {
       type: String,
-      enum: ['zoksh'],
+      enum: ['zoksh', 'futureverse'],
       required: true
     },
     transactionType: {
@@ -29,7 +29,9 @@ const ServicePaymentSchema = new mongoose.Schema(
       default: 'pending'
     },
     transactionId: { type: String, default: '' },
-    amount: { type: String, required: true }
+    amount: { type: String, required: true },
+    currency: { type: String },
+    receivedAmount: { type: Number }
   },
   {
     timestamps: true
