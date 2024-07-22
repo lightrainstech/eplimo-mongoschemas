@@ -111,14 +111,14 @@ HealthInfoSchema.methods = {
       const HealthInfo = mongoose.model('HealthInfo')
       const criteria = {
         user: ObjectId(userId),
-        $and: [
-          { startTime: { $gte: new Date(startDate) } },
-          {
-            endTime: { $lte: new Date(endDate) }
-          }
-        ]
+        endTime: { $lte: new Date(endDate) }
+        // $and: [
+        //   { startTime: { $gte: new Date(startDate) } },
+        //   {
+        //     endTime: { $lte: new Date(endDate) }
+        //   }
+        // ]
       }
-      console.log(criteria.$and)
       return await HealthInfo.aggregate([
         {
           $match: criteria
