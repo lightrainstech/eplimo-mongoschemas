@@ -64,12 +64,13 @@ HealthInfoSchema.methods = {
       const HealthInfo = mongoose.model('HealthInfo')
       const criteria = {
         user: ObjectId(userId),
-        $and: [
-          { startTime: { $gte: new Date(startDate) } },
-          {
-            endTime: { $lte: new Date(endDate) }
-          }
-        ]
+        endTime: { $lte: new Date(endDate) }
+        // $and: [
+        //   { startTime: { $gte: new Date(startDate) } },
+        //   {
+        //     endTime: { $lte: new Date(endDate) }
+        //   }
+        // ]
       }
       return await HealthInfo.aggregate([
         {
@@ -107,17 +108,15 @@ HealthInfoSchema.methods = {
   },
   getHealthInfoByRange: async function (userId, startDate, endDate) {
     try {
-      console.log(userId, startDate, endDate)
       const HealthInfo = mongoose.model('HealthInfo')
       const criteria = {
         user: ObjectId(userId),
-        endTime: { $lte: new Date(endDate) }
-        // $and: [
-        //   { startTime: { $gte: new Date(startDate) } },
-        //   {
-        //     endTime: { $lte: new Date(endDate) }
-        //   }
-        // ]
+        $and: [
+          { startTime: { $gte: new Date(startDate) } },
+          {
+            endTime: { $lte: new Date(endDate) }
+          }
+        ]
       }
       return await HealthInfo.aggregate([
         {
