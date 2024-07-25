@@ -10,6 +10,9 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
     amount: {
       type: Number
     },
+    items: {
+      type: Number
+    },
     referralCode: {
       type: String
     },
