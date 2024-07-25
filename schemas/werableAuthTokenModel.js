@@ -59,6 +59,17 @@ WearableAuthTokenSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getConnectedDevice: async function (user) {
+    try {
+      const WearableAuthTokenModel = mongoose.model('WearableAuthToken')
+      return await WearableAuthTokenModel.find({
+        user: ObjectId(user),
+        isActive: true
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
