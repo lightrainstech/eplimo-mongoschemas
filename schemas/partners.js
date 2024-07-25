@@ -41,12 +41,6 @@ const PartnerSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    custodyWallet: {
-      type: custodyWalletSchema
-    },
-    nonCustodyWallet: {
-      type: [nonCustodyWalletSchema]
-    },
     isActive: {
       type: Boolean,
       default: false
@@ -59,11 +53,6 @@ const PartnerSchema = new mongoose.Schema(
       type: String,
       enum: ['Organizations', 'Professionals', 'NA'],
       default: 'NA'
-    },
-    social: {
-      twitter: socialSchema,
-      linkedin: socialSchema,
-      facebook: socialSchema
     },
     services: {
       type: Array,
