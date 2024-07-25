@@ -26,8 +26,15 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
       default: 'pending'
     },
     assetId: {
+      type: Array,
+      default: []
+    },
+    latestAssetId: {
+      type: Number
+    },
+    assetCounter: {
       type: Number,
-      default: null
+      default: 1
     },
     transferred: {
       type: Boolean,
@@ -48,7 +55,7 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
 LftPurchaseOrderSchema.methods = {
   updateStatus: async function (args) {
     try {
-      const { orderId, hash, assetId } = args
+      const { orderId, hash, assetId, latestAssetId, assetCounter } = args
       const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
       return await LftPurchaseOrderModel.findOneAndUpdate(
         { orderId, paymentStatus: 'pending' },
@@ -56,7 +63,9 @@ LftPurchaseOrderSchema.methods = {
           $set: {
             paymentTxnHash: hash,
             assetId: assetId,
-            paymentStatus: 'completed'
+            paymentStatus: 'completed',
+            latestAssetId: latestAssetId,
+            assetCounter: assetCounter
           }
         },
         { new: true }
@@ -70,7 +79,7 @@ LftPurchaseOrderSchema.methods = {
       const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
       return await LftPurchaseOrderModel.findOne({
         paymentStatus: 'completed'
-      }).sort({ assetId: 1 })
+      }).sort({ latestAssetId: -1 })
     } catch (error) {
       throw error
     }
