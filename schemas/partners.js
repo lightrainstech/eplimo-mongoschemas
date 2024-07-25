@@ -49,11 +49,6 @@ const PartnerSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    lpoType: {
-      type: String,
-      enum: ['Organizations', 'Professionals', 'NA'],
-      default: 'NA'
-    },
     services: {
       type: Array,
       default: [],
@@ -102,6 +97,21 @@ const PartnerSchema = new mongoose.Schema(
         type: String,
         default: 'image/jpeg'
       }
+    },
+    images: {
+      type: [
+        {
+          path: {
+            type: String,
+            default: ''
+          },
+          mimeType: {
+            type: String,
+            default: 'image/jpeg'
+          }
+        }
+      ],
+      default: []
     },
     description: {
       type: String,
