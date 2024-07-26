@@ -146,7 +146,7 @@ PartnerSchema.methods = {
       const Partner = mongoose.model('Partner')
       return await Partner.find(
         {},
-        { hashedPassword: -1, salt: -1, authToken: -1 }
+        { hashedPassword: 0, salt: 0, authToken: 0 }
       )
     } catch (error) {
       throw error
