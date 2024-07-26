@@ -28,12 +28,7 @@ const PartnerServiceSchema = new mongoose.Schema(
       default: []
     },
     terms: {
-      path: {
-        type: String
-      },
-      mimeType: {
-        type: String
-      }
+      type: String
     },
     review: [
       {
