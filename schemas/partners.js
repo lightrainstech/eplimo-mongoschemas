@@ -128,7 +128,14 @@ const PartnerSchema = new mongoose.Schema(
     kycReferenceId: {
       type: String,
       default: null
-    }
+    },
+    review: [
+      {
+        user: { type: Schema.ObjectId, ref: 'User', required: true },
+        message: { type: String, default: '' },
+        rating: { type: Number, enum: [1, 2, 3, 4, 5], default: 1 }
+      }
+    ]
   },
   { timestamps: true }
 )
