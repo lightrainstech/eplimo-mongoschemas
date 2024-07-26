@@ -41,9 +41,24 @@ const PartnerServiceSchema = new mongoose.Schema(
         message: { type: String, default: '' },
         rating: { type: Number, enum: [1, 2, 3, 4, 5], default: 1 }
       }
-    ]
+    ],
+    isApproved: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 )
+
+PartnerServiceSchema.methods = {
+  getServicesByPartner: async function (partnerId) {
+    try {
+      const PartnerService = mongoose.model('PartnerService')
+      return await PartnerService.find({ partnerId })
+    } catch (error) {
+      throw error
+    }
+  }
+}
 
 module.exports = mongoose.model('PartnerService', PartnerServiceSchema)

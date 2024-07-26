@@ -140,4 +140,18 @@ const PartnerSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+PartnerSchema.methods = {
+  getPartners: async function () {
+    try {
+      const Partner = mongoose.model('Partner')
+      return await Partner.find(
+        {},
+        { hashedPassword: -1, salt: -1, authToken: -1 }
+      )
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
 module.exports = mongoose.model('Partner', PartnerSchema)
