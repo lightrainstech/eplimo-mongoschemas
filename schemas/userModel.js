@@ -302,7 +302,8 @@ const UserSchema = new mongoose.Schema(
     notificationId: {
       type: String,
       default: null
-    }
+    },
+    credits: { type: Number, required: true, default: 0 }
   },
   { timestamps: true }
 )
@@ -1350,6 +1351,26 @@ UserSchema.methods = {
         {
           $set: {
             notificationId: playerId
+          }
+        },
+        {
+          new: true
+        }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  updateCredits: async function (user, credits) {
+    try {
+      const userModel = mongoose.model('User')
+      return await userModel.findOneAndUpdate(
+        {
+          _id: ObjectId(user)
+        },
+        {
+          $set: {
+            credits: { $inc: credits }
           }
         },
         {
