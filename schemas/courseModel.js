@@ -345,6 +345,7 @@ courseSchema.methods = {
           updatedAt: 1,
           category: 1,
           overview: 1,
+          materials: 1,
           instructor: {
             _id: '$instructor._id',
             name: '$instructor.name',
