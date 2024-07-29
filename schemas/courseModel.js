@@ -107,6 +107,16 @@ const courseSchema = new mongoose.Schema(
         default: 'image/jpeg'
       }
     },
+    material: {
+      path: {
+        type: String,
+        default: ''
+      },
+      mimeType: {
+        type: String,
+        default: 'pdf'
+      }
+    },
     sections: [sectionSchema],
     instructor: {
       type: mongoose.Schema.Types.ObjectId,
