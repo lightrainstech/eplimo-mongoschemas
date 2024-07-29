@@ -24,7 +24,7 @@ const AiCoachingInfoSchema = new mongoose.Schema(
 AiCoachingInfoSchema.methods = {
   getTrainingHistory: async function (args) {
     try {
-      let { page, user, startDate, endDate } = args
+      let { page, user, startDate, endDate, isChallenge } = args
       let criteria = {}
 
       if (startDate && endDate) {
@@ -37,6 +37,9 @@ AiCoachingInfoSchema.methods = {
         }
       } else {
         criteria.user = user
+      }
+      if (isChallenge) {
+        criteria = { ...criteria, data: { exerciseCompleted: { $ne: [] } } }
       }
       const TraininigHistory = mongoose.model('AiCoachingInfo')
       let limit = 18
