@@ -7,7 +7,15 @@ const BonusReleaseConsentSchema = new mongoose.Schema(
     mode: {
       type: String,
       require: true,
-      enum: ['linear-release', 'admin-stake', 'LFT', 'claim-stake']
+      enum: [
+        'linear-release',
+        'admin-stake',
+        'LFT',
+        'claim-stake',
+        'option1',
+        'option2',
+        'option3'
+      ]
     },
     isAgree: {
       type: Boolean,
@@ -36,7 +44,7 @@ BonusReleaseConsentSchema.methods = {
     const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
     return await BonusReleaseConsent.find({
       user,
-      mode: { $in: ['LFT', 'claim-stake'] }
+      mode: { $in: ['option1', 'option2', 'option3'] }
     })
       .limit(1)
       .lean()
