@@ -27,10 +27,22 @@ const subscriptionSchema = new mongoose.Schema(
       enum: ['pending', 'active', 'expired', 'cancelled'],
       default: 'pending'
     },
-    healthRewards: {
+    totalHealthRewards: {
       type: Number,
       defauly: 0
-    }
+    },
+    rewardsDetails: [
+      {
+        vitals: {
+          type: Number,
+          default: 0
+        },
+        aiTraining: {
+          type: Number,
+          default: 0
+        }
+      }
+    ]
   },
   {
     timestamps: true
@@ -100,17 +112,66 @@ subscriptionSchema.methods = {
       criteria: query,
       populate: {
         path: 'plan',
-        select: 'name price durationInDays'
+        select:
+          'user plan startDate endDate status totalHealthRewards rewardsDetails createdAt updatedAt'
       }
     }
     return Subscription.load(options)
+  },
+  updateRewards: async function (args) {
+    try {
+      let { recordId, totalRewards, vitals, aiTraining } = args
+      const Subscription = mongoose.model('Subscription')
+      return await Subscription.findOneAndUpdate(
+        { _id: Object(recordId) },
+        {
+          $set: {
+            totalRewards: totalRewards,
+            rewardsDetails: [
+              {
+                vitals: vitals
+              },
+              {
+                aiTraining: aiTraining
+              }
+            ]
+          }
+        },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  gettotalRewards: async function (userId) {
+    const Subscription = mongoose.model('Subscription')
+    try {
+      return await Subscription.aggregate([
+        {
+          $match: {
+            user: userId
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            total: {
+              $sum: '$totalRewards'
+            }
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
 subscriptionSchema.statics = {
   load: function (options, cb) {
     options.select =
-      options.select || 'user plan startDate endDate status createdAt updatedAt'
+      options.select ||
+      'user plan startDate endDate status totalHealthRewards rewardsDetails createdAt updatedAt'
     return this.findOne(options.criteria)
       .populate(options.populate)
       .select(options.select)
@@ -121,7 +182,8 @@ subscriptionSchema.statics = {
     const page = options.page - 1
     const limit = parseInt(options.limit) || 12
     const select =
-      options.select || 'user plan startDate endDate status createdAt updatedAt'
+      options.select ||
+      'user plan startDate endDate status totalHealthRewards rewardsDetails createdAt updatedAt'
     return this.find(criteria)
       .select(select)
       .populate(options.populate)
