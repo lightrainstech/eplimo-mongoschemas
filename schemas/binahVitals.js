@@ -36,6 +36,22 @@ BinahVitalsSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getScanHistoryByRange: async function (args) {
+    try {
+      let { userId, startDate, endDate } = args
+      const ScanHistory = mongoose.model('BinahVitals')
+
+      return await ScanHistory.find({
+        user: userId,
+        $and: [
+          { createdAt: { $gte: new Date(startDate) } },
+          { createdAt: { $lte: new Date(endDate) } }
+        ]
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 

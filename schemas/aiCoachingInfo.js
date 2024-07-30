@@ -40,6 +40,8 @@ AiCoachingInfoSchema.methods = {
       }
       if (isChallenge) {
         criteria = { ...criteria, data: { isChallenge: true } }
+      } else {
+        criteria = { ...criteria, data: { isChallenge: { $ne: true } } }
       }
       const TraininigHistory = mongoose.model('AiCoachingInfo')
       let limit = 18
@@ -48,6 +50,23 @@ AiCoachingInfoSchema.methods = {
         .sort({ createdAt: -1 })
         .limit(limit)
         .skip(limit * page)
+    } catch (error) {
+      throw error
+    }
+  },
+  getTrainingHistoryWithoutPagination: async function (args) {
+    try {
+      let { user, startDate, endDate } = args
+      let criteria = {
+        user: user,
+        $and: [
+          { createdAt: { $gte: new Date(startDate) } },
+          { createdAt: { $lte: new Date(endDate) } }
+        ],
+        data: { isChallenge: { $ne: true } }
+      }
+      const TraininigHistory = mongoose.model('AiCoachingInfo')
+      return await TraininigHistory.find(criteria)
     } catch (error) {
       throw error
     }
