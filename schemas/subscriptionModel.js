@@ -26,6 +26,10 @@ const subscriptionSchema = new mongoose.Schema(
       type: String,
       enum: ['pending', 'active', 'expired', 'cancelled'],
       default: 'pending'
+    },
+    healthRewards: {
+      type: Number,
+      defauly: 0
     }
   },
   {
