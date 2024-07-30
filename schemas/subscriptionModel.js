@@ -141,7 +141,7 @@ subscriptionSchema.methods = {
       throw error
     }
   },
-  gettotalRewards: async function (userId) {
+  getTotalRewards: async function (userId) {
     const Subscription = mongoose.model('Subscription')
     try {
       return await Subscription.aggregate([
