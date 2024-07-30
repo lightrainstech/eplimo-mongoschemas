@@ -116,6 +116,10 @@ const courseSchema = new mongoose.Schema(
         mimeType: {
           type: String,
           default: 'pdf'
+        },
+        name: {
+          type: String,
+          default: 'material'
         }
       }
     ],

@@ -58,12 +58,12 @@ AiCoachingInfoSchema.methods = {
     try {
       let { user, startDate, endDate } = args
       let criteria = {
-        user: user,
+        user: ObjectId(user),
         $and: [
           { createdAt: { $gte: new Date(startDate) } },
           { createdAt: { $lte: new Date(endDate) } }
         ],
-        data: { isChallenge: { $ne: true } }
+        'data.isChallenge': { $ne: true }
       }
       const TraininigHistory = mongoose.model('AiCoachingInfo')
       return await TraininigHistory.find(criteria)
