@@ -39,7 +39,7 @@ AiCoachingInfoSchema.methods = {
         criteria.user = user
       }
       if (isChallenge) {
-        criteria = { ...criteria, data: { exerciseCompleted: { $ne: [] } } }
+        criteria = { ...criteria, data: { isChallenge: true } }
       }
       const TraininigHistory = mongoose.model('AiCoachingInfo')
       let limit = 18
