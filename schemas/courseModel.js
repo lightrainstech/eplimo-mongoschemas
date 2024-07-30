@@ -584,6 +584,7 @@ courseSchema.methods = {
             title: 1,
             description: 1,
             price: 1,
+            materials: 1,
             createdAt: 1,
             updatedAt: 1
           }
@@ -668,6 +669,7 @@ courseSchema.methods = {
             sections: 1,
             instructor: 1,
             image: 1,
+            materials: 1,
             overview: 1,
             offerPrice: 1,
             status: 1,
