@@ -126,12 +126,10 @@ subscriptionSchema.methods = {
         { _id: Object(recordId) },
         {
           $set: {
-            totalRewards: totalRewards,
+            totalHealthRewards: totalRewards,
             rewardsDetails: [
               {
-                vitals: vitals
-              },
-              {
+                vitals: vitals,
                 aiTraining: aiTraining
               }
             ]
