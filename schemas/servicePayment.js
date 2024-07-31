@@ -47,7 +47,7 @@ ServicePaymentSchema.methods = {
       const { orderId, txnId, currency, data } = args
       const ServicePaymentModel = mongoose.model('ServicePayment')
       return await ServicePaymentModel.findOneAndUpdate(
-        { orderId },
+        { orderId, status: 'pending' },
         {
           $set: {
             status: 'completed',
