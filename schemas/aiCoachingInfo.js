@@ -70,6 +70,18 @@ AiCoachingInfoSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  lastWorkout: async function (args) {
+    try {
+      let { user } = args
+      let criteria = {
+        user: ObjectId(user)
+      }
+      const TraininigHistory = mongoose.model('AiCoachingInfo')
+      return await TraininigHistory.find(criteria).sort({ createdAt: -1 })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
