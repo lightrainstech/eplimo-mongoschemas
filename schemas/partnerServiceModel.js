@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const { ObjectId } = mongoose.Types
 
 const PartnerServiceSchema = new mongoose.Schema(
   {
@@ -46,10 +47,11 @@ const PartnerServiceSchema = new mongoose.Schema(
 )
 
 PartnerServiceSchema.methods = {
-  getServicesByPartner: async function (partnerId) {
+  getServicesByPartner: async function (args) {
     try {
+      let { partner } = args
       const PartnerService = mongoose.model('PartnerService')
-      return await PartnerService.find({ partnerId })
+      return await PartnerService.find({ partner: ObjectId(partner) })
     } catch (error) {
       throw error
     }
