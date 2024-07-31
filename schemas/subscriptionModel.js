@@ -126,12 +126,10 @@ subscriptionSchema.methods = {
         { _id: Object(recordId) },
         {
           $set: {
-            totalRewards: totalRewards,
+            totalHealthRewards: totalRewards,
             rewardsDetails: [
               {
-                vitals: vitals
-              },
-              {
+                vitals: vitals,
                 aiTraining: aiTraining
               }
             ]
@@ -143,7 +141,7 @@ subscriptionSchema.methods = {
       throw error
     }
   },
-  gettotalRewards: async function (userId) {
+  getTotalRewards: async function (userId) {
     const Subscription = mongoose.model('Subscription')
     try {
       return await Subscription.aggregate([
