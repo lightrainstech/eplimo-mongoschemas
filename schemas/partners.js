@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Types
 const Schema = mongoose.Schema
 const PartnerSchema = new mongoose.Schema(
   {
@@ -141,13 +141,19 @@ const PartnerSchema = new mongoose.Schema(
 )
 
 PartnerSchema.methods = {
-  getPartners: async function () {
+  getPartners: async function (args) {
     try {
+      const { cType } = args
+      let criteria = {}
+      if (cType) {
+        criteria.companyType = cType
+      }
       const Partner = mongoose.model('Partner')
-      return await Partner.find(
-        {},
-        { hashedPassword: 0, salt: 0, authToken: 0 }
-      )
+      return await Partner.find(criteria, {
+        hashedPassword: 0,
+        salt: 0,
+        authToken: 0
+      })
     } catch (error) {
       throw error
     }
