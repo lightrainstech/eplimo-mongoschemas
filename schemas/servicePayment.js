@@ -44,7 +44,7 @@ const ServicePaymentSchema = new mongoose.Schema(
 ServicePaymentSchema.methods = {
   updatePaymentStatus: async function (args) {
     try {
-      const { orderId, txnId, currency } = args
+      const { orderId, txnId, currency, data } = args
       const ServicePaymentModel = mongoose.model('ServicePayment')
       return await ServicePaymentModel.findOneAndUpdate(
         { orderId },
@@ -52,7 +52,8 @@ ServicePaymentSchema.methods = {
           $set: {
             status: 'completed',
             currency: currency,
-            transactionId: txnId
+            transactionId: txnId,
+            paymentDetails: data
           }
         },
         { new: true }
