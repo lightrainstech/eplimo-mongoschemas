@@ -41,6 +41,9 @@ const planSchema = new mongoose.Schema(
     theme: {
       type: Array,
       default: []
+    },
+    planCode: {
+      type: String
     }
   },
   {
@@ -52,6 +55,14 @@ planSchema.methods = {
   getPlanById: async function (planId) {
     const Plan = mongoose.model('Plan')
     let query = { _id: planId }
+    const options = {
+      criteria: query
+    }
+    return Plan.load(options)
+  },
+  getPlanByCode: async function (code) {
+    const Plan = mongoose.model('Plan')
+    let query = { planCode: code }
     const options = {
       criteria: query
     }
@@ -96,7 +107,7 @@ planSchema.statics = {
   load: function (options, cb) {
     options.select =
       options.select ||
-      'name description price durationInDays offerPrice image theme extraFeature createdAt updatedAt'
+      'name description price durationInDays offerPrice image theme extraFeature createdAt updatedAt planCode'
     return this.findOne(options.criteria).select(options.select).exec(cb)
   },
   list: function (options) {
@@ -105,7 +116,7 @@ planSchema.statics = {
     const limit = parseInt(options.limit) || 12
     const select =
       options.select ||
-      'name description price durationInDays offerPrice image theme extraFeature createdAt updatedAt'
+      'name description price durationInDays offerPrice image theme extraFeature createdAt updatedAt planCode'
     return this.find(criteria)
       .select(select)
       .populate(options.populate)

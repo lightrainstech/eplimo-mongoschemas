@@ -29,9 +29,9 @@ const ServicePaymentSchema = new mongoose.Schema(
       default: 'pending'
     },
     transactionId: { type: String, default: '' },
-    amount: { type: String, required: true },
-    currency: { type: String },
-    receivedAmount: { type: Number }
+    amount: { type: String, default: 0 },
+    currency: { type: String, default: '' },
+    receivedAmount: { type: Number, default: 0 }
   },
   {
     timestamps: true

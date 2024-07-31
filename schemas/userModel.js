@@ -1369,8 +1369,8 @@ UserSchema.methods = {
           _id: ObjectId(user)
         },
         {
-          $set: {
-            credits: { $inc: credits }
+          $inc: {
+            credits: credits
           }
         },
         {
