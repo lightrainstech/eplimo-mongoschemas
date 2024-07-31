@@ -34,8 +34,7 @@ const ServicePaymentSchema = new mongoose.Schema(
     },
     transactionId: { type: String, default: '' },
     amount: { type: String, default: 0 },
-    currency: { type: String, default: '' },
-    receivedAmount: { type: Number, default: 0 }
+    currency: { type: String, default: '' }
   },
   {
     timestamps: true
