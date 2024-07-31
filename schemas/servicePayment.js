@@ -10,6 +10,10 @@ const ServicePaymentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     },
+    orderId: {
+      type: String,
+      default: null
+    },
     paymentType: {
       type: String,
       enum: ['zoksh', 'futureverse'],
@@ -38,4 +42,29 @@ const ServicePaymentSchema = new mongoose.Schema(
   }
 )
 
+ServicePaymentSchema.methods = {
+  updatePaymentStatus: async function (args) {
+    try {
+      const { orderId } = args
+      const ServicePaymentModel = mongoose.model('ServicePayment')
+      return await ServicePaymentModel.findOneAndUpdate(
+        { orderId },
+        { $set: {} }
+      )
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
+ServicePaymentSchema.index(
+  {
+    unique: true,
+    partialFilterExpression: { orderId: { $type: 'string' } }
+  },
+  {
+    unique: true,
+    partialFilterExpression: { transactionId: { $type: 'string' } }
+  }
+)
 module.exports = mongoose.model('ServicePayment', ServicePaymentSchema)
