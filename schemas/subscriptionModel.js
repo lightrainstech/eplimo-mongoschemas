@@ -125,6 +125,19 @@ subscriptionSchema.methods = {
     }
     return Subscription.load(options)
   },
+  getActiveSubscriptionDataOfUser: async function (userId) {
+    const Subscription = mongoose.model('Subscription')
+    let query = { user: userId, status: 'active' }
+    const options = {
+      criteria: query,
+      populate: {
+        path: 'plan',
+        select:
+          'user plan startDate endDate status totalHealthRewards rewardsDetails createdAt updatedAt'
+      }
+    }
+    return Subscription.load(options)
+  },
   updateRewards: async function (args) {
     try {
       let { recordId, totalRewards, vitals, aiTraining } = args
