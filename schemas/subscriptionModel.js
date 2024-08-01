@@ -2,6 +2,8 @@
 
 // External Dependencies
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Types
+
 const { addDays } = require('date-fns')
 
 const subscriptionSchema = new mongoose.Schema(
@@ -97,7 +99,7 @@ subscriptionSchema.methods = {
   cancelSubscription: async function (subscriptionId, status) {
     const Subscription = mongoose.model('Subscription')
     return Subscription.findOneAndUpdate(
-      { _id, subscriptionId },
+      { _id: ObjectId(subscriptionId), status: 'active' },
       {
         $set: {
           status: status
