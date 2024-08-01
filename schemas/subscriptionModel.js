@@ -24,6 +24,11 @@ const subscriptionSchema = new mongoose.Schema(
     endDate: {
       type: Date
     },
+    couponCode: {
+      type: String,
+      unique: true,
+      required: true
+    },
     status: {
       type: String,
       enum: ['pending', 'active', 'expired', 'cancelled'],
