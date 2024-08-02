@@ -154,7 +154,7 @@ PartnerSchema.methods = {
       const { cType } = args
       let criteria = {}
       if (cType) {
-        criteria.companyType = cType
+        criteria.category = cType
       }
       const Partner = mongoose.model('Partner')
       return await Partner.find(criteria, {
