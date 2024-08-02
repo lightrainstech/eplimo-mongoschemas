@@ -904,7 +904,7 @@ courseSchema.statics = {
   load: function (options, cb) {
     options.select =
       options.select ||
-      '_id title image description materials sections instructor price status createdAt updatedAt category overview'
+      '_id title image description materials sections instructor price offerPrice status createdAt updatedAt category overview'
     options.populate = options.populate || ''
     return this.findOne(options.criteria)
       .select(options.select)
