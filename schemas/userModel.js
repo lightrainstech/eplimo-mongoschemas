@@ -1380,6 +1380,69 @@ UserSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getNonSubscribedUsers: async function () {
+    try {
+      const User = mongoose.model('User')
+      return User.aggregate([
+        {
+          $match: {
+            $and: [
+              {
+                notificationId: {
+                  $exists: true
+                }
+              },
+              {
+                $expr: {
+                  $ne: ['$notificationId', null]
+                }
+              }
+            ]
+          }
+        },
+        {
+          $lookup: {
+            from: 'subscriptions',
+            let: { user: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $and: [
+                    {
+                      $expr: {
+                        $eq: ['$user', '$$user']
+                      }
+                    },
+                    {
+                      $expr: {
+                        $eq: ['$status', 'active']
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            as: 'activeSubscriptions'
+          }
+        },
+        {
+          $match: {
+            activeSubscriptions: { $eq: [] }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            notificationId: 1,
+            name: 1,
+            userName: 1
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
