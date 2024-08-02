@@ -129,6 +129,10 @@ const PartnerSchema = new mongoose.Schema(
       type: String,
       default: null
     },
+    tagLine: {
+      type: String,
+      default: null
+    },
     review: [
       {
         user: { type: Schema.ObjectId, ref: 'User', required: true },
