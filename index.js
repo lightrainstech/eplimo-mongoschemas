@@ -76,6 +76,7 @@ const CreditTransaction = require('./schemas/creditTransactions')
 const ServicePayment = require('./schemas/servicePayment')
 const Partner = require('./schemas/partners')
 const PartnerService = require('./schemas/partnerServiceModel')
+const DailyHealthTips = require('./schemas/dailyHealthTips')
 
 module.exports = {
   Admin,
@@ -143,5 +144,6 @@ module.exports = {
   CreditTransaction,
   ServicePayment,
   Partner,
-  PartnerService
+  PartnerService,
+  DailyHealthTips
 }
