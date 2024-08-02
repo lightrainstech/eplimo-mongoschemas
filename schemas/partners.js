@@ -117,6 +117,10 @@ const PartnerSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    category: {
+      type: String,
+      default: ''
+    },
     location: {
       type: String,
       default: ''
