@@ -1381,7 +1381,7 @@ UserSchema.methods = {
       throw error
     }
   },
-  getNonSubscribedUsers: async function () {
+  getUnSubscribedUsers: async function () {
     try {
       const User = mongoose.model('User')
       return User.aggregate([
