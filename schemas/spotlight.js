@@ -7,15 +7,13 @@ const SpotLightSchema = new mongoose.Schema(
     //user: { type: Schema.ObjectId, ref: 'User', required: true },
     userName: { type: String, default: 'Anonymous' },
     title: { type: String, default: '' },
-    video: {
-      path: {
-        type: String,
-        default: ''
-      },
-      mimeType: {
-        type: String,
-        default: 'image/jpeg'
-      }
+    videoUrl: {
+      type: String,
+      required: true
+    },
+    platform: {
+      type: String,
+      enum: ['youtube', 'vimeo']
     }
   },
   { timestamps: true }
