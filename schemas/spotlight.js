@@ -21,4 +21,15 @@ const SpotLightSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+SpotLightSchema.methods = {
+  getSpotlights: async function () {
+    try {
+      const spotLigtModel = mongoose.model('SpotLight')
+      return await spotLigtModel.find().sort({ createdAt: -1 })
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
 module.exports = mongoose.model('SpotLight', SpotLightSchema)
