@@ -77,6 +77,7 @@ const ServicePayment = require('./schemas/servicePayment')
 const Partner = require('./schemas/partners')
 const PartnerService = require('./schemas/partnerServiceModel')
 const DailyHealthTips = require('./schemas/dailyHealthTips')
+const SpotLight = require('./schemas/spotlight')
 
 module.exports = {
   Admin,
@@ -145,5 +146,6 @@ module.exports = {
   ServicePayment,
   Partner,
   PartnerService,
-  DailyHealthTips
+  DailyHealthTips,
+  SpotLight
 }
