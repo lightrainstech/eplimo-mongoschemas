@@ -75,7 +75,10 @@ AiCoachingInfoSchema.methods = {
     try {
       let { user } = args
       let criteria = {
-        user: ObjectId(user)
+        user: ObjectId(user),
+        'data.workout_overview': {
+          $ne: [null]
+        }
       }
       const TraininigHistory = mongoose.model('AiCoachingInfo')
       return await TraininigHistory.find(criteria).sort({ createdAt: -1 })
