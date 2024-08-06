@@ -125,7 +125,9 @@ LftPurchaseOrderSchema.index(
   {
     unique: true,
     partialFilterExpression: { paymentTxnHash: { $type: 'string' } }
-  }
+  },
+  { wallet: 1, paymentStatus: 1 },
+  { paymentStatus: 1 }
 )
 
 module.exports = mongoose.model('LftPurchaseOrder', LftPurchaseOrderSchema)
