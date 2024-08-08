@@ -107,6 +107,50 @@ LftPurchaseOrderSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  referralSales: async function () {
+    try {
+      const lftPurchaseModel = mongoose.model('LftPurchaseOrder')
+      return await lftPurchaseModel.aggregate([
+        {
+          $match: {
+            paymentStatus: 'completed',
+            $and: [
+              {
+                referralCode: {
+                  $exists: true
+                }
+              },
+              {
+                $expr: {
+                  $ne: ['$referralCode', '']
+                }
+              }
+            ]
+          }
+        },
+        {
+          $addFields: {
+            items: { $ifNull: ['$items', 1] }
+          }
+        },
+        {
+          $group: {
+            _id: '$referralCode',
+            totalLft: {
+              $sum: '$items'
+            }
+          }
+        },
+        {
+          $sort: {
+            totalLft: -1
+          }
+        }
+      ])
+    } catch (error) {
+      throw error
+    }
   }
 }
 
