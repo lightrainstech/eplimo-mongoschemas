@@ -1368,12 +1368,18 @@ UserSchema.methods = {
         {
           _id: ObjectId(user)
         },
-        {
-          $set: { credits: 0 },
-          $inc: {
-            credits: credits
+        [
+          {
+            $set: {
+              credits: { $ifNull: ['$credits', 0] }
+            }
+          },
+          {
+            $set: {
+              credits: { $add: ['$credits', credits] }
+            }
           }
-        },
+        ],
         {
           new: true
         }
