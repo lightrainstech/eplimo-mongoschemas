@@ -50,6 +50,13 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
     referralCode: {
       type: String,
       default: null
+    },
+    email: {
+      type: String
+    },
+    txnData: {
+      type: Object,
+      default: {}
     }
   },
   { timestamps: true }
