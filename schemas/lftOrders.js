@@ -65,7 +65,7 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
 LftPurchaseOrderSchema.methods = {
   updateStatus: async function (args) {
     try {
-      const { orderId, hash, assetId, latestAssetId, assetCounter } = args
+      const { orderId, hash, assetId, latestAssetId, assetCounter, data } = args
       const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
       return await LftPurchaseOrderModel.findOneAndUpdate(
         { orderId, paymentStatus: 'pending' },
@@ -75,7 +75,8 @@ LftPurchaseOrderSchema.methods = {
             assetId: assetId,
             paymentStatus: 'completed',
             latestAssetId: latestAssetId,
-            assetCounter: assetCounter
+            assetCounter: assetCounter,
+            txnData: data
           }
         },
         { new: true }
