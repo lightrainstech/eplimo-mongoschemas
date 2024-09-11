@@ -13,9 +13,6 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
     items: {
       type: Number
     },
-    referralCode: {
-      type: String
-    },
     orderId: {
       type: String,
       unique: true
@@ -100,7 +97,7 @@ LftPurchaseOrderSchema.methods = {
       const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
       return await LftPurchaseOrderModel.find({
         wallet,
-        paymentStatus: 'completed'
+        paymentStatus: { $in: ['completed', 'airdrop'] }
       })
     } catch (error) {
       throw error
