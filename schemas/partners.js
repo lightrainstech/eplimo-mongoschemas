@@ -165,7 +165,22 @@ PartnerSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  updateProgram: async function (args) {
+    try {
+      const { programId, cleanObj } = args
+      const Partner = mongoose.model('Partner')
+      return Partner.findOneAndUpdate(
+        { _id: Object(programId) },
+        { $set: cleanObj },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
+
+PartnerSchema.index({ category: 1 })
 
 module.exports = mongoose.model('Partner', PartnerSchema)
