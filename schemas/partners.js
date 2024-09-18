@@ -178,6 +178,18 @@ PartnerSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getPartnerDetail: async function (args) {
+    try {
+      const { partnerId } = args
+      const Partner = mongoose.model('Partner')
+      return Partner.findOne(
+        { _id: ObjectId(partnerId) },
+        { hashedPassword: -1, salt: -1, authToken: -1 }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
 
