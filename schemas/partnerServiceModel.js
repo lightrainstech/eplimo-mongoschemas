@@ -60,7 +60,21 @@ PartnerServiceSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  updateService: async function (args) {
+    try {
+      const { serviceId, cleanObj } = args
+      const PartnerService = mongoose.model('PartnerService')
+      return PartnerService.findOneAndUpdate(
+        { _id: Object(serviceId) },
+        { $set: cleanObj },
+        { new: true }
+      )
+    } catch (error) {
+      throw error
+    }
   }
 }
+PartnerServiceSchema.index({ partner: 1 })
 
 module.exports = mongoose.model('PartnerService', PartnerServiceSchema)
