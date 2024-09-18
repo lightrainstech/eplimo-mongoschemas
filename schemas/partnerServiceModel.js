@@ -73,6 +73,15 @@ PartnerServiceSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getServiceDetail: async function (args) {
+    try {
+      const { serviceId } = args
+      const PartnerService = mongoose.model('PartnerService')
+      return PartnerService.findOne({ _id: ObjectId(serviceId) })
+    } catch (error) {
+      throw error
+    }
   }
 }
 PartnerServiceSchema.index({ partner: 1 })
