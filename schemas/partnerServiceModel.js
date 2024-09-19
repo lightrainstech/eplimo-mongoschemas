@@ -38,11 +38,10 @@ const PartnerServiceSchema = new mongoose.Schema(
         rating: { type: Number, enum: [1, 2, 3, 4, 5], default: 1 }
       }
     ],
-    offersList: [
-      {
-        offers: { type: String, default: '' }
-      }
-    ],
+    offersList: {
+      type: Array,
+      default: []
+    },
     isApproved: {
       type: Boolean,
       default: false
