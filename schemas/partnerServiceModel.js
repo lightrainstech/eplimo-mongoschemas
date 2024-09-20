@@ -55,7 +55,12 @@ PartnerServiceSchema.methods = {
     try {
       let { partner } = args
       const PartnerService = mongoose.model('PartnerService')
-      return await PartnerService.find({ partner: ObjectId(partner) })
+      return await PartnerService.find({ partner: ObjectId(partner) }).populate(
+        {
+          path: 'partner',
+          select: 'companyName companyType email phone category location'
+        }
+      )
     } catch (error) {
       throw error
     }
