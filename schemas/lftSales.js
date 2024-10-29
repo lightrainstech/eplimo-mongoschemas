@@ -47,4 +47,18 @@ const LftSalesSchema = new mongoose.Schema({
   }
 })
 
+LftSalesSchema.methods = {
+  fetchSalesList: async function (args) {
+    try {
+      const { startDate, endDate } = args
+      const LftSalesModel = mongoose.model('LftSales')
+      return await LftSalesModel.find({
+        date: { $gte: startDate, $lte: endDate }
+      }).sort({ date: -1 })
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
 module.exports = mongoose.model('LftSales', LftSalesSchema)
