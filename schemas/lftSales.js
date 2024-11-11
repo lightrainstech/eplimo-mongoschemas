@@ -52,9 +52,50 @@ LftSalesSchema.methods = {
     try {
       const { startDate, endDate } = args
       const LftSalesModel = mongoose.model('LftSales')
-      return await LftSalesModel.find({
-        date: { $gte: startDate, $lte: endDate }
-      }).sort({ date: -1 })
+      return await LftSalesModel.aggregate([
+        {
+          $match: {
+            date: { $gte: startDate, $lte: endDate }
+          }
+        },
+        {
+          $project: {
+            date: 1,
+            itemCount: {
+              $cond: {
+                if: {
+                  $and: [
+                    { $isArray: '$assetId' },
+                    { $gt: [{ $size: '$assetId' }, 0] }
+                  ]
+                },
+                then: { $size: '$assetId' },
+                else: 1
+              }
+            },
+            items: 1,
+            wallet: 1,
+            amount: 1,
+            paymentTxnHash: 1,
+            assetId: 1,
+            referralCode: 1,
+            purchasedBy: 1,
+            referredBy: 1,
+            txnData: 1,
+            date: 1
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalSoldItems: { $sum: '$itemCount' },
+            salesData: { $push: '$$ROOT' }
+          }
+        },
+        {
+          $sort: { 'salesData.date': 1 }
+        }
+      ])
     } catch (error) {
       throw error
     }
