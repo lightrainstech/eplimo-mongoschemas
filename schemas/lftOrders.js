@@ -54,6 +54,14 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
     txnData: {
       type: Object,
       default: {}
+    },
+    lockedLimos: {
+      type: Number,
+      default: 0
+    },
+    limoPriceInUsd: {
+      type: Number,
+      default: 0
     }
   },
   { timestamps: true }
@@ -62,7 +70,16 @@ const LftPurchaseOrderSchema = new mongoose.Schema(
 LftPurchaseOrderSchema.methods = {
   updateStatus: async function (args) {
     try {
-      const { orderId, hash, assetId, latestAssetId, assetCounter, data } = args
+      const {
+        orderId,
+        hash,
+        assetId,
+        latestAssetId,
+        assetCounter,
+        data,
+        limos,
+        limoUsdPrice
+      } = args
       const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
       return await LftPurchaseOrderModel.findOneAndUpdate(
         { orderId, paymentStatus: 'pending' },
@@ -73,7 +90,9 @@ LftPurchaseOrderSchema.methods = {
             paymentStatus: 'completed',
             latestAssetId: latestAssetId,
             assetCounter: assetCounter,
-            txnData: data
+            txnData: data,
+            lockedLimos: limos,
+            limoPriceInUsd: limoUsdPrice
           }
         },
         { new: true }
@@ -152,6 +171,67 @@ LftPurchaseOrderSchema.methods = {
             totalLft: -1
           }
         }
+      ])
+    } catch (error) {
+      throw error
+    }
+  },
+  listAssetByOwner: async function (wallets) {
+    try {
+      const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
+      return await LftPurchaseOrderModel.find({
+        wallet: { $in: wallets },
+        paymentStatus: { $in: ['completed', 'airdrop'] }
+      })
+    } catch (error) {
+      throw error
+    }
+  },
+  salesByReferralCode: async function (referralCode) {
+    try {
+      const lftPurchaseModel = mongoose.model('LftPurchaseOrder')
+      return await lftPurchaseModel.aggregate([
+        {
+          $match: {
+            paymentStatus: 'completed',
+            referralCode:referralCode
+          }
+        },
+        {
+          $addFields: {
+            items: { $ifNull: ['$items', 1] },
+            email:{$ifNull:['$email','NA']}
+          }
+        },
+        {
+          $facet: {
+              referralEntries: [
+                        {
+                            $project: {
+                                wallet: 1,
+                                items: { $ifNull: ['$items', 1] },
+                                email:{$ifNull:['$email','NA']},
+                                createdAt: 1,
+                            }
+                        }
+                              ],
+                    totals: [
+                        {
+                            $group: {
+                                _id: '$referralCode',
+                                totalReferrals: { $sum: 1 },
+                                totalLft: { $sum: '$items' }
+                            }
+                        }
+                    ]
+                  }
+            },
+            {
+                $project: {
+                    referralEntries: 1,
+                    totals: { $arrayElemAt: ['$totals', 0] }
+                }
+            }
       ])
     } catch (error) {
       throw error
