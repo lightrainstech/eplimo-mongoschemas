@@ -44,6 +44,14 @@ const LftSalesSchema = new mongoose.Schema({
   },
   date: {
     type: String
+  },
+  lockedLimos: {
+    type: Number,
+    default: 0
+  },
+  limoPriceInUsd: {
+    type: Number,
+    default: 0
   }
 })
 
