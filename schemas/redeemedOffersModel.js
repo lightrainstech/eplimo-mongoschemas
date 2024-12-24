@@ -25,6 +25,14 @@ RedeemedOffersSchema.methods={
       throw err
     }
 
+  },
+  checkForCode:async function(offerCode){
+    try{
+      const  RedeemModel = mongoose.model('RedeemedOffers')
+      return await RedeemModel.findOne({offerCode})
+    }catch(err){
+      throw err
+    }
   }
 }
 
