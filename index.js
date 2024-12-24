@@ -79,6 +79,7 @@ const PartnerService = require('./schemas/partnerServiceModel')
 const DailyHealthTips = require('./schemas/dailyHealthTips')
 const SpotLight = require('./schemas/spotlight')
 const LftSales = require('./schemas/lftSales')
+const RedeemedOffers = require('./schemas/redeemedOffersModel.js')
 
 module.exports = {
   Admin,
@@ -149,5 +150,6 @@ module.exports = {
   PartnerService,
   DailyHealthTips,
   SpotLight,
-  LftSales
+  LftSales,
+  RedeemedOffers
 }
