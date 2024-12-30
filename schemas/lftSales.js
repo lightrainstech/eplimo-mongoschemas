@@ -90,14 +90,17 @@ LftSalesSchema.methods = {
             purchasedBy: 1,
             referredBy: 1,
             txnData: 1,
-            date: 1
+            date: 1,
+            lockedLimos: 1,
+            limoPriceInUsd: 1
           }
         },
         {
           $group: {
             _id: null,
             totalSoldItems: { $sum: '$itemCount' },
-            salesData: { $push: '$$ROOT' }
+            salesData: { $push: '$$ROOT' },
+            lockedLimos: { $sum: '$lockedLimos' }
           }
         },
         {
