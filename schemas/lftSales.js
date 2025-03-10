@@ -111,7 +111,7 @@ LftSalesSchema.methods = {
       throw error
     }
   },
-  lockedLimos: async function (args) {
+  getLockedLimos: async function (args) {
     try {
       const { walletArray } = args
       const LftSalesModel = mongoose.model('LftSales')
