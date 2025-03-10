@@ -111,9 +111,8 @@ LftSalesSchema.methods = {
       throw error
     }
   },
-  getLockedLimos: async function (args) {
+  getLockedLimos: async function (walletArray) {
     try {
-      const { walletArray } = args
       const LftSalesModel = mongoose.model('LftSales')
       const result = await LftSalesModel.aggregate([
         { $match: { wallet: { $in: walletArray } } },
