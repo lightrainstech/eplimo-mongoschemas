@@ -110,7 +110,27 @@ LftSalesSchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  lockedLimos: async function (args) {
+    try {
+      const { walletArray } = args
+      const LftSalesModel = mongoose.model('LftSales')
+      const result = await LftSalesModel.aggregate([
+        { $match: { wallet: { $in: walletArray } } },
+        { $group: { _id: null, totalLockedLimos: { $sum: '$lockedLimos' } } }
+      ])
+      return result.length > 0 ? result[0].totalLockedLimos : 0
+    } catch (error) {
+      throw error
+    }
   }
 }
+
+LftSalesSchema.index(
+  {
+    date: 1
+  },
+  { wallet: 1 }
+)
 
 module.exports = mongoose.model('LftSales', LftSalesSchema)
