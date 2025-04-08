@@ -106,7 +106,7 @@ LftPurchaseOrderSchema.methods = {
       const LftPurchaseOrderModel = mongoose.model('LftPurchaseOrder')
       return await LftPurchaseOrderModel.findOne({
         paymentStatus: 'completed'
-      }).sort({ updatedAt: -1, latestAssetId: 1 })
+      }).sort({ updatedAt: -1, latestAssetId: 1 }).limit(1)
     } catch (error) {
       throw error
     }
