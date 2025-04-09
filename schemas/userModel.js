@@ -1593,7 +1593,13 @@ UserSchema.index(
   { userName: 'text' },
   { email: 'text', name: 'text' },
   { corpId: 1, email: 1, name: 1 },
-  { affiliateCode: 1, corpId: 1 }
+  { affiliateCode: 1, corpId: 1 },
+  {
+    notificationId: 1,
+    _id: 1,
+    name: 1,
+    userName: 1
+  }
 )
 
 module.exports = mongoose.model('User', UserSchema)
