@@ -303,7 +303,15 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: null
     },
-    credits: { type: Number, required: true, default: 0 }
+    credits: { type: Number, required: true, default: 0 },
+    hasLimoCardAccount: {
+      type: Boolean,
+      default: false
+    },
+    limoCardMeta: {
+      type: Object,
+      default: {}
+    }
   },
   { timestamps: true }
 )
