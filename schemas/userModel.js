@@ -1298,6 +1298,47 @@ UserSchema.methods = {
       throw error
     }
   },
+  addLimocardPlanPurchaseDetails:async function (args) {
+    try {
+      const User = mongoose.model('User')
+      const {userId,planId, planName,orderId,status} = args
+      return await User.findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { $set: { "limoCardMeta.planPurchase": {planId:planId,planName:planName,orderId:orderId,status:status} } },
+        {
+          new: true
+        }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  updateLimocardPlanPurchaseDetails:async function(args){
+    try {
+      const User = mongoose.model('User')
+      const {userId,orderId,status} = args
+      return await User.findOneAndUpdate(
+        { _id: ObjectId(userId),'limoCardMeta.planPurchase.orderId':orderId },
+        { $set: { "limoCardMeta.planPurchase.status":status } },
+        {
+          new: true
+        }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
+  getLimoCardPurchaseStatus:async function(args){
+    try {
+      const User = mongoose.model('User')
+      const {userId} = args
+      return await User.findOne(
+        { _id: ObjectId(userId) },{'limoCardMeta.planPurchase':1 }
+      )
+    } catch (error) {
+      throw error
+    }
+  },
   getInstructorDetails: async function (userId) {
     try {
       const User = mongoose.model('User')
