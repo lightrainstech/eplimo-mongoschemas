@@ -21,7 +21,7 @@ const ServicePaymentSchema = new mongoose.Schema(
     },
     transactionType: {
       type: String,
-      enum: ['subscription', 'credits']
+      enum: ['subscription', 'credits','limoCards']
     },
     paymentDetails: {
       type: Object,
