@@ -1027,6 +1027,7 @@ ActivitySchema.methods = {
   },
   getTotalDistance: async function (userId) {
     try {
+      const Activity = mongoose.model('Activity')
       const result = await Activity.aggregate([
         { $match: { user: new mongoose.Types.ObjectId(userId) } },
         {
