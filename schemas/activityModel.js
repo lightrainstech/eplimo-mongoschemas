@@ -1024,6 +1024,22 @@ ActivitySchema.methods = {
     } catch (error) {
       throw error
     }
+  },
+  getTotalDistance: async function (userId) {
+    try {
+      const result = await Activity.aggregate([
+        { $match: { user: new mongoose.Types.ObjectId(userId) } },
+        {
+          $group: {
+            _id: '$user',
+            totalDistance: { $sum: '$distance' }
+          }
+        }
+      ])
+      return result.length > 0 ? result[0].totalDistance : 0
+    } catch (error) {
+      throw error
+    }
   }
 }
 
