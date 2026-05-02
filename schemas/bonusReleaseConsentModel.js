@@ -15,8 +15,8 @@ const BonusReleaseConsentSchema = new mongoose.Schema(
         'option1',
         'option2',
         'option3',
-        '2026-1',
-        '2026-2'
+        'option201',
+        'option202'
       ]
     },
     isAgree: {
