@@ -71,6 +71,13 @@ BonusReleaseConsentSchema.methods = {
       },
       { new: true }
     )
+  },
+  updateSubmission2026: async ({ user, mode }) => {
+    const BonusReleaseConsent = mongoose.model('BonusReleaseConsent')
+    return BonusReleaseConsent.create({
+      user: ObjectId(user),
+      mode
+    })
   }
 }
 
